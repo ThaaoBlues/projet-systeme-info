@@ -3,13 +3,16 @@
 #include <stdio.h>
 #define HASH_SIZE 1024  // Tu peux monter à 65536 si tu veux être large
 #define VAR_NAME_SIZE 4
-
+#define TAILLE_BANC_REGISTRES
 
 uint32_t dernière_addr_libre = 0x00000000;
 extern FILE *output_file;
 
 int next_free_address = 1000;
 int new_tmp() { return next_free_address++; }
+
+// on travaille avec une pile
+void free_tmp() {next_free_address++;}
 %}
 
 
@@ -32,7 +35,7 @@ int get_var(char name[5]) {
     // On cherche dans la liste chaînée à cet index
     struct Node* current = table[hash_index];
     while(current) {
-        if(current->id == full_id) return current->value;
+        if(current->id == full_id && profondeur_actuelle >= current->profondeur) return current->value;
         current = current->next;
     }
     return 0; // Variable non trouvée
@@ -143,7 +146,6 @@ Instruction : tCONST GroupedDecl tENDINST {}
 GroupedDecl : tSEP tKEYWORD tSEP GroupedDecl {$$ = $4; add_var($2,$4);}
 	| tEGAL tSEP Expr {$$ = $3;};
  
-// s'inspirer tID tEGAL Expr tENDLINE { var[(int)$1] = $3; } ;
 
 Expr :  tPO Expr tPF {$$ = $2;} 
 		| Expr tADD DivMul { int res = new_tmp();
