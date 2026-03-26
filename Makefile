@@ -1,11 +1,11 @@
-GRM=compilateur.y
+GRM=compilateur.y 
 LEX=compilateur.l
 BIN=compilateur
 
 CC=gcc
 CFLAGS=-Wall -g
 
-OBJ=y.tab.o lex.yy.o main.o
+OBJ=y.tab.o lex.yy.o main.o gestionMem.o
 
 all: $(BIN)
 
