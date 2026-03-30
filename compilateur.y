@@ -7,7 +7,40 @@
 #define TAILLE_BANC_REGISTRES
 
 
+typedef struct Node {
+    int numero_ligne;
+    struct Node* next;
+} Node;
 
+typedef struct {
+    Node* top; // Pointeur vers le haut de la pile
+} Stack;
+
+
+void push(Stack* s, int value) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Erreur d'allocation mémoire\n");
+        return;
+    }
+    newNode->data = value;
+    newNode->next = s->top;
+    s->top = newNode;
+}
+
+int pop(Stack* s) {
+    if (s->top == NULL) {
+        printf("La pile est vide !\n");
+        return -1; 
+    }
+    Node* temp = s->top;
+    int value = temp->data;
+    s->top = s->top->next;
+    free(temp);
+    return value;
+}
+
+Stack pile_lignes_a_finir = (*Node) malloc(sizeof(Node));
 
 
 FILE *output_file = NULL;
@@ -24,12 +57,13 @@ void iniOutputFile(){
 void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
-%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF
+%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE
 %token <nb> tNB
 %token <var> tID tKEYWORD
 %type <nb>  Expr DivMul Terme GroupedDecl
 %start Main
 %%
+
 Main : {iniOutputFile();}tMAIN tPO tPF tACCO Body tACCF {printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);};
 
 Body:
@@ -40,7 +74,10 @@ Body:
 Instruction : tCONST GroupedDecl tENDINST {} //TODO FAIRE LA CONSTANTE
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
 	| tKEYWORD tEGAL Expr tENDINST{uint32_t allocated_addr = get_var($1); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);} 
-	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} ; 
+	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} 
+	| tIF Expr {fprintf(output_file,"Debut IF %d",ftell(output_file));push(pile_lignes_a_finir,ftell(output_file))} Body {int lineJump = ftell(output_file)+1 ;fseek(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);};
+	// TODO FINIR IF AVEC LE SEEK QUI DOIT BIEN SE DEPLACER
+	// ftell +1 ne marche pas /!\
 
 
 // premier tSEP représente un espace, le second soit une virgule soit un espace
@@ -72,7 +109,7 @@ DivMul :	  DivMul tMUL Terme {
 		| Terme { $$ = $1;} ;
 Terme : tKEYWORD { uint32_t ret = get_var($1); fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); $$ = ret; }
 		// 6 = AFC (affectation)
-		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr); $$=tmpAddr;} ;
+		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;} ;
 
 %%
 

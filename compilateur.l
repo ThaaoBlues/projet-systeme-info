@@ -12,6 +12,8 @@
 "const" {printf("tCONST\n"); return tCONST;}
 "int" {printf("tINTVAR\n");return tINTVAR;}
 "printf" {printf("tPRINTF\n");return tPRINTF;}
+"if" {printf("tIF\n");return tIF;}
+"else" {printf("tELSE\n");return tELSE;}
 
 "*10^" {printf("tEXP\n");return tEXP;}
 "="	{ printf("tEGAL\n");return tEGAL; }
