@@ -24,7 +24,7 @@ void iniOutputFile(){
 void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
-%token tEGAL tPO tPF tSOU tADD tDIV tMUL tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF
+%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF
 %token <nb> tNB
 %token <var> tID tKEYWORD
 %type <nb>  Expr DivMul Terme GroupedDecl
@@ -38,18 +38,20 @@ Body:
 	| {printf("body terminé, on remonte.\n");};
 	
 Instruction : tCONST GroupedDecl tENDINST {} //TODO FAIRE LA CONSTANTE
-	| tINTVAR GroupedDecl tENDINST {printf("on a déclaré un/des nombre(s) entier(s)\n");}
-	| tPRINTF Expr tENDINST {fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);}; // PB DE PRINT DE VALEUR RANDOM
+	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
+	| tKEYWORD tEGAL Expr tENDINST{uint32_t allocated_addr = get_var($1); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);} 
+	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} ; 
 
 
 // premier tSEP représente un espace, le second soit une virgule soit un espace
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
-GroupedDecl : tSEP tKEYWORD tSEP GroupedDecl {uint32_t allocated_addr = add_var($2); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,RESULT_MEM_ADDR,RESULT_MEM_ADDR,allocated_addr);}
-	| tEGAL tSEP Expr {$$ = $3;};
- 
+GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);}
+	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);}
+	| tEGAL Expr  tENDINST {$$ = $2;}
+	| tENDINST {fprintf(output_file,"6 %d %d ; (Init variable) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
-Expr :  tPO Expr tPF
+Expr :  tPO Expr tPF {$$ = $2;}
 		| Expr tADD DivMul {
             // On écrit dans le fichier au lieu de la console
             fprintf(output_file, "1 %d %d %d ; Addition \n", RESULT_MEM_ADDR, $1, $3); 
@@ -58,7 +60,7 @@ Expr :  tPO Expr tPF
             // On écrit dans le fichier au lieu de la console
             fprintf(output_file, "3 %d %d %d ; Soustraction \n", RESULT_MEM_ADDR, $1, $3); 
             $$ = RESULT_MEM_ADDR; }
-		| DivMul { $$ = $1; } ;
+		| DivMul { $$ = $1;} ;
 DivMul :	  DivMul tMUL Terme {
             // On écrit dans le fichier au lieu de la console
             fprintf(output_file, "2 %d %d %d ; Multiplication\n", RESULT_MEM_ADDR, $1, $3); 
@@ -67,10 +69,10 @@ DivMul :	  DivMul tMUL Terme {
             // On écrit dans le fichier au lieu de la console
             fprintf(output_file, "4 %d %d %d ; Division\n", RESULT_MEM_ADDR, $1, $3); 
             $$ = RESULT_MEM_ADDR; }
-		| Terme { $$ = $1; } ;
+		| Terme { $$ = $1;} ;
 Terme : tKEYWORD { uint32_t ret = get_var($1); fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); $$ = ret; }
 		// 6 = AFC (affectation)
-		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constate %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr); $$=tmpAddr;} ;
+		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr); $$=tmpAddr;} ;
 
 %%
 

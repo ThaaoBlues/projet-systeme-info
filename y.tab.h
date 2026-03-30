@@ -61,20 +61,21 @@ extern int yydebug;
     tADD = 262,                    /* tADD  */
     tDIV = 263,                    /* tDIV  */
     tMUL = 264,                    /* tMUL  */
-    tERROR = 265,                  /* tERROR  */
-    tMAIN = 266,                   /* tMAIN  */
-    tCONST = 267,                  /* tCONST  */
-    tINTVAR = 268,                 /* tINTVAR  */
-    tSEP = 269,                    /* tSEP  */
-    tENDLINE = 270,                /* tENDLINE  */
-    tENDINST = 271,                /* tENDINST  */
-    tPRINTF = 272,                 /* tPRINTF  */
-    tEXP = 273,                    /* tEXP  */
-    tACCO = 274,                   /* tACCO  */
-    tACCF = 275,                   /* tACCF  */
-    tNB = 276,                     /* tNB  */
-    tID = 277,                     /* tID  */
-    tKEYWORD = 278                 /* tKEYWORD  */
+    tVIRG = 265,                   /* tVIRG  */
+    tERROR = 266,                  /* tERROR  */
+    tMAIN = 267,                   /* tMAIN  */
+    tCONST = 268,                  /* tCONST  */
+    tINTVAR = 269,                 /* tINTVAR  */
+    tSEP = 270,                    /* tSEP  */
+    tENDLINE = 271,                /* tENDLINE  */
+    tENDINST = 272,                /* tENDINST  */
+    tPRINTF = 273,                 /* tPRINTF  */
+    tEXP = 274,                    /* tEXP  */
+    tACCO = 275,                   /* tACCO  */
+    tACCF = 276,                   /* tACCF  */
+    tNB = 277,                     /* tNB  */
+    tID = 278,                     /* tID  */
+    tKEYWORD = 279                 /* tKEYWORD  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -90,20 +91,21 @@ extern int yydebug;
 #define tADD 262
 #define tDIV 263
 #define tMUL 264
-#define tERROR 265
-#define tMAIN 266
-#define tCONST 267
-#define tINTVAR 268
-#define tSEP 269
-#define tENDLINE 270
-#define tENDINST 271
-#define tPRINTF 272
-#define tEXP 273
-#define tACCO 274
-#define tACCF 275
-#define tNB 276
-#define tID 277
-#define tKEYWORD 278
+#define tVIRG 265
+#define tERROR 266
+#define tMAIN 267
+#define tCONST 268
+#define tINTVAR 269
+#define tSEP 270
+#define tENDLINE 271
+#define tENDINST 272
+#define tPRINTF 273
+#define tEXP 274
+#define tACCO 275
+#define tACCF 276
+#define tNB 277
+#define tID 278
+#define tKEYWORD 279
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -112,7 +114,7 @@ union YYSTYPE
 #line 26 "compilateur.y"
  int nb; char var[5]; 
 
-#line 116 "y.tab.h"
+#line 118 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

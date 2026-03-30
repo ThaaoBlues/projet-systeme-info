@@ -36,7 +36,8 @@
 	}
 
 	}
-[\t|' '|','] {printf("tSEP=%c\n",yytext[0]);return tSEP;}
+[\t|' '|] {}
+"," {printf("VIRGULE\n");return tVIRG;}
 [\n] {printf("tENDLINE\n");}
 ";" {printf("tENDINST\n");return tENDINST;}
 .	{ printf("tERROR\n"); return tERROR; }
