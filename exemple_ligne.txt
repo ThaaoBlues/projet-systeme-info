@@ -1,6 +1,9 @@
 
 main(){int chat = 3;int dog = 4+4;int oui = chat+dog;printf(oui);}
 
+main(){int chat, dog, oui = 5;oui = chat+dog; chat = oui*3; dog = chat*2 + 5 - dog; printf(3*dog);}
+
+
 
 main(){int oui;oui=2;printf(oui);}
 

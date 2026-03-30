@@ -1294,13 +1294,13 @@ yyreduce:
 
   case 13: /* GroupedDecl: tKEYWORD tVIRG GroupedDecl  */
 #line 49 "compilateur.y"
-                                         {uint32_t allocated_addr = add_var((yyvsp[-2].var)); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,(yyvsp[0].nb),(yyvsp[-2].var),(yyvsp[0].nb),allocated_addr);}
+                                         {uint32_t allocated_addr = add_var((yyvsp[-2].var)); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,(yyvsp[0].nb),(yyvsp[-2].var),(yyvsp[0].nb),allocated_addr);(yyval.nb) = (yyvsp[0].nb);}
 #line 1299 "y.tab.c"
     break;
 
   case 14: /* GroupedDecl: tKEYWORD GroupedDecl  */
 #line 50 "compilateur.y"
-                                {uint32_t allocated_addr = add_var((yyvsp[-1].var)); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,(yyvsp[0].nb),(yyvsp[-1].var),(yyvsp[0].nb),allocated_addr);}
+                                {uint32_t allocated_addr = add_var((yyvsp[-1].var)); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,(yyvsp[0].nb),(yyvsp[-1].var),(yyvsp[0].nb),allocated_addr);(yyval.nb) = (yyvsp[0].nb);}
 #line 1305 "y.tab.c"
     break;
 

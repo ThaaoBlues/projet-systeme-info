@@ -46,8 +46,8 @@ Instruction : tCONST GroupedDecl tENDINST {} //TODO FAIRE LA CONSTANTE
 // premier tSEP représente un espace, le second soit une virgule soit un espace
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
-GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);}
-	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);}
+GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
+	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
 	| tEGAL Expr  tENDINST {$$ = $2;}
 	| tENDINST {fprintf(output_file,"6 %d %d ; (Init variable) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
