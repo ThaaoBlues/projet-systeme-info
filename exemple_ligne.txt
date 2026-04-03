@@ -8,3 +8,23 @@ main(){int chat, dog, oui = 5;oui = chat+dog; chat = oui*3; dog = chat*2 + 5 - d
 main(){int oui;oui=2;printf(oui);}
 
 main(){int oui = 2;printf(oui);}
+
+
+// Test var et const
+
+main(){int oui = 2;printf(oui); int oui = 4;printf(oui);}
+
+main(){const int oui = 2;printf(oui); int oui = 4;printf(oui);}
+
+main(){const int oui,non = 2;printf(oui); int non = 4;printf(oui);}
+
+// test if else
+
+main(){if(1){print(3);}}
+
+main(){if(0){print(3);}}
+
+
+main(){if(0){print(3);}else{print(1);print(2);}}
+
+main(){int oui,non = 2; if(oui){print(oui);non = 5}else{print(non);oui = non - 6;}}

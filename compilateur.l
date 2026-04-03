@@ -14,6 +14,7 @@
 "printf" {printf("tPRINTF\n");return tPRINTF;}
 "if" {printf("tIF\n");return tIF;}
 "else" {printf("tELSE\n");return tELSE;}
+"while" {printf("tWhile\n";return tWHILE;)}
 
 "*10^" {printf("tEXP\n");return tEXP;}
 "="	{ printf("tEGAL\n");return tEGAL; }
