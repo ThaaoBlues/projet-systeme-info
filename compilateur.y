@@ -79,7 +79,14 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
     | tINTVAR tMUL GroupedDeclPointeur tENDINST //declaration de pointeur 
     | tCONST GroupedDeclConst tENDINST {prtinf("on déclare un/des constante");} 
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
-	| tKEYWORD tEGAL Expr tENDINST{if is_constante($1){printf("ERREUR IMPOSSIBLE DE CHANGER CONSTANTE\n");}else{uint32_t allocated_addr = get_var($1); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);}} 
+	| tKEYWORD tEGAL Expr tENDINST{
+        if(is_constante($1)){
+            printf("ERREUR : IMPOSSIBLE DE CHANGER LA VALEUR DE LA CONSTANTE : %s\n",$1);
+        }else{
+            uint32_t allocated_addr = get_var($1);
+            fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);
+        }
+    } 
 	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} 
 	| tIF Expr {
         fprintf(output_file,"; Debut IF %d",ftell_line(output_file,ftell(f)));
