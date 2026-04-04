@@ -58,11 +58,13 @@ void iniOutputFile(){
 void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
+
 %token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE
 %token <nb> tNB
 %token <var> tID tKEYWORD
 %type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur
 %start Main
+
 %%
 
 Main : {iniOutputFile();}tMAIN tPO tPF tACCO Body tACCF {printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);};
@@ -93,7 +95,7 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
     
     //Pour le if else, la partie if est la meme que if simple. Il faut rajouter un jump juste avant le else qui jump focement
     // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
-    | tWHILE Expr  {fprintf(output_file,"Debut WHILE %d",ftell(output_file));push(pile_lignes_a_finir,ftell(output_file));} Body {int line_while = pop(pile_lignes_a_finir); fprintf(output_file,"7 %d \n",pile_lignes_a_finir); int lineJump = ftell(output_file)+1 ;fseek(output_file,line_while); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,-1);} ;
+    | tWHILE Expr  {fprintf(output_file,"Debut WHILE %d",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));} Body {int line_while = pop(pile_lignes_a_finir); fprintf(output_file,"7 %d \n",pile_lignes_a_finir); int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,line_while); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);} ;
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition
 
 // premier tSEP représente un espace, le second soit une virgule soit un espace
