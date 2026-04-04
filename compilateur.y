@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "gestionMem.h"
+#include "file_utils.h"
 
 #define VAR_NAME_SIZE 4
 #define TAILLE_BANC_REGISTRES
@@ -70,6 +71,7 @@ Body:
  	tACCO {scopeDeeper();} Body {scopeSmaller();free_scope();} tACCF 
 	| Instruction Body {}
 	| {printf("body terminé, on remonte.\n");};
+
 	
 Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de pointeur constant
     | tINTVAR tMUL GroupedDeclPointeur tENDINST //declaration de pointeur 
@@ -77,8 +79,8 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
 	| tKEYWORD tEGAL Expr tENDINST{if is_constante($1){printf("ERREUR IMPOSSIBLE DE CHANGER CONSTANTE\n");}else{uint32_t allocated_addr = get_var($1); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);}} 
 	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} 
-	| tIF Expr {fprintf(output_file,"Debut IF %d",ftell(output_file));push(pile_lignes_a_finir,ftell(output_file));} Body  {int lineJump = ftell(output_file)+1 ;fseek(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,-1);} 
-    | tIF Expr {fprintf(output_file,"Debut IF %d avec ELSE",ftell(output_file));push(pile_lignes_a_finir,ftell(output_file))} Body {int lineJump = ftell(output_file)+1 ;fseek(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,-1);}  tELSE  {fprintf(output_file,"Debut Else %d ",ftell(output_file));push(pile_lignes_a_finir,ftell(output_file));}Body {int lineJump = ftell(output_file)+1 ;fseek(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"7 %d\n",lineJump);fseek(output_file,-1);} 
+	| tIF Expr {fprintf(output_file,"Debut IF %d",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));} Body  {int lineJump = ftell_line(output_file,ftell(1))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);} 
+    | tIF Expr {fprintf(output_file,"Debut IF %d avec ELSE",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)))} Body {int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);}  tELSE  {fprintf(output_file,"Debut Else %d ",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));}Body {int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"7 %d\n",lineJump);fseek(output_file,0,SEEK_END);} 
 
 	// TODO FINIR IF AVEC LE SEEK QUI DOIT BIEN SE DEPLACER
 	// ftell +1 ne marche pas /!\ 
