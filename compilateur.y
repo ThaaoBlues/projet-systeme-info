@@ -81,8 +81,32 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
 	| tKEYWORD tEGAL Expr tENDINST{if is_constante($1){printf("ERREUR IMPOSSIBLE DE CHANGER CONSTANTE\n");}else{uint32_t allocated_addr = get_var($1); fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);}} 
 	| tPRINTF Expr tENDINST{fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);} 
-	| tIF Expr {fprintf(output_file,"Debut IF %d",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));} Body  {int lineJump = ftell_line(output_file,ftell(1))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);} 
-    | tIF Expr {fprintf(output_file,"Debut IF %d avec ELSE",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)))} Body {int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);}  tELSE  {fprintf(output_file,"Debut Else %d ",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));}Body {int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,pop(pile_lignes_a_finir)); fprintf(output_file,"7 %d\n",lineJump);fseek(output_file,0,SEEK_END);} 
+	| tIF Expr {
+        fprintf(output_file,"; Debut IF %d",ftell_line(output_file,ftell(f)));
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(f))); // stoque la position du if
+    } Body  {
+        int lineJump = ftell_line(output_file,ftell(1))+1; // prend notre position
+        fseek_line(output_file,pop(pile_lignes_a_finir)); // revient sur le if pour jump neq à notre position
+        fprintf(output_file,"8 %d %d\n",$1,lineJump); // écris
+        fseek(output_file,0,SEEK_END); // reviens à la fin du fichier
+    } 
+    | tIF Expr {
+        fprintf(output_file,"; Debut IF %d avec ELSE",ftell_line(output_file,ftell(f)));
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(f))); // stoque la position du if
+    } Body {
+        int lineJump = ftell_line(output_file,ftell(f))+1; // prend notre ligne actuelle (fin de corps du if)
+        fseek_line(output_file,pop(pile_lignes_a_finir)); // saute à la ligne du debut du if
+        fprintf(output_file,"8 %d %d\n",$1,lineJump); // écris de jump par dessus le body dans l'instruction if
+        fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
+    }  tELSE  {
+        fprintf(output_file,"; Debut Else %d ",ftell_line(output_file,ftell(f))); 
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(f))); // stoque la ligne du début de body else
+    }Body {
+        int lineJump = ftell_line(output_file,ftell(f))+1; // prend notre ligne actuelle +1
+        fseek_line(output_file,pop(pile_lignes_a_finir)); // reviens au début du else
+        fprintf(output_file,"7 %d\n",lineJump); // écris de sauter par dessus le else (pour si on vient du if plus haut)
+        seek(output_file,0,SEEK_END); // reviens à notre position d'écriture en fin de fichier
+    } 
 
 	// TODO FINIR IF AVEC LE SEEK QUI DOIT BIEN SE DEPLACER
 	// ftell +1 ne marche pas /!\ 
@@ -95,7 +119,17 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
     
     //Pour le if else, la partie if est la meme que if simple. Il faut rajouter un jump juste avant le else qui jump focement
     // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
-    | tWHILE Expr  {fprintf(output_file,"Debut WHILE %d",ftell_line(output_file,ftell(f)));push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));} Body {int line_while = pop(pile_lignes_a_finir); fprintf(output_file,"7 %d \n",pile_lignes_a_finir); int lineJump = ftell_line(output_file,ftell(f))+1 ;fseek_line(output_file,line_while); fprintf(output_file,"8 %d %d\n",$1,lineJump);fseek(output_file,0,SEEK_END);} ;
+    | tWHILE Expr  {
+        printf(output_file,"Debut WHILE %d",ftell_line(output_file,ftell(f)));
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(f)));
+    } Body {
+        int line_while = pop(pile_lignes_a_finir);
+        fprintf(output_file,"7 %d \n",pile_lignes_a_finir); 
+        int lineJump = ftell_line(output_file,ftell(f))+1;
+        fseek_line(output_file,line_while);
+        fprintf(output_file,"8 %d %d\n",$1,lineJump);
+        fseek(output_file,0,SEEK_END);
+    };
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition
 
 // premier tSEP représente un espace, le second soit une virgule soit un espace
