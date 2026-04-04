@@ -132,7 +132,6 @@ Instruction : | tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de p
     };
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition
 
-// premier tSEP représente un espace, le second soit une virgule soit un espace
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
 GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
