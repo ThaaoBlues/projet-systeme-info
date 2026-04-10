@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Apr 10 15:13:43 2026
+# Process ID         : 59859
+# Current directory  : /home/chauv/projet-systeme-info/projet-systeme-info.runs/synth_1
+# Command line       : vivado -log ALU.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source ALU.tcl
+# Log file           : /home/chauv/projet-systeme-info/projet-systeme-info.runs/synth_1/ALU.vds
+# Journal file       : /home/chauv/projet-systeme-info/projet-systeme-info.runs/synth_1/vivado.jou
+# Running On         : insa-11270
+# Platform           : Linuxmint
+# Operating System   : Linux Mint 22
+# Processor Detail   : Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+# CPU Frequency      : 4299.478 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 67245 MB
+# Swap memory        : 0 MB
+# Total Virtual      : 67245 MB
+# Available Virtual  : 60916 MB
+#-----------------------------------------------------------
+source ALU.tcl -notrace

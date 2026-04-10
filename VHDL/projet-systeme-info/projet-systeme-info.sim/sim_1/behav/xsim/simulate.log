@@ -1,0 +1,49 @@
+Time resolution is 1 ps
+Note: ========== DEBUT DES TESTS ALU ==========
+Time: 0 ps  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: ADD  3 + 4 = 7  Carry='0'  Zero='0'
+Time: 20 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Error: ECHEC ADD 100+100 : Carry attendu 1
+Time: 40 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: ADD  100 + 100 = -56  Carry='0'
+Time: 40 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: ADD  0 + 0 = 0  Zero='1'
+Time: 60 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: SUB  10 - 3 = 7  Carry='0'
+Time: 80 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: SUB -50 - 100 = 106  Carry='1'
+Time: 100 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: SUB  5 - 5 = 0  Zero='1'
+Time: 120 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: MUL  3 x 4 = 12  Overflow='0'
+Time: 140 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: MUL  20 x 20 = -112  Overflow='1'
+Time: 160 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: DIV  20 / 4 = 5
+Time: 180 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: DIV  0 / 5 = 0  Zero='1'
+Time: 200 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: XOR  0xAA ^ 0x55 = 0x255
+Time: 220 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: XOR  0xFF ^ 0xFF = 0x00  Zero='1'
+Time: 240 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: AND  0xF0 & 0x0F = 0x00  Zero='1'
+Time: 260 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: AND  0xFF & 0xAA = 0x170
+Time: 280 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: OR   0xF0 | 0x0F = 0x255
+Time: 300 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: OR   0x00 | 0x00 = 0x00  Zero='1'
+Time: 320 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: NOT  0x00 = 0x255
+Time: 340 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: NOT  0xFF = 0x00  Zero='1'
+Time: 360 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: NOT  0xAA = 0x85
+Time: 380 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Error: ECHEC IDLE : S attendu 0x00
+Time: 400 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: IDLE (aucune commande) S=0x85
+Time: 400 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
+Note: ========== FIN DES TESTS ALU ==========
+Time: 400 ns  Iteration: 0  Process: /ALU_tb/stim  File: /home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd
