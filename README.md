@@ -36,4 +36,12 @@ Pointeur:
     // todo faire qu'on puisse acceder a la valeur dont pointe le pointeur et la modifier en conséquence
     // rajouter la & a la grammaire
     // Il faut rajouter les nouveau tokken dans tokken.h?
-    
+
+
+
+VHDL todo :
+
+finir alu modification avec CRTL_alu
+finir de faire le carry pour tout les flags
+faire flag overflow et autre
+verif avec test

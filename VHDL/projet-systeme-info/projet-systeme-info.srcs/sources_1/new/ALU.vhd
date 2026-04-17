@@ -38,7 +38,7 @@ entity ALU is
         S : out std_logic_vector(7 downto 0);
         
         -- OPTIMISATION : remplacer par un vecteur qui prend les codes des opérations directement
-        Cadd,Csub,Cmul,Cxor,Cand,Cor,Cnot,Cdiv : in std_logic;
+        Ctrl_ALU : in std_logic_vector(2 downto 0);
         Carry,Overflow,Negatif,Zero : out std_logic
     );
 
@@ -46,11 +46,11 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
-
-
-
+    
+    
+    
 begin
-    process (A, B, Cadd, Csub, Cmul, Cdiv, Cxor, Cand, Cor, Cnot)
+    process (A, B, Ctrl_ALU)
         variable res : std_logic_vector(15 downto 0) := (others => '0');
         variable resize_A : std_logic_vector(15 downto 0) := (others => '0');
         variable resize_B : std_logic_vector(15 downto 0) := (others => '0');
@@ -65,6 +65,36 @@ begin
         resize_A := std_logic_vector(resize(signed(A),16));
         resize_B := std_logic_vector(resize(signed(B),16));
 
+
+        case Ctrl_ALU is
+            when "000" => --Add
+                res := std_logic_vector(signed(resize_A) + signed(resize_B));
+                if (signed(res) < -128 ) then
+                    Carry <=  '1';
+                else 
+                    Carry <= '0';
+             end if;
+            when "001" => --sub
+                res := std_logic_vector(signed(resize_A) - signed(resize_B));
+            when "010" => --mul
+                res := std_logic_vector(signed(A) * signed(B));
+            when "011" => --and
+                res(7 downto 0) := A AND B;
+            when "100" => --or
+                res(7 downto 0) := A OR B;
+            when "101" => -- xor
+                res(7 downto 0) := A XOR B;
+            when "110" => -- not A
+                res(7 downto 0) := std_logic_vector(NOT A);
+            when "111" => --not b
+                res(7 downto 0) := std_logic_vector(NOT B);
+            end case;
+            
+       end process;
+           
+
+            
+            
         if Cadd = '1' then
             res := std_logic_vector(signed(resize_A) + signed(resize_B));
             
