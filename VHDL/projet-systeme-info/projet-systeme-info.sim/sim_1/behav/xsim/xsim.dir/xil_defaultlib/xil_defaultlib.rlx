@@ -2,5 +2,7 @@
 2020.2
 Nov  8 2024
 22:36:55
-/home/chauv/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd,1775826400,vhdl,,,,alu_tb,,,,,,,,
-/home/chauv/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd,1775826814,vhdl,,,,alu,,,,,,,,
+/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/BANC_REG_tb.vhd,1776428671,vhdl,,,,banc_tb,,,,,,,,
+/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/test_ALU.vhd,1776422470,vhdl,,,,alu_tb,,,,,,,,
+/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd,1776422470,vhdl,,,,alu,,,,,,,,
+/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/BANC_REG.vhd,1776424943,vhdl,/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/BANC_REG_tb.vhd,,,banc,,,,,,,,

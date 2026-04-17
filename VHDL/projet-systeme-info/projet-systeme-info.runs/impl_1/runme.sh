@@ -21,7 +21,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/chauv/projet-systeme-info/projet-systeme-info.runs/impl_1'
+HD_PWD='/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/impl_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
