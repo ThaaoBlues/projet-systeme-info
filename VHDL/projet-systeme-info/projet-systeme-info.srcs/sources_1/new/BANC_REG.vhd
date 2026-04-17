@@ -30,8 +30,7 @@ begin
     begin
 
 
-        -- front montant
-        if rising_edge(CLK) then
+        if CLK'Event and CLK = '1' then
             -- reset synchrone
             if RST = '0' then
                 regs  <= (others => (others => '0'));

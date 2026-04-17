@@ -36,6 +36,8 @@ entity ALU is
     Port(
         B,A : in std_logic_vector(7 downto 0);
         S : out std_logic_vector(7 downto 0);
+        
+        -- OPTIMISATION : remplacer par un vecteur qui prend les codes des opérations directement
         Cadd,Csub,Cmul,Cxor,Cand,Cor,Cnot,Cdiv : in std_logic;
         Carry,Overflow,Negatif,Zero : out std_logic
     );
