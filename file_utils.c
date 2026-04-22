@@ -7,10 +7,17 @@ int ftell_line(FILE* f,int current_pos){
     int linecount=1;
 
 
+    fflush(f);
+
+
     fseek(f,0,SEEK_SET);
-    while (((c=fgetc(f)) != EOF) && ftell(f) != current_pos) {
-        if (c=='\n')
+    while (((c=fgetc(f)) != EOF) && ftell(f) <= current_pos) {
+        
+        if (c=='\n'){
+            printf("c\n");
             linecount++;
+        }
+            
     }
 
     // restore file pos
@@ -23,6 +30,10 @@ void fseek_line(FILE* f, int n){
 
     int c= EOF;
     int linecount=1;
+
+    fflush(f);
+
+
     fseek(f,0,SEEK_SET);
     
     while (((c=fgetc(f)) != EOF) && (linecount < n)) {

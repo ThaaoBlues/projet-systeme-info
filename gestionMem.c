@@ -46,21 +46,21 @@ uint32_t get_var(char name[5]) {
     return 0; // Variable non trouvée
 }
 
-char is_const(char name[5]){
+char is_constante(char name[5]){
 	unsigned int full_id = var_id_to_index(name);
     int hash_index = full_id % HASH_SIZE;
     
     // On cherche dans la liste chaînée à cet index
     struct Node* current = table[hash_index];
     while(current) {
-        if(current->id == full_id && profondeur_actuelle >= current->profondeur) return current->is_constante;
+        if(current->id == full_id && profondeur_actuelle >= current->profondeur) return current->est_constante;
         current = current->next;
     }
     return -1; // Variable non trouvée
 
 }
 
-uint32_t add_var(char name[5],char is_constant){
+uint32_t add_var(char name[5],char est_constante){
 	/*
 	Rajoute une variable dans la table des symboles
 	*/
@@ -90,7 +90,7 @@ uint32_t add_var(char name[5],char is_constant){
 	}
 
 	new_node->id = full_id;
-	new_node->is_constante = is_constante;
+	new_node->est_constante = est_constante;
 	new_node->value = NULL;
 	new_node->profondeur = profondeur_actuelle;
     strcpy(new_node->name,name);
