@@ -106,7 +106,7 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la position du if    
         // mettre assez de caractères pour pas que la future ligne overflow sur la suivante
         // ATTENTION : en procédant de la sorte, la ligne qui va overwrite ne doit pas avoir de \n
-        fprintf(output_file,";DebutIFl%d                                                        \n",ftell_line(output_file,ftell(output_file)));
+        fprintf(output_file,";Debut IF ligne %d                                                        \n",ftell_line(output_file,ftell(output_file)));
 
     } Body {
         int lineJump = ftell_line(output_file,ftell(output_file)); // prend notre position
@@ -119,16 +119,18 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
     
 
     | tIF Expr {
-        fprintf(output_file,"; Debut IF %d avec ELSE\n",ftell_line(output_file,ftell(output_file)));
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la position du if
-     } Body {
+        fprintf(output_file,"; Debut IF ligne %d avec ELSE                             \n",ftell_line(output_file,ftell(output_file)));
+ 
+    } Body {
         int lineJump = ftell_line(output_file,ftell(output_file))+1; // prend notre ligne actuelle (fin de corps du if)
         fseek_line(output_file,pop(pile_lignes_a_finir)); // saute à la ligne du debut du if
         fprintf(output_file,"8 %d %d ; jump conditionnel vers ligne %d\n",$2,lineJump,lineJump); // écris de jump par dessus le body dans l'instruction if
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
     }  tELSE {
-        fprintf(output_file,"; Debut Else %d\n",ftell_line(output_file,ftell(output_file))); 
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
+        fprintf(output_file,"; Debut Else ligne %d                                      \n",ftell_line(output_file,ftell(output_file))); 
+
     } Body {
         int lineJump = ftell_line(output_file,ftell(output_file))+1; // prend notre ligne actuelle +1
         fseek_line(output_file,pop(pile_lignes_a_finir)); // reviens au début du else
@@ -148,8 +150,8 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
     //Pour le if else, la partie if est la meme que if simple. Il faut rajouter un jump juste avant le else qui jump focement
     // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
     | tWHILE Expr  {
-        fprintf(output_file,";Debut WHILE %d",ftell_line(output_file,ftell(output_file)));
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
+        fprintf(output_file,";Debut WHILE %d                                          \n",ftell_line(output_file,ftell(output_file)));
     } Body {
         int line_while = pop(pile_lignes_a_finir);
         fprintf(output_file,"7 %d \n",pile_lignes_a_finir); 
