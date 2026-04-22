@@ -515,7 +515,7 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 221 "compilateur.y"
+#line 225 "compilateur.y"
 
 #line 521 "y.tab.c"
 
@@ -1259,28 +1259,30 @@ break;
 case 15:
 #line 125 "compilateur.y"
 	{
-        int lineJump = ftell_line(output_file,ftell(output_file))+1; /* prend notre ligne actuelle (fin de corps du if)*/
+        /* prend notre ligne actuelle (fin de corps du if)*/
+        /* +2 pour sauter le jump de else */
+        int lineJump = ftell_line(output_file,ftell(output_file))+2;
         fseek_line(output_file,pop(pile_lignes_a_finir)); /* saute à la ligne du debut du if*/
         fprintf(output_file,"8 %d %d ; jump conditionnel vers ligne %d\n",yystack.l_mark[-2].nb,lineJump,lineJump); /* écris de jump par dessus le body dans l'instruction if*/
         fseek(output_file,0,SEEK_END); /* reviens à la fin actuelle du fichier*/
     }
-#line 1268 "y.tab.c"
+#line 1270 "y.tab.c"
 break;
 case 16:
-#line 130 "compilateur.y"
+#line 132 "compilateur.y"
 	{}
-#line 1273 "y.tab.c"
+#line 1275 "y.tab.c"
 break;
 case 17:
-#line 143 "compilateur.y"
+#line 145 "compilateur.y"
 	{
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
         fprintf(output_file,";Debut WHILE %d                                             \n",ftell_line(output_file,ftell(output_file)));
     }
-#line 1281 "y.tab.c"
+#line 1283 "y.tab.c"
 break;
 case 18:
-#line 146 "compilateur.y"
+#line 148 "compilateur.y"
 	{
         int line_while = pop(pile_lignes_a_finir);
         fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",pile_lignes_a_finir); 
@@ -1289,170 +1291,172 @@ case 18:
         fprintf(output_file,"8 %d %d; condition du while",yystack.l_mark[-2].nb,lineJump);
         fseek(output_file,0,SEEK_END);
     }
-#line 1293 "y.tab.c"
+#line 1295 "y.tab.c"
 break;
 case 19:
-#line 160 "compilateur.y"
+#line 162 "compilateur.y"
 	{
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); /* stoque la ligne du début de body else*/
         fprintf(output_file,"; Debut Else ligne %d                                                               \n",ftell_line(output_file,ftell(output_file))); 
 
     }
-#line 1302 "y.tab.c"
+#line 1304 "y.tab.c"
 break;
 case 20:
-#line 164 "compilateur.y"
+#line 166 "compilateur.y"
 	{
         int lineJump = ftell_line(output_file,ftell(output_file)); /* prend notre ligne actuelle*/
         fseek_line(output_file,pop(pile_lignes_a_finir)); /* reviens au début du else*/
         fprintf(output_file,"7 %d ; saut inconditionnel vers la ligne %d pour éviter le else",lineJump,lineJump); /* écris de sauter par dessus le else (pour si on vient du if plus haut)*/
         fseek(output_file,0,SEEK_END); /* reviens à notre position d'écriture en fin de fichier*/
     }
-#line 1312 "y.tab.c"
+#line 1314 "y.tab.c"
 break;
 case 21:
-#line 171 "compilateur.y"
-	{}
-#line 1317 "y.tab.c"
+#line 173 "compilateur.y"
+	{
+        int lineJump = ftell_line(output_file,ftell(output_file))+1;
+        fprintf(output_file,"7 %d ; saut inconditionnel qui sert à rien pour avoir un offset de saut constant\n",lineJump,lineJump);}
+#line 1321 "y.tab.c"
 break;
 case 22:
-#line 174 "compilateur.y"
+#line 178 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1322 "y.tab.c"
+#line 1326 "y.tab.c"
 break;
 case 23:
-#line 175 "compilateur.y"
+#line 179 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1327 "y.tab.c"
+#line 1331 "y.tab.c"
 break;
 case 24:
-#line 176 "compilateur.y"
+#line 180 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1332 "y.tab.c"
+#line 1336 "y.tab.c"
 break;
 case 25:
-#line 177 "compilateur.y"
+#line 181 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init variable) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1337 "y.tab.c"
+#line 1341 "y.tab.c"
 break;
 case 26:
-#line 180 "compilateur.y"
+#line 184 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,1); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1342 "y.tab.c"
+#line 1346 "y.tab.c"
 break;
 case 27:
-#line 181 "compilateur.y"
+#line 185 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,1); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1347 "y.tab.c"
+#line 1351 "y.tab.c"
 break;
 case 28:
-#line 182 "compilateur.y"
+#line 186 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1352 "y.tab.c"
+#line 1356 "y.tab.c"
 break;
 case 29:
-#line 183 "compilateur.y"
+#line 187 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1357 "y.tab.c"
+#line 1361 "y.tab.c"
 break;
 case 30:
-#line 185 "compilateur.y"
+#line 189 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,0); fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1362 "y.tab.c"
+#line 1366 "y.tab.c"
 break;
 case 31:
-#line 186 "compilateur.y"
+#line 190 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,0); fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1367 "y.tab.c"
+#line 1371 "y.tab.c"
 break;
 case 32:
-#line 187 "compilateur.y"
+#line 191 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1372 "y.tab.c"
+#line 1376 "y.tab.c"
 break;
 case 33:
-#line 188 "compilateur.y"
+#line 192 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1377 "y.tab.c"
+#line 1381 "y.tab.c"
 break;
 case 34:
-#line 190 "compilateur.y"
+#line 194 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,1); fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1382 "y.tab.c"
+#line 1386 "y.tab.c"
 break;
 case 35:
-#line 191 "compilateur.y"
+#line 195 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,1); fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1387 "y.tab.c"
+#line 1391 "y.tab.c"
 break;
 case 36:
-#line 192 "compilateur.y"
+#line 196 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1392 "y.tab.c"
+#line 1396 "y.tab.c"
 break;
 case 37:
-#line 193 "compilateur.y"
+#line 197 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init Pointeur CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1397 "y.tab.c"
+#line 1401 "y.tab.c"
 break;
 case 38:
-#line 197 "compilateur.y"
+#line 201 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1402 "y.tab.c"
+#line 1406 "y.tab.c"
 break;
 case 39:
-#line 198 "compilateur.y"
+#line 202 "compilateur.y"
 	{
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "1 %d %d %d ; Addition \n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR;}
-#line 1410 "y.tab.c"
+#line 1414 "y.tab.c"
 break;
 case 40:
-#line 202 "compilateur.y"
+#line 206 "compilateur.y"
 	{ 
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "3 %d %d %d ; Soustraction \n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1418 "y.tab.c"
+#line 1422 "y.tab.c"
 break;
 case 41:
-#line 206 "compilateur.y"
+#line 210 "compilateur.y"
 	{ yyval.nb = yystack.l_mark[0].nb;}
-#line 1423 "y.tab.c"
+#line 1427 "y.tab.c"
 break;
 case 42:
-#line 207 "compilateur.y"
+#line 211 "compilateur.y"
 	{
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "2 %d %d %d ; Multiplication\n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1431 "y.tab.c"
+#line 1435 "y.tab.c"
 break;
 case 43:
-#line 211 "compilateur.y"
+#line 215 "compilateur.y"
 	{ 
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "4 %d %d %d ; Division\n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1439 "y.tab.c"
+#line 1443 "y.tab.c"
 break;
 case 44:
-#line 215 "compilateur.y"
+#line 219 "compilateur.y"
 	{ yyval.nb = yystack.l_mark[0].nb;}
-#line 1444 "y.tab.c"
+#line 1448 "y.tab.c"
 break;
 case 45:
-#line 216 "compilateur.y"
+#line 220 "compilateur.y"
 	{ uint32_t ret = get_var(yystack.l_mark[0].var); fprintf(output_file, "; Addr %d est la variable %s\n",ret, yystack.l_mark[0].var); yyval.nb = ret; }
-#line 1449 "y.tab.c"
+#line 1453 "y.tab.c"
 break;
 case 46:
-#line 218 "compilateur.y"
+#line 222 "compilateur.y"
 	{uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, yystack.l_mark[0].nb, yystack.l_mark[0].nb, tmpAddr);yyval.nb=tmpAddr;}
-#line 1454 "y.tab.c"
+#line 1458 "y.tab.c"
 break;
-#line 1456 "y.tab.c"
+#line 1460 "y.tab.c"
     default:
         break;
     }

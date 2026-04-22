@@ -48,4 +48,4 @@ verif avec test
 
 COMPILATEUR TODO :
 - voir comment rendre le else optionnel car l'enchainement des deux règles if et if\else créer un conflit on prend toujours la première
-
+- bug de jump 1 ligne trop tot quand ya un else (parfait quand ya pas de else)

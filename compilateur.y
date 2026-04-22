@@ -123,7 +123,9 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         fprintf(output_file,"; Debut IF ligne %d avec ELSE                             \n",ftell_line(output_file,ftell(output_file)));
  
     } Body {
-        int lineJump = ftell_line(output_file,ftell(output_file))+1; // prend notre ligne actuelle (fin de corps du if)
+        // prend notre ligne actuelle (fin de corps du if)
+        // +2 pour sauter le jump de else 
+        int lineJump = ftell_line(output_file,ftell(output_file))+2;
         fseek_line(output_file,pop(pile_lignes_a_finir)); // saute à la ligne du debut du if
         fprintf(output_file,"8 %d %d ; jump conditionnel vers ligne %d\n",$2,lineJump,lineJump); // écris de jump par dessus le body dans l'instruction if
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
@@ -168,7 +170,9 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         fseek(output_file,0,SEEK_END); // reviens à notre position d'écriture en fin de fichier
     } 
 
-    |{};
+    |{
+        int lineJump = ftell_line(output_file,ftell(output_file))+1;
+        fprintf(output_file,"7 %d ; saut inconditionnel qui sert à rien pour avoir un offset de saut constant\n",lineJump,lineJump);};
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
 GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
