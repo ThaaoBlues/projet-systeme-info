@@ -102,7 +102,7 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
     } 
 
 
-    | tIF Expr {
+    /*| tIF Expr {
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la position du if    
         // mettre assez de caractères pour pas que la future ligne overflow sur la suivante
         // ATTENTION : en procédant de la sorte, la ligne qui va overwrite ne doit pas avoir de \n
@@ -114,7 +114,7 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         fseek_line(output_file,pop(pile_lignes_a_finir)); // revient sur le if pour jump neq à notre position
         fprintf(output_file,"8 %d %d; jump conditionnel vers ligne %d",$2,lineJump,lineJump); // écris
         fseek(output_file,0,SEEK_END); // reviens à la fin du fichier
-    }   
+    }   */
     
     
 
@@ -127,16 +127,7 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         fseek_line(output_file,pop(pile_lignes_a_finir)); // saute à la ligne du debut du if
         fprintf(output_file,"8 %d %d ; jump conditionnel vers ligne %d\n",$2,lineJump,lineJump); // écris de jump par dessus le body dans l'instruction if
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
-    }  tELSE {
-        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
-        fprintf(output_file,"; Debut Else ligne %d                                      \n",ftell_line(output_file,ftell(output_file))); 
-
-    } Body {
-        int lineJump = ftell_line(output_file,ftell(output_file))+1; // prend notre ligne actuelle +1
-        fseek_line(output_file,pop(pile_lignes_a_finir)); // reviens au début du else
-        fprintf(output_file,"7 %d\n",lineJump); // écris de sauter par dessus le else (pour si on vient du if plus haut)
-        fseek(output_file,0,SEEK_END); // reviens à notre position d'écriture en fin de fichier
-    } 
+    }  OptionalElse {};
 
 	// TODO FINIR IF AVEC LE SEEK QUI DOIT BIEN SE DEPLACER
 	// ftell +1 ne marche pas /!\ 
@@ -151,17 +142,33 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
     // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
     | tWHILE Expr  {
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf(output_file,";Debut WHILE %d                                          \n",ftell_line(output_file,ftell(output_file)));
+        fprintf(output_file,";Debut WHILE %d                                             \n",ftell_line(output_file,ftell(output_file)));
     } Body {
         int line_while = pop(pile_lignes_a_finir);
-        fprintf(output_file,"7 %d \n",pile_lignes_a_finir); 
+        fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",pile_lignes_a_finir); 
         int lineJump = ftell_line(output_file,ftell(output_file))+1;
         fseek_line(output_file,line_while);
-        fprintf(output_file,"8 %d %d\n",$2,lineJump);
+        fprintf(output_file,"8 %d %d; condition du while",$2,lineJump);
         fseek(output_file,0,SEEK_END);
     };
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition
 
+
+
+
+    OptionalElse :
+    tELSE {
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
+        fprintf(output_file,"; Debut Else ligne %d                                                               \n",ftell_line(output_file,ftell(output_file))); 
+
+    } Body {
+        int lineJump = ftell_line(output_file,ftell(output_file)); // prend notre ligne actuelle
+        fseek_line(output_file,pop(pile_lignes_a_finir)); // reviens au début du else
+        fprintf(output_file,"7 %d ; saut inconditionnel vers la ligne %d pour éviter le else",lineJump,lineJump); // écris de sauter par dessus le else (pour si on vient du if plus haut)
+        fseek(output_file,0,SEEK_END); // reviens à notre position d'écriture en fin de fichier
+    } 
+
+    |{};
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
 GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}

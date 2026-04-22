@@ -45,3 +45,7 @@ finir alu modification avec CRTL_alu
 finir de faire le carry pour tout les flags
 faire flag overflow et autre
 verif avec test
+
+COMPILATEUR TODO :
+- voir comment rendre le else optionnel car l'enchainement des deux règles if et if\else créer un conflit on prend toujours la première
+
