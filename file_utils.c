@@ -40,4 +40,8 @@ void fseek_line(FILE* f, int n){
         if (c=='\n')
             linecount++;
     }
+
+    // get to first char of next line from file cursor position
+    // as cursor is right after \n right now (next char), which is one position too far
+    fseek(f,-1,SEEK_CUR);
 }
