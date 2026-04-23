@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "gestionMem.h"
-#define HASH_SIZE 1024  // Tu peux monter à 65536 si tu veux être large
+#define HASH_SIZE 1024  
 
 uint32_t derniere_addr_libre = 0x00000004;
 

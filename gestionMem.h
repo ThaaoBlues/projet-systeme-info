@@ -7,7 +7,7 @@
     Structure représentant une variable
     */
     struct Node {
-        unsigned int id;    // Ton index calculé sur 32 bits
+        unsigned int id;    // index calculé sur 32 bits
         char name[5];
         int value;
         uint32_t pointeur;

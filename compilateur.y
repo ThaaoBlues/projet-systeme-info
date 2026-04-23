@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "file_utils.h"
+#include "fonctions.h"
 
 #define VAR_NAME_SIZE 4
 #define TAILLE_BANC_REGISTRES
@@ -68,13 +69,18 @@ void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
 
-%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tAND tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE
-%token <nb> tNB
+%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tAND tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE tRETURN
+%token <nb> tNB Args Params
 %token <var> tID tKEYWORD
 %type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur
 %start Main
 
 %%
+
+// comme en C, on defini tout avant le main
+Start : FunctionDefinitions Main ;
+
+
 
 Main : {iniOutputFile();}tMAIN tPO tPF tACCO Body tACCF {printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);};
 
@@ -264,5 +270,52 @@ Terme : tKEYWORD {
             $$ = RESULT_MEM_ADDR;
 
         }
+
+
+FunctionDefinitions : FunctionDefinitions FuncDef 
+                    |;
+
+FuncDef : tINTVAR tKEYWORD {
+
+            // d'abord on enregistre la fonction avec sa ligne de départ 
+            add_func($2, ftell_line(output_file, ftell(output_file)),0);
+
+        } tPO Args tPF {
+
+            // maintenant qu'on a le nombre d'arguments on peut le maj dans la table
+            update_func_args($2,$2)
+
+            // INTRO :
+            // dépiler les arguments dans l'ordre inverse (LIFO)
+            // on suppose que Args renvoie le nombre d'arguments
+            /*
+            A FINIR : ON A PAS DE PILE LOL
+            
+            */
+        } tACCO Body tACCF {
+            // OUTRO
+            // On dépile l'adresse de retour (stockée en premier) et on saute
+            uint32_t tmpRet = getTmpAddr();
+            fprintf(output_file, "x %d ; POP return_addr\n", tmpRet);
+            fprintf(output_file, "7 %d ; saute sur l'adr de retour\n", tmpRet);
+        };
+
+Args : /* vide */ { $$ = 0; }
+     | tINTVAR tKEYWORD { 
+            // on crée la variable locale qui correspond à l'argument empilé
+            uint32_t addr = add_var($2, 0, 0);
+
+            /*
+            
+            TODO : rajouter le pop de l'argument dans la variable locale
+
+            */
+
+            $$ = 1; 
+       }
+     | tINTVAR tKEYWORD tVIRG Args { 
+            add_var($2, 0, 0);
+            $$ = 1 + $4; 
+       };
 %%
 

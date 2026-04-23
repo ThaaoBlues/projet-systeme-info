@@ -19,25 +19,6 @@ While :
 
 
 Pointeur:
-    Piste de réflexion:
-    *p; decla pointeur
-    *p = &i; => p poite sur i. C'est a dire que la valeur de p est l'addresse de i. Cela représente en assembleur : d'initialisé la valeur de p a l'addresse de i
-    =====> au lieu de mov on affecte la valeur de l'addresse de i
-    *p = 5 => i prend pour valeur 5
-    
-    J'ai fait une implementation ou c'est globalement comme une var sauf que a la place on utilise l'instruction d'affectation a la place de la copie. Cela permet d'avoir la valeur du pointeur renvoyer par expression. Pas sur de mon implem.
-
-    
-    
-
-
-
-
-    // todo faire qu'on puisse acceder a la valeur dont pointe le pointeur et la modifier en conséquence
-    // rajouter la & a la grammaire
-    // Il faut rajouter les nouveau tokken dans tokken.h?
-
-
 
 VHDL todo :
 
@@ -48,13 +29,12 @@ verif avec test
 
 COMPILATEUR TODO :
 - tester le while et if/else
-
-
-- Implémentation de pointers
-Vous allez rajouter l'implémentation de pointers en langage C. Vous allez faire les
-modifications nécessaires au niveau de l’analyseur lexical et syntaxique de votre
-compilateur. Vous allez également rajouter les instructions assembleur nécessaires pour
-l'implémentation de pointers.
+- tester les pointeurs
+- pour les fonctions : 
+    * dépiler les arguments en intro du code de la fonction
+    * empiler les args et l'addr de retour avant chaque appel de la fonction
+    * mettre le resultat dans l'addr globale de resultat  en outro de la fonction
+    * depiler l'addr de retour et sauter dessus en outro de la fonction 
 
 
 - Implémentation de fonctions 
