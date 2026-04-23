@@ -68,7 +68,7 @@ void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
 
-%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE
+%token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tAND tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE
 %token <nb> tNB
 %token <var> tID tKEYWORD
 %type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur
@@ -84,16 +84,22 @@ Body:
 	| {printf("body terminé, on remonte.\n");};
 
 	
-Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de pointeur constant
-    | tINTVAR tMUL GroupedDeclPointeur tENDINST //declaration de pointeur 
+Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur constant
+    | tINTVAR tMUL GroupedDeclPointeur //declaration de pointeur 
     | tCONST GroupedDeclConst tENDINST {printf("on déclare un/des constante");} 
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
 	| tKEYWORD tEGAL Expr tENDINST{
         if(is_constante($1)){
             printf("ERREUR : IMPOSSIBLE DE CHANGER LA VALEUR DE LA CONSTANTE : %s\n",$1);
+        
+        // suivi des pointeurs (necessaire car leur valeur doit être connue à la compilation)
+        }else if (is_pointeur($1)) {
+            uint32_t allocated_addr = get_var($1);
+            fprintf(output_file, "5 %d %d ;Copie de %d dans le pointeur stocké à l'adresse %d\n",allocated_addr,$3,$3,allocated_addr);
         }else{
             uint32_t allocated_addr = get_var($1);
-            fprintf(output_file, "5 %d %d ;Copie de %d dans %d\n",allocated_addr,$3,$3,allocated_addr);
+            fprintf(output_file, "5 %d %d ;Copie de %d dans la variable stockée à l'adresse %d\n",allocated_addr,$3,$3,allocated_addr);
+
         }
     } 
 	| tPRINTF Expr tENDINST{
@@ -175,24 +181,45 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur tENDINST //declaration de poi
         fprintf(output_file,"7 %d ; saut inconditionnel qui sert à rien pour avoir un offset de saut constant\n",lineJump,lineJump);};
 // la variable va pointer sur le dernier résultat calculé
 																								// COPIE de resultat dans la variable
-GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
-	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
+GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
+	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
 	| tEGAL Expr  tENDINST {$$ = $2;}
 	| tENDINST {fprintf(output_file,"6 %d %d ; (Init variable) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
 // declaration de constante. Ces declaration sont tres similaire a celle des variable a l'exception que l'on ne puisse pas les réaffecters.
-GroupedDeclConst : tKEYWORD tVIRG GroupedDeclConst {uint32_t allocated_addr = add_var($1,1); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
-	| tKEYWORD  GroupedDeclConst {uint32_t allocated_addr = add_var($1,1); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
+GroupedDeclConst : tKEYWORD tVIRG GroupedDeclConst {uint32_t allocated_addr = add_var($1,1,0); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
+	| tKEYWORD  GroupedDeclConst {uint32_t allocated_addr = add_var($1,1,0); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
 	| tEGAL Expr  tENDINST {$$ = $2;}
 	| tENDINST {fprintf(output_file,"6 %d %d ; (Init CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
-GroupedDeclPointeur : tKEYWORD tVIRG GroupedDeclPointeur {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
-	| tKEYWORD  GroupedDeclPointeur {uint32_t allocated_addr = add_var($1,0); fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
-	| tEGAL Expr  tENDINST {$$ = $2;}
-	| tENDINST {fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
+GroupedDeclPointeur : tKEYWORD tVIRG GroupedDeclPointeur {
+    uint32_t allocated_addr = add_var($1,0,1); 
+    fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
+    $$ = $3;
+}
+	| tKEYWORD  GroupedDeclPointeur {
+    uint32_t allocated_addr = add_var($1,0,1); 
+    fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
+    $$ = $2;
+    }
 
-GroupedDeclConstPointeur : tKEYWORD tVIRG GroupedDeclConstPointeur {uint32_t allocated_addr = add_var($1,1); fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
-	| tKEYWORD  GroupedDeclConstPointeur {uint32_t allocated_addr = add_var($1,1); fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
+	| tEGAL Expr  tENDINST {$$ = $2;}
+
+	| tENDINST {
+    fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);
+    $$ = RESULT_MEM_ADDR;
+    };
+
+GroupedDeclConstPointeur : tKEYWORD tVIRG GroupedDeclConstPointeur {
+    uint32_t allocated_addr = add_var($1,1,1); 
+    fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
+    $$ = $3;
+    }
+	| tKEYWORD  GroupedDeclConstPointeur {
+        uint32_t allocated_addr = add_var($1,1,1); 
+        fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
+        $$ = $2;
+    }
 	| tEGAL Expr  tENDINST {$$ = $2;}
 	| tENDINST {fprintf(output_file,"6 %d %d ; (Init Pointeur CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
@@ -217,9 +244,25 @@ DivMul :	  DivMul tMUL Terme {
             fprintf(output_file, "4 %d %d %d ; Division\n", RESULT_MEM_ADDR, $1, $3); 
             $$ = RESULT_MEM_ADDR; }
 		| Terme { $$ = $1;} ;
-Terme : tKEYWORD { uint32_t ret = get_var($1); fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); $$ = ret; }
+Terme : tKEYWORD { 
+    uint32_t ret = get_var($1); 
+    fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); 
+    $$ = ret; 
+}
 		// 6 = AFC (affectation)
 		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;} ;
+        | tAND tKEYWORD { 
+            uint32_t ret = get_var($2); 
+            fprintf(output_file, "; Recup de l'adresse (%d) de la variable %s\n",ret, $2); 
+            $$ = ret; 
+        }
+        | tMUL tKEYWORD {
+            uint32_t ptr_addr = get_var($2); 
+            fprintf(output_file, "DEREF %d %d ",RESULT_MEM_ADDR,ptr_addr); // \n dans la ligne de commentaire après
+            fprintf(output_file, ";Recup de la valeur à (%d) depuis le pointeur %s vers stockage des rés. (%d)\n",ptr_addr, $2,RESULT_MEM_ADDR); 
+            
+            $$ = RESULT_MEM_ADDR;
 
+        }
 %%
 

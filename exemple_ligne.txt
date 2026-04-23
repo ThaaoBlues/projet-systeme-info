@@ -28,3 +28,9 @@ main(){if(0){printf(3);}}
 main(){if(0){printf(3);}else{printf(1);printf(2);}}
 
 main(){int oui,non = 2; if(oui){printf(oui);non = 5}else{printf(non);oui = non - 6;}}
+
+
+// pointeurs
+
+main(){int a = 10;int *b = &a;}
+main(){int a = 10;int *b = &a;int c = *b;}

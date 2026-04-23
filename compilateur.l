@@ -26,6 +26,7 @@
 ")"	{ printf("tPF\n");return tPF; }
 "{"	{ printf("tACCO\n");return tACCO; }
 "}"	{ printf("tACCF\n");return tACCF; }
+"&" {printf("tAND\n"); return tAND;}
 [0-9]+	{
 	  yylval.nb = atoi(yytext);
 	  printf("tNB\n");return tNB;

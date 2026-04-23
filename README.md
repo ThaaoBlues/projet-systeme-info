@@ -48,4 +48,25 @@ verif avec test
 
 COMPILATEUR TODO :
 - tester le while et if/else
-- faire les autres features
+
+
+- Implémentation de pointers
+Vous allez rajouter l'implémentation de pointers en langage C. Vous allez faire les
+modifications nécessaires au niveau de l’analyseur lexical et syntaxique de votre
+compilateur. Vous allez également rajouter les instructions assembleur nécessaires pour
+l'implémentation de pointers.
+
+
+- Implémentation de fonctions 
+Vous allez rajouter l'implémentation de fonctions en langage C. Vous allez faire les
+modifications nécessaires au niveau de l’analyseur lexical et syntaxique de votre
+compilateur. Vous allez également rajouter les instructions assembleur nécessaires pour
+l'implémentation de fonctions.
+
+
+- Traitement des erreurs
+Dans un premier temps, un traitement des erreurs simple est à implémenter au niveau
+du compilateur. Il permettra de détecter qu’une erreur est intervenue, d’afficher un message
+d’erreur et la ligne sur laquelle l’erreur se trouve dans un premier temps.
+Dans un second temps il faut pouvoir analyser une erreur pour ensuite continuer
+l’analyse de la chaîne d’entrée.

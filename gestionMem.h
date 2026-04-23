@@ -13,7 +13,8 @@
         uint32_t pointeur;
         uint32_t profondeur;
         struct Node* next;  // Pour gérer si deux noms tombent sur la même case
-        char est_constante; 
+        char est_constante;
+        char est_pointeur;
     }; 
 
     void printMem(); // fonction d'affichage claire de la mémoire utilisé pour comprendre ce qu'il se passe et ou se trouve l'addresse de tel valeur
@@ -21,9 +22,8 @@
 
     uint32_t get_var(char name[5]);
 
-    uint32_t add_var(char name[5],char is_constante);
+    uint32_t add_var(char name[5],char is_constante,char is_pointeur);
 
-    char is_const(char name[5]);
 
     void free_scope();
 
@@ -32,6 +32,7 @@
     void scopeSmaller();
 
     char is_constante(char name[5]);
+    char is_pointeur(char name[5]);
 
     uint32_t getTmpAddr();
     #define GESTION_MEM_H
