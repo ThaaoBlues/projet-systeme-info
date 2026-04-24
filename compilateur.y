@@ -149,21 +149,6 @@ Instruction :
         yyerrok; //empeche bison de crash et continuer la compilation pour voir les autre erreur
         printf("Récupération de l'erreur effectuée. On continue l'analyse! \n");
     }
-
-
-    /*| tIF Expr {
-        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la position du if    
-        // mettre assez de caractères pour pas que la future ligne overflow sur la suivante
-        // ATTENTION : en procédant de la sorte, la ligne qui va overwrite ne doit pas avoir de \n
-        fprintf(output_file,";Debut IF ligne %d                                                        \n",ftell_line(output_file,ftell(output_file)));
-
-    } Body {
-        int lineJump = ftell_line(output_file,ftell(output_file)); // prend notre position
-        printf("fin du body du IF detecté ligne %d\n",lineJump);
-        fseek_line(output_file,pop(pile_lignes_a_finir)); // revient sur le if pour jump neq à notre position
-        fprintf(output_file,"8 %d %d; jump conditionnel vers ligne %d",$2,lineJump,lineJump); // écris
-        fseek(output_file,0,SEEK_END); // reviens à la fin du fichier
-    }   */
     
     
 
