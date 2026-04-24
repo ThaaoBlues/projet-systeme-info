@@ -57,3 +57,6 @@ du compilateur. Il permettra de détecter qu’une erreur est intervenue, d’af
 d’erreur et la ligne sur laquelle l’erreur se trouve dans un premier temps.
 Dans un second temps il faut pouvoir analyser une erreur pour ensuite continuer
 l’analyse de la chaîne d’entrée.
+
+Gestion d'erreur DONE: on peut écirer son fichier en entier et le compilateur indique chaque ligne ayant une faute.
+TODO ? indiqué quel type d'erreur? complexe car il faut gerer tout les erreur imaginable

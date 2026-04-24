@@ -1,6 +1,12 @@
-6 3 10 ; Constante 10 dans addresse temporaire 3
+6 3 0 ; Constante 0 dans addresse temporaire 3
 5 4 3 ;DECL VARIABLE a : (init par Copie de 3 dans 4)
-; Recup de l'adresse (4) de la variable a
-4 5 4 ;DECL Pointeur b : (init par Affectation de 4 dans 5)
-DEREF 1 5; Recup de la valeur à l'adresse (5) depuis le pointeur b vers l'adresses de stockage des résultats (1)
-5 6 1 ;DECL VARIABLE c : (init par Copie de 1 dans 6)
+; Addr 4 est la variable a
+8 4 11; condition du while
+                                
+; Addr 4 est la variable a
+6 2 1 ; Constante 1 dans addresse temporaire 2
+1 1 4 2 ; Addition 
+5 4 1 ;Copie de 1 dans la variable stockée à l'adresse 4
+7 4; saut inconditionel pour remonter à la condition du while
+; Addr 4 est la variable a
+C 4 ;PRINT de la valeur à l'addresse 4 
