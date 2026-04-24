@@ -35,6 +35,14 @@
     char is_pointeur(char name[5]);
 
     uint32_t getTmpAddr();
+
+    void push_arg();
+
+    void pop_arg();
+
+    uint32_t get_sp();
+
+
     #define GESTION_MEM_H
 
 #else

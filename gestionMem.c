@@ -5,13 +5,43 @@
 #include "gestionMem.h"
 #define HASH_SIZE 1024  
 
+#define DEBUT_PILE 0xFFFFFFFF
+#define TAILLE_PILE 1024
+
 uint32_t derniere_addr_libre = 0x00000004;
+
+uint32_t stack_pointer = DEBUT_PILE;
 
 
 struct Node* table[HASH_SIZE];
 uint32_t profondeur_actuelle = 0;
 
+// uniquement manipulation de sp pour générer le bon code assembleur
+// le vrai empilement etc sera fait durant l'execution
+void push_arg(){
 
+    if((DEBUT_PILE - stack_pointer) < TAILLE_PILE){
+        stack_pointer --;
+
+    }else{
+        printf("[X] ERRROR : Stack overflow detected in your program");
+        exit(1);
+    }
+}
+
+void pop_arg(){
+
+    if(stack_pointer){
+        stack_pointer ++;
+    }else{
+        printf("[X] ERRROR : Pop on enmtpy stack !");
+        exit(1);
+    }
+}
+
+uint32_t get_sp(){
+    return stack_pointer;
+}
 
 
 void scopeDeeper(){profondeur_actuelle++;}

@@ -20,6 +20,13 @@ While :
 
 Pointeur:
 
+
+## Extensions du set d'instructions
+- DEREF ra rb : charge dans ra le contenu de l'adresse contenue dans rb
+- Pour la pile, push et pop sont implémentés grâce à l'opération copie déjà présente
+
+> la pile est utilisée uniquement pour passer les arguments d'appel de fonction (et addr de retour) 
+
 VHDL todo :
 
 finir alu modification avec CRTL_alu

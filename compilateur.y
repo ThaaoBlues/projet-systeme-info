@@ -90,7 +90,36 @@ Body:
 	| {printf("body terminé, on remonte.\n");};
 
 	
-Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur constant
+Instruction :
+    | tKEYWORD tPO {
+
+        // push l'adresse de retour avant les arguments
+
+        // PLACEHOLDER, les arguments peuvent être des expr
+        // on doit repasser après generation en ayant le bon offset
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
+        fprintf("PLACEHOLDER appel;                                                             \n",get_sp(),addr_ret);
+        push_arg();
+
+    } CallArgs tPF tENDINST { // function call without value affectation
+        
+        
+        uint32_t addr_ret = ftell_line(output_file,fseek(output_file));
+        fseek_line(output_file,pop(pile_lignes_a_finir));
+        fprintf("5 %d %d ; (appel de fonction) on push l'adresse de retour",get_sp(),addr_ret);
+        fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
+
+        uint32_t line_jump = get_func(tKEYWORD);
+        fprintf(output_file,"7 %d; saut debut fontion\n",line_jump); 
+
+    }
+
+    | tRETURN Expr tENDINST {
+
+        fprintf("5 %d %d ; stoque la valeur renvoyée par la fonction dans l'addr de resultat\n",RESULT_MEM_ADDR,$2);
+
+    }
+    | tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur constant
     | tINTVAR tMUL GroupedDeclPointeur //declaration de pointeur 
     | tCONST GroupedDeclConst tENDINST {printf("on déclare un/des constante");} 
 	| tINTVAR GroupedDecl {printf("on a déclaré un/des nombre(s) entier(s)\n");}
@@ -112,22 +141,6 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
         
         fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);
     } 
-
-
-    /*| tIF Expr {
-        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la position du if    
-        // mettre assez de caractères pour pas que la future ligne overflow sur la suivante
-        // ATTENTION : en procédant de la sorte, la ligne qui va overwrite ne doit pas avoir de \n
-        fprintf(output_file,";Debut IF ligne %d                                                        \n",ftell_line(output_file,ftell(output_file)));
-
-    } Body {
-        int lineJump = ftell_line(output_file,ftell(output_file)); // prend notre position
-        printf("fin du body du IF detecté ligne %d\n",lineJump);
-        fseek_line(output_file,pop(pile_lignes_a_finir)); // revient sur le if pour jump neq à notre position
-        fprintf(output_file,"8 %d %d; jump conditionnel vers ligne %d",$2,lineJump,lineJump); // écris
-        fseek(output_file,0,SEEK_END); // reviens à la fin du fichier
-    }   */
-    
     
 
     | tIF Expr {
@@ -143,17 +156,8 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
     }  OptionalElse {};
 
-	// TODO FINIR IF AVEC LE SEEK QUI DOIT BIEN SE DEPLACER
-	// ftell +1 ne marche pas /!\ 
+	
 
-    // ATTENTION, a la fin du IF refaire un fseek pour se remettre a la fin du fichier (j'ai tenter un fseek(-1))
-
-    // ATTENTION, remplacer fseek car donne octet, trouver fonction qui donne la ligne (désoler j'avais pas internet dans le train)
-
-    // ATTENTION, pour le else, on doit placer le jump juste avant le else, et le jump du if doit arriver a la premiere instru du body du else
-    
-    //Pour le if else, la partie if est la meme que if simple. Il faut rajouter un jump juste avant le else qui jump focement
-    // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
     | tWHILE Expr  {
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
         fprintf(output_file,";Debut WHILE %d                                             \n",ftell_line(output_file,ftell(output_file)));
@@ -170,7 +174,7 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
 
 
 
-    OptionalElse :
+OptionalElse :
     tELSE {
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
         fprintf(output_file,"; Debut Else ligne %d                                                               \n",ftell_line(output_file,ftell(output_file))); 
@@ -185,8 +189,11 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
     |{
         int lineJump = ftell_line(output_file,ftell(output_file))+1;
         fprintf(output_file,"7 %d ; saut inconditionnel qui sert à rien pour avoir un offset de saut constant\n",lineJump,lineJump);};
-// la variable va pointer sur le dernier résultat calculé
-																								// COPIE de resultat dans la variable
+
+
+
+        // la variable va pointer sur le dernier résultat calculé
+// COPIE de resultat dans la variable
 GroupedDecl : tKEYWORD tVIRG GroupedDecl {uint32_t allocated_addr = add_var($1,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);$$ = $3;}
 	| tKEYWORD  GroupedDecl {uint32_t allocated_addr = add_var($1,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);$$ = $2;}
 	| tEGAL Expr  tENDINST {$$ = $2;}
@@ -198,23 +205,26 @@ GroupedDeclConst : tKEYWORD tVIRG GroupedDeclConst {uint32_t allocated_addr = ad
 	| tEGAL Expr  tENDINST {$$ = $2;}
 	| tENDINST {fprintf(output_file,"6 %d %d ; (Init CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);$$ = RESULT_MEM_ADDR;};
 
+
 GroupedDeclPointeur : tKEYWORD tVIRG GroupedDeclPointeur {
-    uint32_t allocated_addr = add_var($1,0,1); 
-    fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
-    $$ = $3;
-}
+        uint32_t allocated_addr = add_var($1,0,1); 
+        fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
+        $$ = $3;
+    }
 	| tKEYWORD  GroupedDeclPointeur {
-    uint32_t allocated_addr = add_var($1,0,1); 
-    fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
-    $$ = $2;
+        uint32_t allocated_addr = add_var($1,0,1); 
+        fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
+        $$ = $2;
     }
 
 	| tEGAL Expr  tENDINST {$$ = $2;}
 
 	| tENDINST {
-    fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);
-    $$ = RESULT_MEM_ADDR;
+        fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);
+        $$ = RESULT_MEM_ADDR;
     };
+
+
 
 GroupedDeclConstPointeur : tKEYWORD tVIRG GroupedDeclConstPointeur {
     uint32_t allocated_addr = add_var($1,1,1); 
@@ -241,6 +251,8 @@ Expr :  tPO Expr tPF {$$ = $2;}
             fprintf(output_file, "3 %d %d %d ; Soustraction \n", RESULT_MEM_ADDR, $1, $3); 
             $$ = RESULT_MEM_ADDR; }
 		| DivMul { $$ = $1;} ;
+
+
 DivMul :	  DivMul tMUL Terme {
             // On écrit dans le fichier au lieu de la console
             fprintf(output_file, "2 %d %d %d ; Multiplication\n", RESULT_MEM_ADDR, $1, $3); 
@@ -250,11 +262,38 @@ DivMul :	  DivMul tMUL Terme {
             fprintf(output_file, "4 %d %d %d ; Division\n", RESULT_MEM_ADDR, $1, $3); 
             $$ = RESULT_MEM_ADDR; }
 		| Terme { $$ = $1;} ;
-Terme : tKEYWORD { 
-    uint32_t ret = get_var($1); 
-    fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); 
-    $$ = ret; 
-}
+
+
+Terme : tKEYWORD tPO {
+
+        // push l'adresse de retour avant les arguments
+
+        // PLACEHOLDER, les arguments peuvent être des expr
+        // on doit repasser après generation en ayant le bon offset
+        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
+        fprintf("PLACEHOLDER appel;                                                             \n",get_sp(),addr_ret);
+        push_arg();
+
+        } CallArgs tPF { // function call without value affectation
+            
+            // +1 pour compter le saut
+            uint32_t addr_ret = ftell_line(output_file,fseek(output_file)) +1;
+            fseek_line(output_file,pop(pile_lignes_a_finir));
+            fprintf("5 %d %d ; (appel de fonction) on push l'adresse de retour",get_sp(),addr_ret);
+            fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
+
+            uint32_t line_jump = get_func(tKEYWORD);
+            fprintf(output_file,"7 %d; saut debut fontion\n",line_jump);
+
+            // le resultat d'evaluation la fonction est toujours contenu dans RESULT_MEM_ADDR
+            $$ = RESULT_MEM_ADDR;
+        }
+
+        | tKEYWORD { // variable 
+            uint32_t ret = get_var($1); 
+            fprintf(output_file, "; Addr %d est la variable %s\n",ret, $1); 
+            $$ = ret; 
+        }
 		// 6 = AFC (affectation)
 		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;} ;
         | tAND tKEYWORD { 
@@ -272,6 +311,8 @@ Terme : tKEYWORD {
         }
 
 
+
+
 FunctionDefinitions : FunctionDefinitions FuncDef 
                     |;
 
@@ -280,42 +321,57 @@ FuncDef : tINTVAR tKEYWORD {
             // d'abord on enregistre la fonction avec sa ligne de départ 
             add_func($2, ftell_line(output_file, ftell(output_file)),0);
 
-        } tPO Args tPF {
+        } tPO DeclArgs tPF {
+
+            // l'intro de la fonction a été générée en même temps que les arguments
 
             // maintenant qu'on a le nombre d'arguments on peut le maj dans la table
-            update_func_args($2,$2)
+            update_func_args($2,$4);
 
-            // INTRO :
-            // dépiler les arguments dans l'ordre inverse (LIFO)
-            // on suppose que Args renvoie le nombre d'arguments
-            /*
-            A FINIR : ON A PAS DE PILE LOL
-            
-            */
+
         } tACCO Body tACCF {
             // OUTRO
             // On dépile l'adresse de retour (stockée en premier) et on saute
             uint32_t tmpRet = getTmpAddr();
-            fprintf(output_file, "x %d ; POP return_addr\n", tmpRet);
+            fprintf("5 %d %d; (copie) Depile l'adr de retour vers une var temporaire\n",tmpRet,get_sp());
+            pop_arg();
             fprintf(output_file, "7 %d ; saute sur l'adr de retour\n", tmpRet);
         };
 
-Args : /* vide */ { $$ = 0; }
+
+
+// arguments of a function during its declaration 
+DeclArgs : /* vide */ { $$ = 0; }
      | tINTVAR tKEYWORD { 
             // on crée la variable locale qui correspond à l'argument empilé
             uint32_t addr = add_var($2, 0, 0);
 
-            /*
-            
-            TODO : rajouter le pop de l'argument dans la variable locale
-
-            */
-
             $$ = 1; 
+
+            fprintf("5 %d %d; (copie) Depile l'argument %d vers une var locale\n",addr,get_sp(),$$);
+            pop_arg();
        }
-     | tINTVAR tKEYWORD tVIRG Args { 
+     | tINTVAR tKEYWORD tVIRG DeclArgs { 
             add_var($2, 0, 0);
             $$ = 1 + $4; 
+            fprintf("5 %d %d; (copie) Depile l'argument %d vers une var locale\n",addr,get_sp(),$$);
+            pop_arg();
        };
+
+
+// arguments of a function during its call
+CallArgs : /* vide */ { $$ = 0; }
+     | Expr { 
+            // on crée la variable locale qui correspond à l'argument empilé
+            $$ = 1; 
+            fprintf("5 %d %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+            push_arg();
+       }
+     | Expr tVIRG CallArgs { 
+            $$ = 1 + $4; 
+            fprintf("5 %d %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+            push_arg();
+       };
+
 %%
 
