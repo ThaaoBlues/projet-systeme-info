@@ -371,8 +371,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 27
-#define YY_END_OF_BUFFER 28
+#define YY_NUM_RULES 26
+#define YY_END_OF_BUFFER 27
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -382,8 +382,8 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[62] =
     {   0,
-        0,    0,   28,   26,   22,   24,   19,   15,   16,   13,
-       12,   23,   11,   14,   20,   25,   10,   21,   21,   21,
+        0,    0,   27,   25,   22,   22,   19,   15,   16,   13,
+       12,   23,   11,   14,   20,   24,   10,   21,   21,   21,
        21,   21,   21,   21,   21,   17,   21,   18,    0,   20,
        21,   21,   21,    5,   21,   21,   21,   21,   21,    0,
        21,   21,    3,   21,   21,   21,   21,    9,   21,    6,
@@ -488,10 +488,10 @@ static const flex_int16_t yy_chk[114] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[28] =
+static const flex_int32_t yy_rule_can_match_eol[27] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 1, 0, 0, 0,     };
+    0, 0, 1, 0, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -908,6 +908,7 @@ YY_RULE_SETUP
 #line 36 "compilateur.l"
 {
 	if(strlen(yytext) > 4){
+		printf("Identifiant trop long ! (%d>4)",strlen(yytext));
 		return tERROR;
 	}else{
 	  strcpy(yylval.var,yytext);
@@ -917,37 +918,32 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case 22:
+/* rule 22 can match eol */
 YY_RULE_SETUP
-#line 45 "compilateur.l"
+#line 46 "compilateur.l"
 {}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 46 "compilateur.l"
+#line 47 "compilateur.l"
 {printf("VIRGULE\n");return tVIRG;}
 	YY_BREAK
 case 24:
-/* rule 24 can match eol */
-YY_RULE_SETUP
-#line 47 "compilateur.l"
-{printf("tENDLINE\n");}
-	YY_BREAK
-case 25:
 YY_RULE_SETUP
 #line 48 "compilateur.l"
 {printf("tENDINST\n");return tENDINST;}
 	YY_BREAK
-case 26:
+case 25:
 YY_RULE_SETUP
 #line 49 "compilateur.l"
 { printf("tERROR\n"); return tERROR; }
 	YY_BREAK
-case 27:
+case 26:
 YY_RULE_SETUP
 #line 56 "compilateur.l"
 ECHO;
 	YY_BREAK
-#line 951 "lex.yy.c"
+#line 947 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

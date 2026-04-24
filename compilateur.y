@@ -76,17 +76,17 @@ void iniOutputFile(){
 %token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tAND tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE tRETURN
 %token <nb> tNB 
 %token <var> tID tKEYWORD
-%type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur Args Params
-%start Main
+%type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur DeclArgs CallArgs
+%start Start
 
 %%
 
 // comme en C, on defini tout avant le main
-Start : FunctionDefinitions Main ;
+Start : {iniOutputFile();} FunctionDefinitions Main {printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);};
 
 
 
-Main : {iniOutputFile();}tMAIN tPO tPF tACCO Body tACCF {printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);};
+Main : tMAIN tPO tPF tACCO Body tACCF ;
 
 Body:
  	tACCO {scopeDeeper();} Body {scopeSmaller();free_scope();} tACCF 
@@ -102,25 +102,37 @@ Instruction :
         // PLACEHOLDER, les arguments peuvent être des expr
         // on doit repasser après generation en ayant le bon offset
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf("PLACEHOLDER appel;                                                             \n",get_sp(),addr_ret);
+        fprintf(output_file,"PLACEHOLDER appel;                                             \n");
         push_arg();
 
     } CallArgs tPF tENDINST { // function call without value affectation
         
         
-        uint32_t addr_ret = ftell_line(output_file,fseek(output_file));
+        uint32_t addr_ret = ftell_line(output_file,ftell(output_file));
         fseek_line(output_file,pop(pile_lignes_a_finir));
-        fprintf("5 %d %d ; (appel de fonction) on push l'adresse de retour",get_sp(),addr_ret);
+
+
+        // on a push les arguments entre temps
+        // la place reservée pour l'adresse de retour
+        // est alors sp+nb_args+1
+        uint32_t emplacement_pile = get_sp()+get_func_args($1)+1;
+        fprintf(output_file, "5 %u %d ; (appel de fonction) on push l'adresse de retour",emplacement_pile,addr_ret);
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
 
-        uint32_t line_jump = get_func(tKEYWORD);
+        uint32_t line_jump = get_func($1);
         fprintf(output_file,"7 %d; saut debut fontion\n",line_jump); 
+
+        // simulation de pop des arguments par la fonction
+        // permet d'avoir sp à jour dans le code que l'on génère
+        for(int i =0; i< get_func_args($1);i++){
+            pop_arg();
+        }
 
     }
 
     | tRETURN Expr tENDINST {
 
-        fprintf("5 %d %d ; stoque la valeur renvoyée par la fonction dans l'addr de resultat\n",RESULT_MEM_ADDR,$2);
+        fprintf(output_file,"5 %d %d ; stoque la valeur renvoyée par la fonction dans l'addr de resultat\n",RESULT_MEM_ADDR,$2);
 
     }
     | tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur constant
@@ -281,18 +293,22 @@ Terme : tKEYWORD tPO {
         // PLACEHOLDER, les arguments peuvent être des expr
         // on doit repasser après generation en ayant le bon offset
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf("PLACEHOLDER appel;                                                             \n",get_sp(),addr_ret);
+        fprintf(output_file,"PLACEHOLDER appel;                                                             \n");
         push_arg();
 
         } CallArgs tPF { // function call without value affectation
             
-            // +1 pour compter le saut
-            uint32_t addr_ret = ftell_line(output_file,fseek(output_file)) +1;
+            uint32_t addr_ret = ftell_line(output_file,ftell(output_file));
             fseek_line(output_file,pop(pile_lignes_a_finir));
-            fprintf("5 %d %d ; (appel de fonction) on push l'adresse de retour",get_sp(),addr_ret);
+
+            // on a push les arguments entre temps
+            // la place reservée pour l'adresse de retour
+            // est alors sp+nb_args+1
+            uint32_t emplacement_pile = get_sp()+get_func_args($1)+1;
+            fprintf(output_file, "5 %u %d ; (appel de fonction) on push l'adresse de retour",emplacement_pile,addr_ret);
             fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
 
-            uint32_t line_jump = get_func(tKEYWORD);
+            uint32_t line_jump = get_func($1);
             fprintf(output_file,"7 %d; saut debut fontion\n",line_jump);
 
             // le resultat d'evaluation la fonction est toujours contenu dans RESULT_MEM_ADDR
@@ -305,7 +321,7 @@ Terme : tKEYWORD tPO {
             $$ = ret; 
         }
 		// 6 = AFC (affectation)
-		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;} ;
+		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;}
         | tAND tKEYWORD { 
             uint32_t ret = get_var($2); 
             fprintf(output_file, "; Recup de l'adresse (%d) de la variable %s\n",ret, $2); 
@@ -326,26 +342,62 @@ Terme : tKEYWORD tPO {
 FunctionDefinitions : FunctionDefinitions FuncDef 
                     |;
 
+
+
+
 FuncDef : tINTVAR tKEYWORD {
 
+
+            fprintf(output_file,";=====FONCTION : %s =====\n",$2);
             // d'abord on enregistre la fonction avec sa ligne de départ 
             add_func($2, ftell_line(output_file, ftell(output_file)),0);
-
+            
+            // offset pour prendre en compte le fait
+            // quer l'addr de retour sera deja sur la pile
+            push_arg();
         } tPO DeclArgs tPF {
 
             // l'intro de la fonction a été générée en même temps que les arguments
 
             // maintenant qu'on a le nombre d'arguments on peut le maj dans la table
-            update_func_args($2,$4);
+            update_func_args($2,$<nb>5);
+            
+            // simule les arguments empilés avant l'appel de fonction
+            // pour avoir les bonnes valeurs de sp
+            //printf("La fonction déclarée a %d arguments\n",$<nb>5);
+            for(int i = 0; i<$<nb>5; i++){
+                push_arg();
+            }
+
+
+            // on dépile dans des vars locales
+            // comme on vient de les créer
+            // leurs adresses sont les dernières
+            uint32_t var_addr = get_next_free_addr()-1;
+            for(int i = $<nb>5; i > 0; i--){
+                uint32_t ligne = pop(pile_lignes_a_finir);
+                printf("itération %d, modif ligne %u\n",i,ligne);
+                fseek_line(output_file,ligne);
+
+                // pas de saut de ligne, on l'a mis dans le placeholder !
+                fprintf(output_file, "5 %d %u; (copie) Depile l'argument %d vers une var locale",var_addr,get_sp()+1,i);
+                var_addr--;
+                pop_arg();
+                fseek(output_file,0,SEEK_END);
+
+            }
 
 
         } tACCO Body tACCF {
             // OUTRO
             // On dépile l'adresse de retour (stockée en premier) et on saute
             uint32_t tmpRet = getTmpAddr();
-            fprintf("5 %d %d; (copie) Depile l'adr de retour vers une var temporaire\n",tmpRet,get_sp());
+            
+            //fprintf(output_file, "5 %d %u; (copie) Depile l'adr de retour vers une var temporaire\n",tmpRet,);
+            fprintf(output_file, "JMPREF %u ; saute sur l'adr de retour contenue dans la pile à l'adresse %u \n", get_sp(), get_sp());
             pop_arg();
-            fprintf(output_file, "7 %d ; saute sur l'adr de retour\n", tmpRet);
+            fprintf(output_file,";=====FIN DE FONCTION : %s =====\n",$2);
+
         };
 
 
@@ -354,19 +406,19 @@ FuncDef : tINTVAR tKEYWORD {
 DeclArgs : /* vide */ { $$ = 0; }
      | tINTVAR tKEYWORD { 
             // on crée la variable locale qui correspond à l'argument empilé
-            uint32_t addr = add_var($2, 0, 0);
+            uint32_t var_addr = add_var($2, 0, 0);
 
             $$ = 1; 
+            push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
+            fprintf(output_file, "POP arg placeholder;                                                       \n");
 
-            fprintf("5 %d %d; (copie) Depile l'argument %d vers une var locale\n",addr,get_sp(),$$);
-            pop_arg();
-       }
+        }
      | tINTVAR tKEYWORD tVIRG DeclArgs { 
-            add_var($2, 0, 0);
+            uint32_t var_addr = add_var($2, 0, 0);
             $$ = 1 + $4; 
-            fprintf("5 %d %d; (copie) Depile l'argument %d vers une var locale\n",addr,get_sp(),$$);
-            pop_arg();
-       };
+            push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); // stoque la ligne du début de body else
+            fprintf(output_file, "POP arg placeholder;                                                              \n");
+        };
 
 
 // arguments of a function during its call
@@ -374,12 +426,12 @@ CallArgs : /* vide */ { $$ = 0; }
      | Expr { 
             // on crée la variable locale qui correspond à l'argument empilé
             $$ = 1; 
-            fprintf("5 %d %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
             push_arg();
        }
      | Expr tVIRG CallArgs { 
-            $$ = 1 + $4; 
-            fprintf("5 %d %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+            $$ = 1 + $3; 
+            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
             push_arg();
        };
 

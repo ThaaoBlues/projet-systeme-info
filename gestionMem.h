@@ -42,6 +42,8 @@
 
     uint32_t get_sp();
 
+    uint32_t get_next_free_addr();
+
 
     #define GESTION_MEM_H
 

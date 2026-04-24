@@ -35,6 +35,7 @@
 	}
 [a-z|0-9|_]+	{
 	if(strlen(yytext) > 4){
+		printf("Identifiant trop long ! (%d>4)",strlen(yytext));
 		return tERROR;
 	}else{
 	  strcpy(yylval.var,yytext);
@@ -42,9 +43,8 @@
 	}
 
 	}
-[\t|' '|] {}
+[\t|' '|\n] {}
 "," {printf("VIRGULE\n");return tVIRG;}
-[\n] {printf("tENDLINE\n");}
 ";" {printf("tENDINST\n");return tENDINST;}
 .	{ printf("tERROR\n"); return tERROR; }
 

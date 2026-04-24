@@ -14,7 +14,6 @@ int ftell_line(FILE* f,int current_pos){
     while (((c=fgetc(f)) != EOF) && ftell(f) <= current_pos) {
         
         if (c=='\n'){
-            printf("c\n");
             linecount++;
         }
             

@@ -37,3 +37,12 @@ main() { int a = 1; if (a) { a = 2; } printf a; }
 
 main(){int a = 10;int *b = &a;}
 main(){int a = 10;int *b = &a;int c = *b;}
+
+
+//fonctions
+int prou(int arg1,int arg2){
+    return 0;
+}
+main(){
+    int a = prou(1,10);
+}

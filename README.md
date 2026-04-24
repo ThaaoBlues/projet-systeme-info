@@ -24,6 +24,7 @@ Pointeur:
 ## Extensions du set d'instructions
 - DEREF ra rb : charge dans ra le contenu de l'adresse contenue dans rb
 - Pour la pile, push et pop sont implémentés grâce à l'opération copie déjà présente
+- JMPREF ra : pour sauter à l'adresse contenue à une adresse mémoire et non pas passée immédiatement ( utile pour sauter à l'adresse de retour contenue dans la pile)
 
 > la pile est utilisée uniquement pour passer les arguments d'appel de fonction (et addr de retour) 
 
@@ -44,11 +45,10 @@ COMPILATEUR TODO :
     * depiler l'addr de retour et sauter dessus en outro de la fonction 
 
 
+
 - Implémentation de fonctions 
-Vous allez rajouter l'implémentation de fonctions en langage C. Vous allez faire les
-modifications nécessaires au niveau de l’analyseur lexical et syntaxique de votre
-compilateur. Vous allez également rajouter les instructions assembleur nécessaires pour
-l'implémentation de fonctions.
+ * addr de pile negatives => a fix
+ * addr de retour fausse => a fix
 
 
 - Traitement des erreurs
@@ -60,3 +60,5 @@ l’analyse de la chaîne d’entrée.
 
 Gestion d'erreur DONE: on peut écirer son fichier en entier et le compilateur indique chaque ligne ayant une faute.
 TODO ? indiqué quel type d'erreur? complexe car il faut gerer tout les erreur imaginable
+
+

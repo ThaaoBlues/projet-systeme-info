@@ -16,6 +16,11 @@ uint32_t stack_pointer = DEBUT_PILE;
 struct Node* table[HASH_SIZE];
 uint32_t profondeur_actuelle = 0;
 
+
+uint32_t get_next_free_addr(){
+    return derniere_addr_libre;
+}
+
 // uniquement manipulation de sp pour générer le bon code assembleur
 // le vrai empilement etc sera fait durant l'execution
 void push_arg(){
