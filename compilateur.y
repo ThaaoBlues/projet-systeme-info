@@ -102,7 +102,7 @@ Instruction :
         // PLACEHOLDER, les arguments peuvent être des expr
         // on doit repasser après generation en ayant le bon offset
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf(output_file,"PLACEHOLDER appel;                                             \n");
+        fprintf(output_file,"PLACEHOLDER appel;                                                         \n");
         push_arg();
 
     } CallArgs tPF tENDINST { // function call without value affectation
@@ -120,7 +120,7 @@ Instruction :
         fseek(output_file,0,SEEK_END); // reviens à la fin actuelle du fichier
 
         uint32_t line_jump = get_func($1);
-        fprintf(output_file,"7 %d; saut debut fontion\n",line_jump); 
+        fprintf(output_file,"7 %d; saut debut fonction\n",line_jump); 
 
         // simulation de pop des arguments par la fonction
         // permet d'avoir sp à jour dans le code que l'on génère
@@ -321,7 +321,11 @@ Terme : tKEYWORD tPO {
             $$ = ret; 
         }
 		// 6 = AFC (affectation)
-		| tNB {uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);$$=tmpAddr;}
+		| tNB {
+            uint32_t tmpAddr = getTmpAddr(); 
+            fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, $1, $1, tmpAddr);
+            $$=tmpAddr;
+        }
         | tAND tKEYWORD { 
             uint32_t ret = get_var($2); 
             fprintf(output_file, "; Recup de l'adresse (%d) de la variable %s\n",ret, $2); 

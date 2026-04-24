@@ -583,7 +583,7 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 439 "compilateur.y"
+#line 441 "compilateur.y"
 
 #line 589 "y.tab.c"
 
@@ -1294,7 +1294,7 @@ case 10:
         /* PLACEHOLDER, les arguments peuvent être des expr*/
         /* on doit repasser après generation en ayant le bon offset*/
         push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf(output_file,"PLACEHOLDER appel;                                             \n");
+        fprintf(output_file,"PLACEHOLDER appel;                                                         \n");
         push_arg();
 
     }
@@ -1317,7 +1317,7 @@ case 11:
         fseek(output_file,0,SEEK_END); /* reviens à la fin actuelle du fichier*/
 
         uint32_t line_jump = get_func(yystack.l_mark[-5].var);
-        fprintf(output_file,"7 %d; saut debut fontion\n",line_jump); 
+        fprintf(output_file,"7 %d; saut debut fonction\n",line_jump); 
 
         /* simulation de pop des arguments par la fonction*/
         /* permet d'avoir sp à jour dans le code que l'on génère*/
@@ -1677,7 +1677,7 @@ case 59:
 	{
 
 
-            fprintf(output_file,";=====FONCTION : %s=====\n",yystack.l_mark[0].var);
+            fprintf(output_file,";=====FONCTION : %s =====\n",yystack.l_mark[0].var);
             /* d'abord on enregistre la fonction avec sa ligne de départ */
             add_func(yystack.l_mark[0].var, ftell_line(output_file, ftell(output_file)),0);
             
@@ -1735,7 +1735,7 @@ case 61:
             /*fprintf(output_file, "5 %d %u; (copie) Depile l'adr de retour vers une var temporaire\n",tmpRet,);*/
             fprintf(output_file, "JMPREF %u ; saute sur l'adr de retour contenue dans la pile à l'adresse %u \n", get_sp(), get_sp());
             pop_arg();
-            fprintf(output_file,";=====FIN DE FONCTION : %s=====\n",yystack.l_mark[-8].var);
+            fprintf(output_file,";=====FIN DE FONCTION : %s =====\n",yystack.l_mark[-8].var);
 
         }
 #line 1742 "y.tab.c"
@@ -1779,20 +1779,22 @@ case 66:
             /* on crée la variable locale qui correspond à l'argument empilé*/
             yyval.nb = 1; 
             fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),yystack.l_mark[0].nb,yyval.nb);
+            fflush(output_file);
             push_arg();
        }
-#line 1785 "y.tab.c"
+#line 1786 "y.tab.c"
 break;
 case 67:
-#line 432 "compilateur.y"
+#line 433 "compilateur.y"
 	{ 
             yyval.nb = 1 + yystack.l_mark[0].nb; 
             fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),yystack.l_mark[-2].nb,yyval.nb);
+            fflush(output_file);
             push_arg();
        }
-#line 1794 "y.tab.c"
-break;
 #line 1796 "y.tab.c"
+break;
+#line 1798 "y.tab.c"
     default:
         break;
     }

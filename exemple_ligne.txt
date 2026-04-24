@@ -46,3 +46,12 @@ int prou(int arg1,int arg2){
 main(){
     int a = prou(1,10);
 }
+
+
+
+int prou(int arg1,int arg2,int arg3){
+    return 0;
+}
+main(){
+    prou(1,101,5);
+}
