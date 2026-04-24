@@ -200,12 +200,12 @@ GroupedDeclConst : tKEYWORD tVIRG GroupedDeclConst {uint32_t allocated_addr = ad
 
 GroupedDeclPointeur : tKEYWORD tVIRG GroupedDeclPointeur {
     uint32_t allocated_addr = add_var($1,0,1); 
-    fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
+    fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
     $$ = $3;
 }
 	| tKEYWORD  GroupedDeclPointeur {
     uint32_t allocated_addr = add_var($1,0,1); 
-    fprintf(output_file, "4 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
+    fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
     $$ = $2;
     }
 
@@ -218,12 +218,12 @@ GroupedDeclPointeur : tKEYWORD tVIRG GroupedDeclPointeur {
 
 GroupedDeclConstPointeur : tKEYWORD tVIRG GroupedDeclConstPointeur {
     uint32_t allocated_addr = add_var($1,1,1); 
-    fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
+    fprintf(output_file, "5 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,$3,$1,$3,allocated_addr);
     $$ = $3;
     }
 	| tKEYWORD  GroupedDeclConstPointeur {
         uint32_t allocated_addr = add_var($1,1,1); 
-        fprintf(output_file, "4 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
+        fprintf(output_file, "5 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,$2,$1,$2,allocated_addr);
         $$ = $2;
     }
 	| tEGAL Expr  tENDINST {$$ = $2;}
