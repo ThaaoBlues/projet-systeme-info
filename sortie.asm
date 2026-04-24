@@ -8,8 +8,8 @@ JMPREF 4294967294 ; saute sur l'adr de retour contenue dans la pile à l'adresse
 ;=====FIN DE FONCTION : prou =====
 5 4294967295 16 ; (appel de fonction) on push l'adresse de retour          
 6 3 1 ; Constante 1 dans addresse temporaire 3
+5 4294967294 3; (copie) Empile un argument
 6 2 101 ; Constante 101 dans addresse temporaire 2
+5 4294967293 2; (copie) Empile un argument
 6 3 5 ; Constante 5 dans addresse temporaire 3
-5 4294967294 3; (copie) Empile l'argument 1
-5 4294967293 2; (copie) Empile l'argument 2
-5 4294967292 3; (copie) Empile l'argument 3
+5 4294967292 3; (copie) Empile l'argument 1

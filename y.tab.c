@@ -174,7 +174,7 @@ static const YYINT yylhs[] = {                           -1,
     4,    5,    5,    5,    5,    7,    7,    7,    7,    6,
     6,    6,    6,    1,    1,    1,    1,    2,    2,    2,
    23,    3,    3,    3,    3,    3,   10,   10,   25,   26,
-   24,    8,    8,    8,    9,    9,    9,
+   24,    8,    8,    8,    9,    9,   27,    9,
 };
 static const YYINT yylen[] = {                            2,
     0,    3,    6,    0,    0,    5,    2,    0,    0,    0,
@@ -183,7 +183,7 @@ static const YYINT yylen[] = {                            2,
     1,    3,    2,    3,    1,    3,    2,    3,    1,    3,
     2,    3,    1,    3,    3,    3,    1,    3,    3,    1,
     0,    5,    1,    1,    2,    2,    2,    0,    0,    0,
-   10,    0,    2,    4,    0,    1,    3,
+   10,    0,    2,    4,    0,    1,    0,    4,
 };
 static const YYINT yydefred[] = {                         1,
     0,   58,    0,    0,    0,    2,   57,    0,   59,    0,
@@ -198,7 +198,7 @@ static const YYINT yydefred[] = {                         1,
    41,   32,   30,    0,    0,   37,   28,   44,    0,    0,
     0,   49,   48,    0,   21,   24,   17,    0,    0,   64,
     0,   42,   40,   38,   36,    0,    6,    0,    0,    0,
-    0,   52,   25,   22,   67,   11,   61,    0,   26,
+    0,   52,   25,   22,    0,   11,   61,    0,   68,   26,
 };
 #if defined(YYDESTRUCT_CALL) || defined(YYSTYPE_TOSTRING)
 static const YYINT yystos[] = {                           0,
@@ -213,44 +213,44 @@ static const YYINT yystos[] = {                           0,
   303,  306,  272,  286,  302,  264,  311,  272,  286,  264,
   291,  290,  272,  286,  264,  292,  289,  259,  308,  287,
   287,  288,  288,  300,  298,  298,  272,  286,  294,  293,
-  275,  272,  291,  272,  292,  294,  276,  305,  264,  259,
-  298,  259,  278,  304,  294,  272,  276,  307,  298,
+  275,  272,  291,  272,  292,  294,  276,  305,  312,  259,
+  298,  259,  278,  304,  264,  272,  276,  307,  294,  298,
 };
 #endif /* YYDESTRUCT_CALL || YYSTYPE_TOSTRING */
 static const YYINT yydgoto[] = {                          1,
   108,   44,   45,   37,   32,   60,   68,   26,  109,    3,
     2,    6,   23,   46,  104,   24,   85,   81,  124,  118,
-   82,  128,   99,    7,   11,   87,
+   82,  128,   99,    7,   11,   87,  119,
 };
 static const YYINT yysindex[] = {                         0,
-    0,    0, -223, -239, -267,    0,    0, -235,    0, -247,
- -227,  -67, -230, -213, -246, -243,  -43,    0,  -43,  -43,
-  -43, -150, -210,  -67, -195, -160,    0,  -43, -242,    0,
-  -69, -167,  -43, -124,    0,  -53,    0,  -43, -174, -151,
-    0, -142, -251,  -96,    0,  -67, -131, -131, -198,  -43,
-    0,    0,    0, -130,    0, -181,  -43,    0,  -40,    0,
- -101,    0,    0, -148,  -43,    0,  -39,    0,  -85,    0,
- -177,    0,    0,    0, -238, -238,    0, -238, -238,    0,
-  -67,  -67,    0, -123,  -43, -230, -100,    0,  -33, -242,
-    0,    0,    0,  -26, -124,    0,    0,    0,  -43,  -96,
-  -96,    0,    0,  -93,    0,    0,    0, -109,  -68,    0,
-  -67,    0,    0,    0,    0,  -60,    0,  -73,  -43,  -65,
-  -55,    0,    0,    0,    0,    0,    0,  -67,    0,
+    0,    0, -162, -199, -271,    0,    0, -193,    0, -259,
+ -170,  -67, -153, -173, -246, -243,  -43,    0,  -43,  -43,
+  -43, -211, -147,  -67, -149, -104,    0,  -43, -242,    0,
+  -69,  -97,  -43, -124,    0,  -53,    0,  -43, -100,  -92,
+    0,  -51, -251, -238,    0,  -67, -152, -152, -233,  -43,
+    0,    0,    0,  -65,    0, -229,  -43,    0,  -40,    0,
+ -101,    0,    0, -198,  -43,    0,  -39,    0,  -85,    0,
+ -177,    0,    0,    0,  -42,  -42,    0,  -42,  -42,    0,
+  -67,  -67,    0, -181,  -43, -153,  -70,    0, -148, -242,
+    0,    0,    0, -123, -124,    0,    0,    0,  -43, -238,
+ -238,    0,    0,  -50,    0,    0,    0, -152,  -32,    0,
+  -67,    0,    0,    0,    0,  -31,    0,  -49,  -55,  -41,
+  -34,    0,    0,    0,  -43,    0,    0,  -67,    0,    0,
 };
 static const YYINT yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  -50,  -36,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0, -229,    0,    0,    0,    0,    0,    0,
+    0,  -30,  -25,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0, -146,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0, -208,    0, -183,    0,  -50, -115,  -99,    0,    0,
-    0,    0,    0,  -30,    0,    0,    0,    0,    0,    0,
+    0, -208,    0, -183,    0,  -30, -115,  -99,    0,    0,
+    0,    0,    0,  -23,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
- -229, -229,    0,    0,  -14,  -36,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,  -14, -158,
- -133,    0,    0,    0,    0,    0,    0,  -12,    0,    0,
-  -50,    0,    0,    0,    0,    0,    0,  -83,  -14,    0,
-    0,    0,    0,    0,    0,    0,    0, -229,    0,
+ -146, -146,    0,    0,  -22,  -25,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,  -22, -158,
+ -133,    0,    0,    0,    0,    0,    0, -215,    0,    0,
+  -30,    0,    0,    0,    0,    0,    0,  -83,    0,    0,
+    0,    0,    0,    0,  -22,    0,    0, -146,    0,    0,
 };
 #if YYBTYACC
 static const YYINT yycindex[] = {                         0,
@@ -266,68 +266,68 @@ static const YYINT yycindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 };
 #endif
 static const YYINT yygindex[] = {                         0,
-  -15,  161,  163,  -35,  -28,  -52,  -59,  123,  -87,    0,
+  -15,   76,   88,  -35,  -28,  -52,  -59,  149,  -80,    0,
     0,    0,  -24,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,
 };
-#define YYTABLESIZE 247
+#define YYTABLESIZE 246
 static const YYINT yytable[] = {                         53,
    70,   43,   62,   47,   48,   49,   91,   96,   75,   76,
-   28,  116,   56,   33,   57,    9,   29,   64,    8,   34,
-   77,   80,   71,   10,   39,   30,   40,   12,   35,   58,
-   13,  125,   92,   97,   84,  115,   31,  113,   25,   36,
-   59,   89,   41,    4,   42,    5,    8,   53,    8,   94,
-   53,   53,   53,   53,   53,   53,  105,  106,   27,   53,
-   53,   75,   76,   53,   53,   52,   53,   53,   53,   53,
-   53,   53,   47,   83,   53,   47,   47,   47,   75,   76,
-   47,   98,   75,   76,   47,   47,  121,   54,   47,   47,
-   88,   47,   47,   47,   47,   47,   47,   46,   55,   47,
-   46,   46,   46,  129,   63,   46,   50,   51,   72,   46,
-   46,   75,   76,   46,   46,   74,   46,   46,   46,   46,
-   46,   46,   45,   93,   46,   45,   45,   45,   75,   76,
-   45,   73,   65,   86,   45,   45,   75,   76,   45,   45,
-   20,   45,   45,   45,   45,   45,   45,   66,  107,   45,
-   75,   76,   20,   20,  119,   28,   23,   20,   67,   20,
-   20,   20,   20,   20,   20,   78,   79,   20,   23,   23,
-   30,   33,   27,   23,  111,   23,   23,   23,   23,   23,
-   23,   31,  117,   23,   27,   27,   35,   28,   14,   27,
-  120,   27,   27,   27,   61,   27,   27,   36,  122,   27,
-   15,   16,   30,   33,  123,   17,  126,   18,  110,   19,
+   28,    9,   56,   33,   57,   12,   29,   64,  116,   34,
+   77,   80,   71,   78,   79,   30,   75,   76,   35,   58,
+   75,   76,   92,   97,   84,  115,   31,  113,   83,   36,
+   59,   89,   88,   66,  129,   50,   51,   53,   67,   94,
+   53,   53,   53,   53,   53,   53,  105,  106,    8,   53,
+   53,   75,   76,   53,   53,   10,   53,   53,   53,   53,
+   53,   53,   47,   93,   53,   47,   47,   47,   75,   76,
+   47,   98,   75,   76,   47,   47,  121,   13,   47,   47,
+  107,   47,   47,   47,   47,   47,   47,   46,   27,   47,
+   46,   46,   46,  130,    4,   46,    5,   75,   76,   46,
+   46,   75,   76,   46,   46,   25,   46,   46,   46,   46,
+   46,   46,   45,  112,   46,   45,   45,   45,   52,    8,
+   45,    8,   65,   54,   45,   45,   75,   76,   45,   45,
+   20,   45,   45,   45,   45,   45,   45,   66,  114,   45,
+  100,  101,   20,   20,   55,   28,   23,   20,   67,   20,
+   20,   20,   20,   20,   20,  102,  103,   20,   23,   23,
+   30,   33,   27,   23,   63,   23,   23,   23,   23,   23,
+   23,   31,   72,   23,   27,   27,   35,   28,   14,   27,
+   73,   27,   27,   27,   61,   27,   27,   36,   86,   27,
+   15,   16,   30,   33,  111,   17,   74,   18,  125,   19,
    69,   20,   21,   31,   38,   22,   57,   65,   35,   39,
-  127,   40,   62,   90,   95,    8,   75,   76,   63,   36,
-    0,   58,   66,   75,   76,  100,  101,   41,  112,   42,
-  102,  103,   59,   67,   65,  114,   66,
+   39,   40,   40,   90,   95,  117,  120,  122,  123,   36,
+  126,   58,   66,   62,  110,   63,   65,   41,   41,   42,
+   42,  127,   59,   67,    0,    8,
 };
 static const YYINT yycheck[] = {                         24,
    36,   17,   31,   19,   20,   21,   59,   67,  260,  261,
-  257,   99,   28,  257,  257,  283,  263,   33,  258,  263,
-  272,   46,   38,  259,  263,  272,  265,  275,  272,  272,
-  258,  119,   61,   69,   50,   95,  283,   90,  269,  283,
-  283,   57,  281,  267,  283,  269,  276,  256,  278,   65,
-  259,  260,  261,  262,  263,  264,   81,   82,  272,  268,
-  269,  260,  261,  272,  273,  276,  275,  276,  277,  278,
+  257,  283,   28,  257,  257,  275,  263,   33,   99,  263,
+  272,   46,   38,  262,  263,  272,  260,  261,  272,  272,
+  260,  261,   61,   69,   50,   95,  283,   90,  272,  283,
+  283,   57,  272,  259,  125,  257,  258,  256,  264,   65,
+  259,  260,  261,  262,  263,  264,   81,   82,  258,  268,
+  269,  260,  261,  272,  273,  259,  275,  276,  277,  278,
   279,  280,  256,  272,  283,  259,  260,  261,  260,  261,
-  264,  259,  260,  261,  268,  269,  111,  283,  272,  273,
-  272,  275,  276,  277,  278,  279,  280,  256,  259,  283,
-  259,  260,  261,  128,  272,  264,  257,  258,  283,  268,
-  269,  260,  261,  272,  273,  258,  275,  276,  277,  278,
-  279,  280,  256,  272,  283,  259,  260,  261,  260,  261,
-  264,  283,  257,  264,  268,  269,  260,  261,  272,  273,
+  264,  259,  260,  261,  268,  269,  111,  258,  272,  273,
+  272,  275,  276,  277,  278,  279,  280,  256,  272,  283,
+  259,  260,  261,  128,  267,  264,  269,  260,  261,  268,
+  269,  260,  261,  272,  273,  269,  275,  276,  277,  278,
+  279,  280,  256,  272,  283,  259,  260,  261,  276,  276,
+  264,  278,  257,  283,  268,  269,  260,  261,  272,  273,
   256,  275,  276,  277,  278,  279,  280,  272,  272,  283,
-  260,  261,  268,  269,  264,  257,  256,  273,  283,  275,
-  276,  277,  278,  279,  280,  262,  263,  283,  268,  269,
-  272,  257,  256,  273,  275,  275,  276,  277,  278,  279,
-  280,  283,  276,  283,  268,  269,  272,  257,  256,  273,
-  259,  275,  276,  277,  264,  279,  280,  283,  259,  283,
-  268,  269,  272,  257,  278,  273,  272,  275,   86,  277,
+   75,   76,  268,  269,  259,  257,  256,  273,  283,  275,
+  276,  277,  278,  279,  280,   78,   79,  283,  268,  269,
+  272,  257,  256,  273,  272,  275,  276,  277,  278,  279,
+  280,  283,  283,  283,  268,  269,  272,  257,  256,  273,
+  283,  275,  276,  277,  264,  279,  280,  283,  264,  283,
+  268,  269,  272,  257,  275,  273,  258,  275,  264,  277,
   264,  279,  280,  283,  258,  283,  257,  257,  272,  263,
-  276,  265,  259,  264,  264,  276,  260,  261,  259,  283,
-   -1,  272,  272,  260,  261,   75,   76,  281,  272,  283,
-   78,   79,  283,  283,  259,  272,  259,
+  263,  265,  265,  264,  264,  276,  259,  259,  278,  283,
+  272,  272,  272,  259,   86,  259,  259,  281,  281,  283,
+  283,  276,  283,  283,   -1,  276,
 };
 #if YYBTYACC
 static const YYINT yyctable[] = {                        -1,
@@ -355,7 +355,7 @@ static const YYINT yyctable[] = {                        -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,
 };
 #endif
 #define YYFINAL 1
@@ -363,7 +363,7 @@ static const YYINT yyctable[] = {                        -1,
 #define YYDEBUG 0
 #endif
 #define YYMAXTOKEN 283
-#define YYUNDFTOKEN 312
+#define YYUNDFTOKEN 313
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -381,7 +381,7 @@ static const char *const yyname[] = {
 "GroupedDecl","GroupedDeclConst","GroupedDeclConstPointeur",
 "GroupedDeclPointeur","DeclArgs","CallArgs","FunctionDefinitions","$$1","Main",
 "Body","$$2","$$3","Instruction","$$4","$$5","OptionalElse","$$6","$$7","$$8",
-"$$9","FuncDef","$$10","$$11","illegal-symbol",
+"$$9","FuncDef","$$10","$$11","$$12","illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : Start",
@@ -451,7 +451,8 @@ static const char *const yyrule[] = {
 "DeclArgs : tINTVAR tKEYWORD tVIRG DeclArgs",
 "CallArgs :",
 "CallArgs : Expr",
-"CallArgs : Expr tVIRG CallArgs",
+"$$12 :",
+"CallArgs : Expr $$12 tVIRG CallArgs",
 
 };
 #endif
@@ -583,9 +584,9 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 441 "compilateur.y"
+#line 443 "compilateur.y"
 
-#line 589 "y.tab.c"
+#line 590 "y.tab.c"
 
 /* For use in generated program */
 #define yydepth (int)(yystack.s_mark - yystack.s_base)
@@ -1258,32 +1259,32 @@ yyreduce:
 case 1:
 #line 85 "compilateur.y"
 	{iniOutputFile();}
-#line 1262 "y.tab.c"
+#line 1263 "y.tab.c"
 break;
 case 2:
 #line 85 "compilateur.y"
 	{printf("FNISHED MAIN BODY\n");printMem();fclose(output_file);}
-#line 1267 "y.tab.c"
+#line 1268 "y.tab.c"
 break;
 case 4:
 #line 92 "compilateur.y"
 	{scopeDeeper();}
-#line 1272 "y.tab.c"
+#line 1273 "y.tab.c"
 break;
 case 5:
 #line 92 "compilateur.y"
 	{scopeSmaller();free_scope();}
-#line 1277 "y.tab.c"
+#line 1278 "y.tab.c"
 break;
 case 7:
 #line 93 "compilateur.y"
 	{}
-#line 1282 "y.tab.c"
+#line 1283 "y.tab.c"
 break;
 case 8:
 #line 94 "compilateur.y"
 	{printf("body terminé, on remonte.\n");}
-#line 1287 "y.tab.c"
+#line 1288 "y.tab.c"
 break;
 case 10:
 #line 98 "compilateur.y"
@@ -1298,7 +1299,7 @@ case 10:
         push_arg();
 
     }
-#line 1302 "y.tab.c"
+#line 1303 "y.tab.c"
 break;
 case 11:
 #line 108 "compilateur.y"
@@ -1326,7 +1327,7 @@ case 11:
         }
 
     }
-#line 1330 "y.tab.c"
+#line 1331 "y.tab.c"
 break;
 case 12:
 #line 133 "compilateur.y"
@@ -1335,17 +1336,17 @@ case 12:
         fprintf(output_file,"5 %d %d ; stoque la valeur renvoyée par la fonction dans l'addr de resultat\n",RESULT_MEM_ADDR,yystack.l_mark[-1].nb);
 
     }
-#line 1339 "y.tab.c"
+#line 1340 "y.tab.c"
 break;
 case 15:
 #line 140 "compilateur.y"
 	{printf("on déclare un/des constante");}
-#line 1344 "y.tab.c"
+#line 1345 "y.tab.c"
 break;
 case 16:
 #line 141 "compilateur.y"
 	{printf("on a déclaré un/des nombre(s) entier(s)\n");}
-#line 1349 "y.tab.c"
+#line 1350 "y.tab.c"
 break;
 case 17:
 #line 142 "compilateur.y"
@@ -1363,7 +1364,7 @@ case 17:
 
         }
     }
-#line 1367 "y.tab.c"
+#line 1368 "y.tab.c"
 break;
 case 18:
 #line 156 "compilateur.y"
@@ -1371,7 +1372,7 @@ case 18:
         
         fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",yystack.l_mark[-1].nb,yystack.l_mark[-1].nb);
     }
-#line 1375 "y.tab.c"
+#line 1376 "y.tab.c"
 break;
 case 19:
 #line 160 "compilateur.y"
@@ -1379,7 +1380,7 @@ case 19:
         yyerrok; /*empeche bison de crash et continuer la compilation pour voir les autre erreur*/
         printf("Récupération de l'erreur effectuée. On continue l'analyse! \n");
     }
-#line 1383 "y.tab.c"
+#line 1384 "y.tab.c"
 break;
 case 20:
 #line 167 "compilateur.y"
@@ -1388,7 +1389,7 @@ case 20:
         fprintf(output_file,"; Debut IF ligne %d avec ELSE                             \n",ftell_line(output_file,ftell(output_file)));
  
     }
-#line 1392 "y.tab.c"
+#line 1393 "y.tab.c"
 break;
 case 21:
 #line 171 "compilateur.y"
@@ -1400,12 +1401,12 @@ case 21:
         fprintf(output_file,"8 %d %d ; jump conditionnel vers ligne %d\n",yystack.l_mark[-2].nb,lineJump,lineJump); /* écris de jump par dessus le body dans l'instruction if*/
         fseek(output_file,0,SEEK_END); /* reviens à la fin actuelle du fichier*/
     }
-#line 1404 "y.tab.c"
+#line 1405 "y.tab.c"
 break;
 case 22:
 #line 178 "compilateur.y"
 	{}
-#line 1409 "y.tab.c"
+#line 1410 "y.tab.c"
 break;
 case 23:
 #line 182 "compilateur.y"
@@ -1414,7 +1415,7 @@ case 23:
         push(pile_lignes_a_finir,line_while_start);
         fprintf(output_file,";Debut WHILE %d                                             \n",line_while_start);
     }
-#line 1418 "y.tab.c"
+#line 1419 "y.tab.c"
 break;
 case 24:
 #line 186 "compilateur.y"
@@ -1426,7 +1427,7 @@ case 24:
         fprintf(output_file,"8 %d %d; condition du while\n",yystack.l_mark[-2].nb,lineJump);
         fseek(output_file,0,SEEK_END);
     }
-#line 1430 "y.tab.c"
+#line 1431 "y.tab.c"
 break;
 case 25:
 #line 200 "compilateur.y"
@@ -1435,7 +1436,7 @@ case 25:
         fprintf(output_file,"; Debut Else ligne %d                                                               \n",ftell_line(output_file,ftell(output_file))); 
 
     }
-#line 1439 "y.tab.c"
+#line 1440 "y.tab.c"
 break;
 case 26:
 #line 204 "compilateur.y"
@@ -1445,54 +1446,54 @@ case 26:
         fprintf(output_file,"7 %d ; saut inconditionnel vers la ligne %d pour éviter le else",lineJump,lineJump); /* écris de sauter par dessus le else (pour si on vient du if plus haut)*/
         fseek(output_file,0,SEEK_END); /* reviens à notre position d'écriture en fin de fichier*/
     }
-#line 1449 "y.tab.c"
+#line 1450 "y.tab.c"
 break;
 case 27:
 #line 211 "compilateur.y"
 	{
         int lineJump = ftell_line(output_file,ftell(output_file))+1;
         fprintf(output_file,"7 %d ; saut inconditionnel qui sert à rien pour avoir un offset de saut constant\n",lineJump,lineJump);}
-#line 1456 "y.tab.c"
+#line 1457 "y.tab.c"
 break;
 case 28:
 #line 219 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1461 "y.tab.c"
+#line 1462 "y.tab.c"
 break;
 case 29:
 #line 220 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,0,0); fprintf(output_file, "5 %d %d ;DECL VARIABLE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1466 "y.tab.c"
+#line 1467 "y.tab.c"
 break;
 case 30:
 #line 221 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1471 "y.tab.c"
+#line 1472 "y.tab.c"
 break;
 case 31:
 #line 222 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init variable) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1476 "y.tab.c"
+#line 1477 "y.tab.c"
 break;
 case 32:
 #line 225 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-2].var,1,0); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1481 "y.tab.c"
+#line 1482 "y.tab.c"
 break;
 case 33:
 #line 226 "compilateur.y"
 	{uint32_t allocated_addr = add_var(yystack.l_mark[-1].var,1,0); fprintf(output_file, "5 %d %d ;DECL CONSTANTE %s : (init par Copie de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);yyval.nb = yystack.l_mark[0].nb;}
-#line 1486 "y.tab.c"
+#line 1487 "y.tab.c"
 break;
 case 34:
 #line 227 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1491 "y.tab.c"
+#line 1492 "y.tab.c"
 break;
 case 35:
 #line 228 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1496 "y.tab.c"
+#line 1497 "y.tab.c"
 break;
 case 36:
 #line 231 "compilateur.y"
@@ -1501,7 +1502,7 @@ case 36:
         fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);
         yyval.nb = yystack.l_mark[0].nb;
     }
-#line 1505 "y.tab.c"
+#line 1506 "y.tab.c"
 break;
 case 37:
 #line 236 "compilateur.y"
@@ -1510,12 +1511,12 @@ case 37:
         fprintf(output_file, "5 %d %d ;DECL Pointeur %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);
         yyval.nb = yystack.l_mark[0].nb;
     }
-#line 1514 "y.tab.c"
+#line 1515 "y.tab.c"
 break;
 case 38:
 #line 242 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1519 "y.tab.c"
+#line 1520 "y.tab.c"
 break;
 case 39:
 #line 244 "compilateur.y"
@@ -1523,7 +1524,7 @@ case 39:
         fprintf(output_file,"6 %d %d ; (Init Pointeur) Pointeur %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);
         yyval.nb = RESULT_MEM_ADDR;
     }
-#line 1527 "y.tab.c"
+#line 1528 "y.tab.c"
 break;
 case 40:
 #line 251 "compilateur.y"
@@ -1532,7 +1533,7 @@ case 40:
     fprintf(output_file, "5 %d %d ;DECL POINTEUR CONSTANTE %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-2].var,yystack.l_mark[0].nb,allocated_addr);
     yyval.nb = yystack.l_mark[0].nb;
     }
-#line 1536 "y.tab.c"
+#line 1537 "y.tab.c"
 break;
 case 41:
 #line 256 "compilateur.y"
@@ -1541,22 +1542,22 @@ case 41:
         fprintf(output_file, "5 %d %d ;DECL POINTEUR CONSTANT %s : (init par Affectation de %d dans %d)\n",allocated_addr,yystack.l_mark[0].nb,yystack.l_mark[-1].var,yystack.l_mark[0].nb,allocated_addr);
         yyval.nb = yystack.l_mark[0].nb;
     }
-#line 1545 "y.tab.c"
+#line 1546 "y.tab.c"
 break;
 case 42:
 #line 261 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1550 "y.tab.c"
+#line 1551 "y.tab.c"
 break;
 case 43:
 #line 262 "compilateur.y"
 	{fprintf(output_file,"6 %d %d ; (Init Pointeur CONSTANTE) Constante %d dans addresse de résulats \n",0,RESULT_MEM_ADDR,0,RESULT_MEM_ADDR);yyval.nb = RESULT_MEM_ADDR;}
-#line 1555 "y.tab.c"
+#line 1556 "y.tab.c"
 break;
 case 44:
 #line 266 "compilateur.y"
 	{yyval.nb = yystack.l_mark[-1].nb;}
-#line 1560 "y.tab.c"
+#line 1561 "y.tab.c"
 break;
 case 45:
 #line 267 "compilateur.y"
@@ -1564,7 +1565,7 @@ case 45:
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "1 %d %d %d ; Addition \n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR;}
-#line 1568 "y.tab.c"
+#line 1569 "y.tab.c"
 break;
 case 46:
 #line 271 "compilateur.y"
@@ -1572,12 +1573,12 @@ case 46:
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "3 %d %d %d ; Soustraction \n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1576 "y.tab.c"
+#line 1577 "y.tab.c"
 break;
 case 47:
 #line 275 "compilateur.y"
 	{ yyval.nb = yystack.l_mark[0].nb;}
-#line 1581 "y.tab.c"
+#line 1582 "y.tab.c"
 break;
 case 48:
 #line 278 "compilateur.y"
@@ -1585,7 +1586,7 @@ case 48:
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "2 %d %d %d ; Multiplication\n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1589 "y.tab.c"
+#line 1590 "y.tab.c"
 break;
 case 49:
 #line 282 "compilateur.y"
@@ -1593,12 +1594,12 @@ case 49:
             /* On écrit dans le fichier au lieu de la console*/
             fprintf(output_file, "4 %d %d %d ; Division\n", RESULT_MEM_ADDR, yystack.l_mark[-2].nb, yystack.l_mark[0].nb); 
             yyval.nb = RESULT_MEM_ADDR; }
-#line 1597 "y.tab.c"
+#line 1598 "y.tab.c"
 break;
 case 50:
 #line 286 "compilateur.y"
 	{ yyval.nb = yystack.l_mark[0].nb;}
-#line 1602 "y.tab.c"
+#line 1603 "y.tab.c"
 break;
 case 51:
 #line 289 "compilateur.y"
@@ -1613,7 +1614,7 @@ case 51:
         push_arg();
 
         }
-#line 1617 "y.tab.c"
+#line 1618 "y.tab.c"
 break;
 case 52:
 #line 299 "compilateur.y"
@@ -1635,7 +1636,7 @@ case 52:
             /* le resultat d'evaluation la fonction est toujours contenu dans RESULT_MEM_ADDR*/
             yyval.nb = RESULT_MEM_ADDR;
         }
-#line 1639 "y.tab.c"
+#line 1640 "y.tab.c"
 break;
 case 53:
 #line 318 "compilateur.y"
@@ -1644,24 +1645,28 @@ case 53:
             fprintf(output_file, "; Addr %d est la variable %s\n",ret, yystack.l_mark[0].var); 
             yyval.nb = ret; 
         }
-#line 1648 "y.tab.c"
+#line 1649 "y.tab.c"
 break;
 case 54:
 #line 324 "compilateur.y"
-	{uint32_t tmpAddr = getTmpAddr(); fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, yystack.l_mark[0].nb, yystack.l_mark[0].nb, tmpAddr);yyval.nb=tmpAddr;}
-#line 1653 "y.tab.c"
+	{
+            uint32_t tmpAddr = getTmpAddr(); 
+            fprintf(output_file, "6 %d %d ; Constante %d dans addresse temporaire %d\n", tmpAddr, yystack.l_mark[0].nb, yystack.l_mark[0].nb, tmpAddr);
+            yyval.nb=tmpAddr;
+        }
+#line 1658 "y.tab.c"
 break;
 case 55:
-#line 325 "compilateur.y"
+#line 329 "compilateur.y"
 	{ 
             uint32_t ret = get_var(yystack.l_mark[0].var); 
             fprintf(output_file, "; Recup de l'adresse (%d) de la variable %s\n",ret, yystack.l_mark[0].var); 
             yyval.nb = ret; 
         }
-#line 1662 "y.tab.c"
+#line 1667 "y.tab.c"
 break;
 case 56:
-#line 330 "compilateur.y"
+#line 334 "compilateur.y"
 	{
             uint32_t ptr_addr = get_var(yystack.l_mark[0].var); 
             fprintf(output_file, "DEREF %d %d ",RESULT_MEM_ADDR,ptr_addr); /* \n dans la ligne de commentaire après*/
@@ -1670,10 +1675,10 @@ case 56:
             yyval.nb = RESULT_MEM_ADDR;
 
         }
-#line 1674 "y.tab.c"
+#line 1679 "y.tab.c"
 break;
 case 59:
-#line 348 "compilateur.y"
+#line 352 "compilateur.y"
 	{
 
 
@@ -1685,10 +1690,10 @@ case 59:
             /* quer l'addr de retour sera deja sur la pile*/
             push_arg();
         }
-#line 1689 "y.tab.c"
+#line 1694 "y.tab.c"
 break;
 case 60:
-#line 358 "compilateur.y"
+#line 362 "compilateur.y"
 	{
 
             /* l'intro de la fonction a été générée en même temps que les arguments*/
@@ -1723,10 +1728,10 @@ case 60:
 
 
         }
-#line 1727 "y.tab.c"
+#line 1732 "y.tab.c"
 break;
 case 61:
-#line 391 "compilateur.y"
+#line 395 "compilateur.y"
 	{
             /* OUTRO*/
             /* On dépile l'adresse de retour (stockée en premier) et on saute*/
@@ -1738,15 +1743,15 @@ case 61:
             fprintf(output_file,";=====FIN DE FONCTION : %s =====\n",yystack.l_mark[-8].var);
 
         }
-#line 1742 "y.tab.c"
-break;
-case 62:
-#line 406 "compilateur.y"
-	{ yyval.nb = 0; }
 #line 1747 "y.tab.c"
 break;
+case 62:
+#line 410 "compilateur.y"
+	{ yyval.nb = 0; }
+#line 1752 "y.tab.c"
+break;
 case 63:
-#line 407 "compilateur.y"
+#line 411 "compilateur.y"
 	{ 
             /* on crée la variable locale qui correspond à l'argument empilé*/
             uint32_t var_addr = add_var(yystack.l_mark[0].var, 0, 0);
@@ -1756,45 +1761,48 @@ case 63:
             fprintf(output_file, "POP arg placeholder;                                                       \n");
 
         }
-#line 1760 "y.tab.c"
+#line 1765 "y.tab.c"
 break;
 case 64:
-#line 416 "compilateur.y"
+#line 420 "compilateur.y"
 	{ 
             uint32_t var_addr = add_var(yystack.l_mark[-2].var, 0, 0);
             yyval.nb = 1 + yystack.l_mark[0].nb; 
             push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file))); /* stoque la ligne du début de body else*/
             fprintf(output_file, "POP arg placeholder;                                                              \n");
         }
-#line 1770 "y.tab.c"
-break;
-case 65:
-#line 425 "compilateur.y"
-	{ yyval.nb = 0; }
 #line 1775 "y.tab.c"
 break;
+case 65:
+#line 429 "compilateur.y"
+	{ yyval.nb = 0; }
+#line 1780 "y.tab.c"
+break;
 case 66:
-#line 426 "compilateur.y"
+#line 430 "compilateur.y"
 	{ 
             /* on crée la variable locale qui correspond à l'argument empilé*/
             yyval.nb = 1; 
-            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),yystack.l_mark[0].nb,yyval.nb);
-            fflush(output_file);
+            fprintf(output_file, "5 %u %d; (copie) Empile l'argument 1\n",get_sp(),yystack.l_mark[0].nb,yyval.nb);
             push_arg();
        }
-#line 1786 "y.tab.c"
+#line 1790 "y.tab.c"
 break;
 case 67:
-#line 433 "compilateur.y"
+#line 436 "compilateur.y"
 	{ 
-            yyval.nb = 1 + yystack.l_mark[0].nb; 
-            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),yystack.l_mark[-2].nb,yyval.nb);
-            fflush(output_file);
+             
+            fprintf(output_file, "5 %u %d; (copie) Empile un argument\n",get_sp(),yystack.l_mark[0].nb);
             push_arg();
        }
-#line 1796 "y.tab.c"
+#line 1799 "y.tab.c"
 break;
-#line 1798 "y.tab.c"
+case 68:
+#line 440 "compilateur.y"
+	{yyval.nb = 1 + yystack.l_mark[-1].nb;}
+#line 1804 "y.tab.c"
+break;
+#line 1806 "y.tab.c"
     default:
         break;
     }

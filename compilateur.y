@@ -430,14 +430,14 @@ CallArgs : /* vide */ { $$ = 0; }
      | Expr { 
             // on crée la variable locale qui correspond à l'argument empilé
             $$ = 1; 
-            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+            fprintf(output_file, "5 %u %d; (copie) Empile l'argument 1\n",get_sp(),$1,$$);
             push_arg();
        }
-     | Expr tVIRG CallArgs { 
-            $$ = 1 + $3; 
-            fprintf(output_file, "5 %u %d; (copie) Empile l'argument %d\n",get_sp(),$1,$$);
+     | Expr { 
+             
+            fprintf(output_file, "5 %u %d; (copie) Empile un argument\n",get_sp(),$1);
             push_arg();
-       };
+       } tVIRG CallArgs {$$ = 1 + $<nb>3;} ;
 
 %%
 
