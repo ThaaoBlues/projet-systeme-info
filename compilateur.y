@@ -17,6 +17,11 @@ typedef struct {
     StackNode* top; // Pointeur vers le haut de la pile
 } Stack;
 
+//override de la fonction appeler par bison lors d'un tokken inatendu
+void yyerror(const char *s) {
+    extern int yylineno; // On récupère la variable de Flex
+    fprintf(stderr, "ERREUR SYNTAXIQUE : %s à la ligne %d\n", s, yylineno);
+}
 
 void push(Stack* s, int value) {
     StackNode* newNode = (StackNode*)malloc(sizeof(StackNode));
@@ -65,14 +70,13 @@ void iniOutputFile(){
 }
 
 
-void yyerror(char *s);
 %}
 %union { int nb; char var[5]; }
 
 %token tEGAL tPO tPF tSOU tADD tDIV tMUL tVIRG tAND tERROR tMAIN tCONST tINTVAR tSEP tENDLINE tENDINST tPRINTF tEXP tACCO tACCF tIF tELSE tWHILE tRETURN
-%token <nb> tNB Args Params
+%token <nb> tNB 
 %token <var> tID tKEYWORD
-%type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur
+%type <nb>  Expr DivMul Terme GroupedDecl GroupedDeclConst GroupedDeclConstPointeur GroupedDeclPointeur Args Params
 %start Main
 
 %%
@@ -112,6 +116,10 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
         
         fprintf(output_file, "C %d ;PRINT de la valeur à l'addresse %d \n",$2,$2);
     } 
+    | error tENDINST { 
+        yyerrok; //empeche bison de crash et continuer la compilation pour voir les autre erreur
+        printf("Récupération de l'erreur effectuée. On continue l'analyse! \n");
+    }
 
 
     /*| tIF Expr {
@@ -155,14 +163,15 @@ Instruction : tCONST tMUL GroupedDeclConstPointeur //declaration de pointeur con
     //Pour le if else, la partie if est la meme que if simple. Il faut rajouter un jump juste avant le else qui jump focement
     // sous le else. Pour cela, on parse le Else, on revient juste avant celui-ci et on ajoute un jump vers apres sa fin
     | tWHILE Expr  {
-        push(pile_lignes_a_finir,ftell_line(output_file,ftell(output_file)));
-        fprintf(output_file,";Debut WHILE %d                                             \n",ftell_line(output_file,ftell(output_file)));
+        int line_while_start = ftell_line(output_file,ftell(output_file));
+        push(pile_lignes_a_finir,line_while_start);
+        fprintf(output_file,";Debut WHILE %d                                             \n",line_while_start);
     } Body {
         int line_while = pop(pile_lignes_a_finir);
-        fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",pile_lignes_a_finir); 
+        fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",line_while); 
         int lineJump = ftell_line(output_file,ftell(output_file))+1;
         fseek_line(output_file,line_while);
-        fprintf(output_file,"8 %d %d; condition du while",$2,lineJump);
+        fprintf(output_file,"8 %d %d; condition du while\n",$2,lineJump);
         fseek(output_file,0,SEEK_END);
     };
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition

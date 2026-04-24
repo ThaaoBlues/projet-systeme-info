@@ -29,6 +29,9 @@ main(){if(0){printf(3);}else{printf(1);printf(2);}}
 
 main(){int oui,non = 2; if(oui){printf(oui);non = 5}else{printf(non);oui = non - 6;}}
 
+//tester et marche : 
+main() { int a = 1; if (a) { a = 2; } printf a; } 
+
 
 // pointeurs
 
