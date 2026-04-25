@@ -71,7 +71,6 @@ begin
             wait for CLK_PERIOD;
         end loop;
 
-        report "Fin de la simulation de lecture ROM";
         wait;
     end process;
 

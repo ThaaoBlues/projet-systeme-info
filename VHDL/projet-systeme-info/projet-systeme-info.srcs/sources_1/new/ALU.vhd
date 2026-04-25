@@ -76,79 +76,46 @@ begin
              end if;
             when "001" => --sub
                 res := std_logic_vector(signed(resize_A) - signed(resize_B));
+                
+                if(signed(res) <128) then
+                    Carry <= '1';
+                else
+                    Carry <= '0';
+                end if;
+                
             when "010" => --mul
                 res := std_logic_vector(signed(A) * signed(B));
-            when "011" => --and
+                
+                
+                if (signed(res) > 127) then
+                    Overflow <= '1';
+                else
+                    Overflow <= '0';
+                end if;
+                
+            when "011" =>
+                res := std_logic_vector(signed(resize_A) / signed(resize_B));
+            when "100" => --and
                 res(7 downto 0) := A AND B;
-            when "100" => --or
+            when "101" => --or
                 res(7 downto 0) := A OR B;
-            when "101" => -- xor
+            when "110" => -- xor
                 res(7 downto 0) := A XOR B;
-            when "110" => -- not A
+            when "111" => -- not A
                 res(7 downto 0) := std_logic_vector(NOT A);
             when "111" => --not b
                 res(7 downto 0) := std_logic_vector(NOT B);
             end case;
-            
-       end process;
-           
-
-            
-            
-        if Cadd = '1' then
-            res := std_logic_vector(signed(resize_A) + signed(resize_B));
-            
-            
-            if (signed(res) < -128 ) then
-                Carry <=  '1';
+        
+            if (signed(res) = 0) then
+                Zero <=  '1';
              else 
-                Carry <= '0';
-             end if;
-             
-            
-        elsif Csub = '1' then
-            res := std_logic_vector(signed(resize_A) - signed(resize_B));
-
-            if (signed(res) < -128) then
-                Carry <=  '1';
-             else 
-                Carry <= '0';
-             end if;
-             
-           
-
-            
-        elsif Cmul = '1' then
-            res := std_logic_vector(signed(A) * signed(B));
-
-            if (signed(res) > 127) then
-            
-                Overflow <= '1';
-            else
-                Overflow <= '0';
+                Zero <= '0';
             end if;
-           
-             
-        elsif Cdiv = '1' then
-            res := std_logic_vector(signed(resize_A) / signed(resize_B));
-
-        elsif Cxor = '1' then
-            res(7 downto 0) := A xor B; 
-        elsif Cand = '1' then
-            res(7 downto 0) := A AND B;
-        elsif Cor = '1' then
-            res(7 downto 0) := A OR B;
-        elsif Cnot = '1' then
-            res(7 downto 0) := std_logic_vector(NOT A);
-        end if;
-        if (signed(res) = 0) then
-            Zero <=  '1';
-         else 
-            Zero <= '0';
-         end if;
             
-             
-        S <= res(7 downto 0);
-    end process;
+            S <= res(7 downto 0);
+
+       end process;
+ 
     
 end Behavioral;

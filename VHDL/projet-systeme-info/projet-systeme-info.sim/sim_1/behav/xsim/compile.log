@@ -1,2 +1,4 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/BANC_REG_tb.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'BANC_tb'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/DATA_MEM.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'DATA_MEM'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sim_1/new/DATA_MEM_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'DATA_MEM_tb'

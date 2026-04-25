@@ -2,3 +2,6 @@ Running: xsim.dir/BANC_behav/xsimk -simmode gui -wdb BANC_behav.wdb -simrunnum 0
 Design successfully loaded
 Design Loading Memory Usage: 180240 KB (Peak: 180240 KB)
 Design Loading CPU Usage: 1100 ms
+Simulation completed
+Simulation Memory Usage: 261976 KB (Peak: 319508 KB)
+Simulation CPU Usage: 1110 ms

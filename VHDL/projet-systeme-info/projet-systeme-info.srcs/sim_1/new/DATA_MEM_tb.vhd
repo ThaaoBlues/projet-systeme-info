@@ -12,7 +12,7 @@ architecture Behavioral of DATA_MEM_tb is
     component DATA_MEM
         PORT (
             ADDR   : in std_logic_vector(7 downto 0);
-            ENTREE : in std_logic_vector(7 downto 0);
+            ENTREE : in std_logic_vector( 31 downto 0);
             RW     : in std_logic;
             RST    : in std_logic;
             CLK    : in std_logic;
@@ -22,7 +22,7 @@ architecture Behavioral of DATA_MEM_tb is
 
     -- Signaux internes pour piloter l'UUT
     signal ADDR   : std_logic_vector(7 downto 0) := (others => '0');
-    signal ENTREE : std_logic_vector(7 downto 0) := (others => '0');
+    signal ENTREE : std_logic_vector(31 downto 0) := (others => '0');
     signal RW     : std_logic := '1'; -- Par défaut en lecture
     signal RST    : std_logic := '0';
     signal CLK    : std_logic := '0';
@@ -66,15 +66,13 @@ begin
         wait for CLK_PERIOD;
 
         -- 2. Écriture de données (RW = '0')
-        -- Écrire la valeur 0xAA à l'adresse 0x01
         RW     <= '0';
         ADDR   <= "00000001"; -- Adresse 1
-        ENTREE <= "10101010"; -- 0xAA
+        ENTREE <= X"AAAAAAAA";-- 0xAA
         wait for CLK_PERIOD;
 
-        -- Écrire la valeur 0x55 à l'adresse 0x02
         ADDR   <= "00000010"; -- Adresse 2
-        ENTREE <= "01010101"; -- 0x55
+        ENTREE <= X"55555555"; -- 0x55
         wait for CLK_PERIOD;
 
         -- 3. Lecture des données (RW = '1')
