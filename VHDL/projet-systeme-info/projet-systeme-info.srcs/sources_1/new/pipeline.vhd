@@ -161,15 +161,20 @@ begin
     
     
 -- LI/DI
-    li_di : LIDI port map(INST<=inst_4o,OP<=op_li_di,A<=a_li_di,B<=b_li_di,C<=c_li_di);
+    li_di : LIDI port map(INST<=inst_4o,
+                          OP<=op_li_di,
+                          A<=a_li_di,
+                          B<=b_li_di,
+                          C<=c_li_di
+                        );
 
 
     banc_registres_principal : BANC_REG port map(
         ADDR_A => b_li_di(3 downto 0),
         ADDR_B => c_li_di(3 downto 0),
-        ADDR_W => "0000", -- TODO: à relier à la sortie a_re
-        W      => '0',    -- TODO : à relier au controleur en fonction de op_re
-        DATA   => x"00",  -- TODO : à relier à la sortie b_re
+        ADDR_W => a_re, -- TODO: à relier à la sortie a_re
+        W      => '1',    -- TODO : à relier au controleur en fonction de op_re
+        DATA   => b_re,  -- TODO : à relier à la sortie b_re
         RST    => rst,
         CLK    => clock,
         QA     => qa_out,
@@ -182,6 +187,9 @@ begin
 -- donc il va falloir séparer sortie li_di et signaux en entrée de DIEX 
 -- on va donc mettre des mux partout presque
 -- ce sera la même pour tous les étages
+
+-- je pense que les mux sont faisable avec des 'when' directement en fonction de l'OP
+-- sans forcément besoin de composant
 
 -- DI/EX
     alu : alu port map(A => b_di,
