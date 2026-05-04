@@ -40,11 +40,15 @@ entity ROM is
     );
 end ROM;
 
-architecture Behavioral of ROM is
+architecture beh of ROM is
 
 
     type mem is array(255 downto 0) of std_logic_vector(31 downto 0);
-    signal rom : mem := (others => (others => '0'));
+    signal rom : mem := (
+    0 => x"06010A00", -- AFC : R1 = 10 (0x0A)
+    1 => x"06021400", -- AFC : R2 = 20 (0x14)
+    others=> (others => '0')
+    );
 begin
     
     process(CLK)
@@ -60,4 +64,4 @@ begin
     
     end process;
 
-end Behavioral;
+end beh;

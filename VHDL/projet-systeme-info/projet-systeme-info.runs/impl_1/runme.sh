@@ -21,7 +21,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/impl_1'
+HD_PWD='/home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/impl_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -39,6 +39,6 @@ EAStep()
 
 # pre-commands:
 /bin/touch .init_design.begin.rst
-EAStep vivado -log BANC.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source BANC.tcl -notrace
+EAStep vivado -log pipeline.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source pipeline.tcl -notrace
 
 

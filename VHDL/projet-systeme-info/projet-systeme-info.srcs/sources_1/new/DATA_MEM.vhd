@@ -34,18 +34,18 @@ use IEEE.NUMERIC_STD.ALL;
 entity DATA_MEM is
     PORT (
         ADDR : in std_logic_vector( 7 downto 0);
-        ENTREE : in std_logic_vector(31 downto 0);
+        ENTREE : in std_logic_vector(7 downto 0);
         RW : in std_logic;
         RST : in std_logic;
         CLK : in std_logic;
-        SORTIE : out std_logic_vector(31 downto 0)
+        SORTIE : out std_logic_vector(7 downto 0)
     );
 end DATA_MEM;
 
-architecture Behavioral of DATA_MEM is
+architecture beh of DATA_MEM is
 
 
-    type mem is array(255 downto 0) of std_logic_vector(31 downto 0);
+    type mem is array(255 downto 0) of std_logic_vector(7 downto 0);
     signal data : mem := (others => (others => '0'));
 begin
     
@@ -70,5 +70,5 @@ begin
     
     end process;
 
-end Behavioral;
+end beh;
 

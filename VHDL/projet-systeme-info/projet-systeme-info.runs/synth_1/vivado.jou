@@ -3,22 +3,22 @@
 # SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
 # IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
 # SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
-# Start of session at: Sat Apr 25 11:47:20 2026
-# Process ID         : 44634
-# Current directory  : /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1
-# Command line       : vivado -log BANC.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source BANC.tcl
-# Log file           : /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/BANC.vds
-# Journal file       : /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/vivado.jou
-# Running On         : srv-tp04
+# Start of session at: Mon May  4 15:06:26 2026
+# Process ID         : 86242
+# Current directory  : /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1
+# Command line       : vivado -log pipeline.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source pipeline.tcl
+# Log file           : /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/pipeline.vds
+# Journal file       : /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/vivado.jou
+# Running On         : insa-20930
 # Platform           : Linuxmint
 # Operating System   : Linux Mint 22
-# Processor Detail   : Intel(R) Xeon(R) Silver 4216 CPU @ 2.10GHz
-# CPU Frequency      : 800.002 MHz
-# CPU Physical cores : 32
-# CPU Logical cores  : 64
-# Host memory        : 134753 MB
-# Swap memory        : 21474 MB
-# Total Virtual      : 156228 MB
-# Available Virtual  : 150062 MB
+# Processor Detail   : 12th Gen Intel(R) Core(TM) i5-12500
+# CPU Frequency      : 800.000 MHz
+# CPU Physical cores : 6
+# CPU Logical cores  : 12
+# Host memory        : 16441 MB
+# Swap memory        : 0 MB
+# Total Virtual      : 16441 MB
+# Available Virtual  : 8750 MB
 #-----------------------------------------------------------
-source BANC.tcl -notrace
+source pipeline.tcl -notrace

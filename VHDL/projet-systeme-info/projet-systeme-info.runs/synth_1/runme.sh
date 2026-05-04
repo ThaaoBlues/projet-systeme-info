@@ -21,7 +21,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1'
+HD_PWD='/home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -37,4 +37,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log BANC.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source BANC.tcl
+EAStep vivado -log pipeline.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source pipeline.tcl

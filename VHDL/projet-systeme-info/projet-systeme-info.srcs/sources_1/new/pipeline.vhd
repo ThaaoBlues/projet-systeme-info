@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -32,7 +32,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity pipeline is
---  Port ( );
+    Port (
+        CLK : in std_logic;
+        RST : in std_logic;
+        FAUSSE_SORTIE : out std_logic_vector(7 downto 0)
+    );
 end pipeline;
 
 architecture Structural of pipeline is
@@ -45,15 +49,6 @@ component ROM port(
 end component;
 
 
--- TODO DANS VIVADO : créer le composant clock
-component CLOCK port(
-    CLK : out std_logic
-);
-end component;
-
--- TODO DANS VIVADO : créer le composant LI/DI
--- il s'agit juste d'un truc qui split les 4 octets
--- et les mets chacun dans son registre
 component LIDI port(
         CLK  : in std_logic;
         INST : in std_logic_vector(31 downto 0);
@@ -74,8 +69,7 @@ component BANC_REG port(
 end component;
 
 
--- TODO : composant à faire
--- je pense que là c'est juste 4 registres
+
 component DIEX port(
         CLK: in std_logic;
         OP_IN, A_IN, B_IN, C_IN: in std_logic_vector(7 downto 0);
@@ -83,8 +77,7 @@ component DIEX port(
     );
 end component;
 
--- TODO : composant à faire
--- je pense que là c'est juste 4 registres
+-- je pense que là c'est juste 3 registres
 component EXMEM port(
         CLK: in std_logic; 
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
@@ -92,7 +85,7 @@ component EXMEM port(
     );
 end component;
 
--- TODO : composant à faire
+
 -- là jsp c'est un peu plus complexe comme il touche au banc de registres
 component MEMRE port(
         CLK: in std_logic; 
@@ -102,31 +95,39 @@ component MEMRE port(
 end component;
 
 
-component ALU
+component ALU_COMP
     Port(
         B, A : in  std_logic_vector(7 downto 0);
         S : out std_logic_vector(7 downto 0);
-        Cadd, Csub, Cmul, Cxor, Cand, Cor, Cnot, Cdiv : in std_logic;
-        Carry, Overflow, Negatif, Zero : out std_logic
+        Ctrl_ALU : in std_logic_vector(2 downto 0);
+        Carry,Overflow,Negatif,Zero : out std_logic
     );
 end component;
 
 
 
-component DATA_MEM
+component DATA_MEM_COMP
     PORT (
         ADDR   : in std_logic_vector(7 downto 0);
-        ENTREE : in std_logic_vector( 31 downto 0);
+        ENTREE : in std_logic_vector( 7 downto 0);
         RW     : in std_logic;
         RST    : in std_logic;
         CLK    : in std_logic;
-        SORTIE : out std_logic_vector(31 downto 0)
+        SORTIE : out std_logic_vector(7 downto 0)
     );
 end component;
 
+for all: ROM use entity work.ROM(beh);
+for all: LIDI use entity work.LIDI(beh);
+for all: BANC_REG use entity work.BANC(beh);
+for all: DIEX use entity work.DIEX(beh);
+for all: EXMEM use entity work.EXMEM(beh);
+for all: MEMRE use entity work.MEMRE(beh);
+for all: ALU_COMP use entity work.ALU(beh);
+for all: DATA_MEM_COMP use entity work.DATA_MEM(beh);
+
 
 signal ip : std_logic_vector(7 downto 0) := (others => '0');
-signal clock : std_logic := '0';
 
 -- sortie ROM
 signal inst_4o : std_logic_vector(31 downto 0) := (others => '0');
@@ -149,34 +150,39 @@ signal op_re, a_re, b_re : std_logic_vector(7 downto 0);
 
 -- sortie ALU
 signal alu_out : std_logic_vector(7 downto 0);
+signal s_carry : std_logic;
+signal s_overflow : std_logic;
+signal s_zero : std_logic;
+signal s_negatif : std_logic;
+
 
 -- sortie memoire donnees
-signal data_mem_out : str
+signal data_mem_out : std_logic_vector(7 downto 0);
 
 begin
 
-    clock_component : CLOCK port map(clock); 
 -- LES MULTIPLEXERS SERONT DES COMPOSANTS   
-    mem_code : ROM port map(ADDR<=ip,CLK<=clock,SORTIE<=inst_4o);
+    mem_code : ROM port map(ADDR=>ip,CLK=>CLK,SORTIE=>inst_4o);
     
     
 -- LI/DI
-    li_di : LIDI port map(INST<=inst_4o,
-                          OP<=op_li_di,
-                          A<=a_li_di,
-                          B<=b_li_di,
-                          C<=c_li_di
+    li_di : LIDI port map(INST=>inst_4o,
+                          OP=>op_li_di,
+                          A=>a_li_di,
+                          B=>b_li_di,
+                          C=>c_li_di,
+                          CLK => CLK
                         );
 
 
     banc_registres_principal : BANC_REG port map(
         ADDR_A => b_li_di(3 downto 0),
         ADDR_B => c_li_di(3 downto 0),
-        ADDR_W => a_re, -- TODO: à relier à la sortie a_re
+        ADDR_W => a_re(3 downto 0), -- TODO: à relier à la sortie a_re
         W      => '1',    -- TODO : à relier au controleur en fonction de op_re
         DATA   => b_re,  -- TODO : à relier à la sortie b_re
         RST    => rst,
-        CLK    => clock,
+        CLK    => CLK,
         QA     => qa_out,
         QB     => qb_out
     );
@@ -192,14 +198,18 @@ begin
 -- sans forcément besoin de composant
 
 -- DI/EX
-    alu : alu port map(A => b_di,
+    alu : alu_comp port map(A => b_di,
                        B => c_di,
-                       OP => op_di, -- TODO : passer par le controleur avant ici (jsp pq)
-                       S => alu_out
+                       Ctrl_ALU => op_di(2 downto 0), -- TODO : passer par le controleur avant ici (jsp pq)
+                       S => alu_out,
+                       Carry => s_carry,
+                       Overflow=> s_overflow,
+                       Negatif=> s_negatif,
+                       Zero=> s_zero 
                     );
 
 
-    di_ex : DIEX port map(CLK => clock,
+    di_ex : DIEX port map(CLK => CLK,
                                 OP_IN => op_li_di, 
                                 A_IN => a_li_di, 
                                 B_IN => b_li_di, -- TODO : mux entre b_li_di,qa_out suivant op_li_di
@@ -212,7 +222,7 @@ begin
 
 -- EX/MEM
 
-    ex_mem : EXMEM port map(CLK => clock,
+    ex_mem : EXMEM port map(CLK => CLK,
                                 OP_IN => op_di, 
                                 A_IN => a_di,
                                 B_IN => b_di, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
@@ -223,15 +233,16 @@ begin
 
 -- MEM/RE
 
-    data_mem : DATA_MEM port map(ADDR => a_ex, -- TODO : mux entre b_ex, a_ex en fonction de op_ex
-                                 IN_DATA => b_ex, 
+    data_mem : DATA_MEM_COMP port map(ADDR => a_ex, -- TODO : mux entre b_ex, a_ex en fonction de op_ex
+                                 ENTREE => b_ex, 
                                  RW => '1', --TODO : c'est le controleur, en fonction de op_ex
-                                 CLK => clock, 
-                                 OUT_DATA => data_mem_out
+                                 CLK => CLK, 
+                                 SORTIE => data_mem_out,
+                                 RST => RST
                                 );
 
 
-    mem_re : MEMRE port map(CLK => clock, 
+    mem_re : MEMRE port map(CLK => CLK, 
                             OP_IN => op_ex, 
                             A_IN => a_ex, 
                             B_IN => b_ex, -- TODO : mux entre b_ex,data_mem_out suivant op_ex 
@@ -241,12 +252,14 @@ begin
                         );
 
 -- process d'incrémentation de IP
-    process(clock) begin
-        if clock'Event AND clock='1' then 
-            ip <= ip + 1; 
+    process(CLK) begin
+        if CLK'Event AND CLK='1' then 
+            ip <= std_logic_vector( unsigned(ip) + 1 ); 
         end if;
     end process;
 
+
+    FAUSSE_SORTIE <= b_re;
 
 end Structural;
 

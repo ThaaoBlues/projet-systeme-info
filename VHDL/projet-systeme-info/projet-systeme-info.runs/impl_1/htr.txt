@@ -7,4 +7,4 @@
 # Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 #
 
-vivado -log BANC.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source BANC.tcl -notrace
+vivado -log pipeline.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source pipeline.tcl -notrace

@@ -1,0 +1,15 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../projet-systeme-info.srcs/sources_1/new/ALU.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/BANC_REG.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/DATA_MEM.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/DIEX.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/EXMEM.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/LIDI.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/MEMRE.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/ROM.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/pipeline.vhd" \
+"../../../../projet-systeme-info.srcs/sim_1/new/pipeline_tb.vhd" \
+
+# Do not sort compile order
+nosort

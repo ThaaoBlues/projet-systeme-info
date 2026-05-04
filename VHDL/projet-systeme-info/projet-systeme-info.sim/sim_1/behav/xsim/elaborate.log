@@ -1,7 +1,7 @@
 Vivado Simulator v2024.2.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: /usr/local/Xilinx/Vivado/2024.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L secureip --snapshot DATA_MEM_tb_behav xil_defaultlib.DATA_MEM_tb -log elaborate.log 
+Running: /usr/local/Xilinx/Vivado/2024.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L secureip --snapshot pipeline_tb_behav xil_defaultlib.pipeline_tb -log elaborate.log 
 Using 8 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -11,7 +11,17 @@ Time Resolution for simulation is 1ps
 Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
 Compiling package ieee.numeric_std
-Compiling architecture behavioral of entity xil_defaultlib.DATA_MEM [data_mem_default]
-Compiling architecture behavioral of entity xil_defaultlib.data_mem_tb
-Built simulation snapshot DATA_MEM_tb_behav
+Compiling architecture beh of entity xil_defaultlib.ROM [rom_default]
+Compiling architecture beh of entity xil_defaultlib.LIDI [lidi_default]
+Compiling architecture beh of entity xil_defaultlib.BANC [banc_default]
+Compiling architecture beh of entity xil_defaultlib.ALU [alu_default]
+Compiling architecture beh of entity xil_defaultlib.DIEX [diex_default]
+Compiling architecture beh of entity xil_defaultlib.EXMEM [exmem_default]
+Compiling architecture beh of entity xil_defaultlib.DATA_MEM [data_mem_default]
+Compiling architecture beh of entity xil_defaultlib.MEMRE [memre_default]
+Compiling architecture structural of entity xil_defaultlib.pipeline [pipeline_default]
+Compiling architecture behavioral of entity xil_defaultlib.pipeline_tb
+Built simulation snapshot pipeline_tb_behav
