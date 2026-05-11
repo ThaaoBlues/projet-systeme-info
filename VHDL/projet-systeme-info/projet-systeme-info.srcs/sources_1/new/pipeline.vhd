@@ -68,6 +68,14 @@ component BANC_REG port(
     );
 end component;
 
+component MUX_BR port(
+out_br : in std_logic_vector(7 downto 0);
+    out_li_di : in std_logic_vector(7 downto 0);
+    op_code : in std_logic_vector(7 downto 0);
+    out_mux_br : out std_logic_vector(7 downto 0) 
+    );
+end component;
+
 
 
 component DIEX port(
@@ -104,7 +112,17 @@ component ALU_COMP
     );
 end component;
 
+component LC_UAL
+    port(op : in std_logic_vector (7 downto 0);
+         ctrl_out : out std_logic_vector(2 downto 0));
+end component;
 
+component MUX_UAL
+    port(out_ual : in std_logic_vector(7 downto 0);
+    out_di_ex : in std_logic_vector(7 downto 0);
+    op_code : in std_logic_vector(7 downto 0);
+    out_mux_ual : out std_logic_vector(7 downto 0) );
+end component ;
 
 component DATA_MEM_COMP
     PORT (
@@ -117,6 +135,31 @@ component DATA_MEM_COMP
     );
 end component;
 
+component LC_MEM 
+    PORT( op : in std_logic_vector (7 downto 0);
+            rw_out : out std_logic);
+end component ;
+
+component LC_RE
+    PORT( op : in std_logic_vector (7 downto 0);
+        w_out : out std_logic);
+        end component;
+        
+component MUX_EX_MEM_TO_MEM is
+ Port ( op, ex_mem_a, ex_mem_b : in std_logic_vector(7 downto 0); out_addr : out std_logic_vector(7 downto 0));
+end component;
+
+
+component MUX_DATA_MEM is
+     Port ( 
+     op : in std_logic_vector(7 downto 0);
+     out_data_mem : in std_logic_vector(7 downto 0);
+     out_ex_mem : in std_logic_vector(7 downto 0);
+     out_b : out std_logic_vector(7 downto 0)
+     );
+end component;
+
+
 for all: ROM use entity work.ROM(beh);
 for all: LIDI use entity work.LIDI(beh);
 for all: BANC_REG use entity work.BANC(beh);
@@ -125,6 +168,17 @@ for all: EXMEM use entity work.EXMEM(beh);
 for all: MEMRE use entity work.MEMRE(beh);
 for all: ALU_COMP use entity work.ALU(beh);
 for all: DATA_MEM_COMP use entity work.DATA_MEM(beh);
+for all: LC_RE use entity work.LC_RE(beh);
+for all: MUX_BR use entity work.MUX_BR(beh);
+for all: LC_UAL use entity work.LC_UAL(beh);
+for all: MUX_UAL use entity work.MUX_UAL(beh);
+for all: LC_MEM use entity work.LC_MEM(beh);
+for all: MUX_DATA_MEM use entity work.MUX_DATA_MEM(beh);
+for all: MUX_EX_MEM_TO_MEM use entity work.mux_ex_mem_to_mem(beh);
+
+
+
+
 
 
 signal ip : std_logic_vector(7 downto 0) := (others => '0');
@@ -159,6 +213,27 @@ signal s_negatif : std_logic;
 -- sortie memoire donnees
 signal data_mem_out : std_logic_vector(7 downto 0);
 
+--LC banc registre
+signal w_out_br : std_logic;
+
+--mux banc registre
+signal out_mux_br :std_logic_vector(7 downto 0);
+
+-- LC ual
+signal lc_ctrl_ual : std_logic_vector(2 downto 0);
+
+--mux UAL
+signal out_mux_ual :std_logic_vector(7 downto 0); 
+
+-- LC mem
+signal lc_mem_out : std_logic;
+
+-- mux data mem
+signal mux_data_mem_out : std_logic_vector(7 downto 0);
+
+-- mux mux_ex_mem_to_mem
+signal mux_ex_mem_to_mem_out : std_logic_vector(7 downto 0);
+
 begin
 
 -- LES MULTIPLEXERS SERONT DES COMPOSANTS   
@@ -179,13 +254,24 @@ begin
         ADDR_A => b_li_di(3 downto 0),
         ADDR_B => c_li_di(3 downto 0),
         ADDR_W => a_re(3 downto 0), -- TODO: à relier à la sortie a_re
-        W      => '1',    -- TODO : à relier au controleur en fonction de op_re
+        W      => w_out_br,    -- TODO : à relier au controleur en fonction de op_re
         DATA   => b_re,  -- TODO : à relier à la sortie b_re
         RST    => rst,
         CLK    => CLK,
         QA     => qa_out,
         QB     => qb_out
     );
+    
+    lc_registre : LC_RE port map(
+        op => op_re,
+        w_out => w_out_br);
+        
+    mux_registre : MUX_BR port map(
+    out_br => qa_out,
+    out_li_di => b_li_di,
+    op_code => op_li_di,
+    out_mux_br => out_mux_br);
+        
 
 
 -- ATTENTION : les sorties LI/DI sont branchées sur di_ex
@@ -200,19 +286,31 @@ begin
 -- DI/EX
     alu : alu_comp port map(A => b_di,
                        B => c_di,
-                       Ctrl_ALU => op_di(2 downto 0), -- TODO : passer par le controleur avant ici (jsp pq)
+                       Ctrl_ALU => lc_ctrl_ual, --  passer par le controleur avant ici 
                        S => alu_out,
                        Carry => s_carry,
                        Overflow=> s_overflow,
                        Negatif=> s_negatif,
                        Zero=> s_zero 
                     );
+                    
+    lc_alu : lc_ual port map(
+        op => op_di,
+        ctrl_out => lc_ctrl_ual
+    );
+    
+    mux_alu : mux_ual port map(
+             out_ual => alu_out,
+        out_di_ex =>  b_di,
+        op_code => op_di,
+        out_mux_ual => out_mux_ual);
 
 
+    
     di_ex : DIEX port map(CLK => CLK,
                                 OP_IN => op_li_di, 
                                 A_IN => a_li_di, 
-                                B_IN => b_li_di, -- TODO : mux entre b_li_di,qa_out suivant op_li_di
+                                B_IN => out_mux_br, -- mux entre b_li_di,qa_out suivant op_li_di
                                 C_IN => c_li_di, -- TODO : relier directement à qb du banc de registre
                                 OP_OUT => op_di, 
                                 A_OUT => a_di, 
@@ -225,7 +323,7 @@ begin
     ex_mem : EXMEM port map(CLK => CLK,
                                 OP_IN => op_di, 
                                 A_IN => a_di,
-                                B_IN => b_di, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
+                                B_IN => out_mux_ual, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
                                 OP_OUT => op_ex, 
                                 A_OUT => a_ex, 
                                 B_OUT => b_ex
@@ -233,19 +331,28 @@ begin
 
 -- MEM/RE
 
-    data_mem : DATA_MEM_COMP port map(ADDR => a_ex, -- TODO : mux entre b_ex, a_ex en fonction de op_ex
+    mux_ex_mem_to_mem_component : MUX_EX_MEM_TO_MEM port map( op => op_ex, ex_mem_a => a_ex, ex_mem_b => b_ex, out_addr =>mux_ex_mem_to_mem_out);
+    
+
+
+    data_mem : DATA_MEM_COMP port map(ADDR => mux_ex_mem_to_mem_out, --  mux entre b_ex, a_ex en fonction de op_ex
                                  ENTREE => b_ex, 
-                                 RW => '1', --TODO : c'est le controleur, en fonction de op_ex
+                                 RW => lc_mem_out, -- c'est le controleur, en fonction de op_ex
                                  CLK => CLK, 
                                  SORTIE => data_mem_out,
                                  RST => RST
                                 );
+                                
+    lc_data_mem : LC_MEM port map( op => op_ex,
+            rw_out => lc_mem_out);
+            
+    mux_data : MUX_DATA_MEM port map( op => op_ex, out_data_mem => data_mem_out, out_ex_mem => b_ex,out_b => mux_data_mem_out);
 
 
     mem_re : MEMRE port map(CLK => CLK, 
                             OP_IN => op_ex, 
                             A_IN => a_ex, 
-                            B_IN => b_ex, -- TODO : mux entre b_ex,data_mem_out suivant op_ex 
+                            B_IN => mux_data_mem_out, -- : mux entre b_ex,data_mem_out suivant op_ex 
                             OP_OUT => op_re, 
                             A_OUT => a_re, 
                             B_OUT => b_re
