@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "/home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/pipeline.tcl"
+  variable script "/home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.runs/synth_1/pipeline.tcl"
   variable category "vivado_synth"
 }
 
@@ -56,32 +56,38 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param chipscope.maxJobs 3
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.cache/wt [current_project]
-set_property parent.project_path /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.xpr [current_project]
+set_property webtalk.parent_dir /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.cache/wt [current_project]
+set_property parent.project_path /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language VHDL [current_project]
 set_property board_part digilentinc.com:basys3:part0:1.2 [current_project]
-set_property ip_output_repo /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.cache/ip [current_project]
+set_property ip_output_repo /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_vhdl -library xil_defaultlib {
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/BANC_REG.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/DATA_MEM.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/DIEX.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/EXMEM.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/LIDI.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/MEMRE.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ROM.vhd
-  /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/pipeline.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/BANC_REG.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/DATA_MEM.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/DIEX.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/EXMEM.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/LC_UAL.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/LIDI.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/MEMRE.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ROM.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/lc_mem.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/lc_re.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_br.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_data_mem.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_ex_mem_to_mem.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_ual.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/pipeline.vhd
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -92,9 +98,12 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
+read_xdc /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/constrs_1/new/test.xdc
+set_property used_in_implementation false [get_files /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/constrs_1/new/test.xdc]
+
 set_param ips.enableIPCacheLiteLoad 1
 
-read_checkpoint -auto_incremental -incremental /home/chauv/Bureau/4A/sys_info/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/utils_1/imports/synth_1/ALU.dcp
+read_checkpoint -auto_incremental -incremental /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/utils_1/imports/synth_1/ALU.dcp
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }

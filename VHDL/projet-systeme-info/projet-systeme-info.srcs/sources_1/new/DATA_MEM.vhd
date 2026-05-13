@@ -54,13 +54,8 @@ begin
     begin
     
         if CLK'Event and CLK = '1' then
-            if RST = '1' then
+            if RST = '0' then
                 data <= (others => (others => '0'));
-                SORTIE <= (others => '0');
-            elsif RW = '1' then 
-            
-                SORTIE <= data(to_integer(unsigned(ADDR)));
-
             elsif RW = '0' then
                 data(to_integer(unsigned(ADDR))) <= ENTREE;
             end if;
@@ -69,6 +64,8 @@ begin
     
     
     end process;
+    
+    SORTIE <= data(to_integer(unsigned(ADDR))) when RW='1' else "UUUUUUUU";
 
 end beh;
 

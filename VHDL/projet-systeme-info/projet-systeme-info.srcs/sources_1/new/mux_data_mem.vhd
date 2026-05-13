@@ -36,7 +36,7 @@ entity mux_data_mem is
  op : in std_logic_vector(7 downto 0);
  out_data_mem : in std_logic_vector(7 downto 0);
  out_ex_mem : in std_logic_vector(7 downto 0);
- out_b : out std_logic_vector(7 downto 0);
+ out_b : out std_logic_vector(7 downto 0)
  );
 end mux_data_mem;
 
@@ -44,7 +44,7 @@ architecture Behavioral of mux_data_mem is
 
 begin
 
-
+    
     out_b <= out_data_mem when op(5) = '1' else out_ex_mem;
 
 end Behavioral;

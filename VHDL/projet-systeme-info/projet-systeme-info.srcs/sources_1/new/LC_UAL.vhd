@@ -45,6 +45,6 @@ begin
            
 -- Toute les instruction demandant d'utiliser une opération sont de la forme 0xCX. On a donc simplement
 -- besoin de regardé le 6e bit de op.
-    ctrl_out <= op(2 downto 0) when op_cool='1' else "000";
+    ctrl_out <= op(2 downto 0) when op_cool='1' else "UUU";
     
 end Behavioral;

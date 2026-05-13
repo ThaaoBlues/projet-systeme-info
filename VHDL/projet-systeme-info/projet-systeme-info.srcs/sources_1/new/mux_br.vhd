@@ -41,7 +41,9 @@ end mux_br;
 architecture Behavioral of mux_br is
     signal op_cool : std_logic;
 begin
-    op_cool <= op_code(7);
+
+    -- 4eme bit de poids fort => lecture du banc
+    op_cool <= op_code(4);
     
         -- on exclu affection et load qui n'utilise pas B comme addresse de registre
     out_mux_br <= out_br when (op_cool = '1' and (not(op_code = X"86" or op_code = X"A7"))) else out_li_di; 

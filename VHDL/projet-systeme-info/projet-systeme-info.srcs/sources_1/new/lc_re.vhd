@@ -39,13 +39,10 @@ end lc_re;
 
 architecture Behavioral of lc_re is
 
-    signal op_cool : std_logic;
 begin
 -- Toute les instruction demandant d'écrire sur le banc de registre sont de la forme 0x8X. Donc le bit de poid fort est à un. On a donc simplement
--- besoin de regardé le 7e bit de op.
-    op_cool <= op(7);
-    
-    w_out <= op_cool when op_cool='1' else "0";
+-- besoin de regarder le 7e bit de op.
+    w_out <= '1' when op(7) = '1' else '0';
        
         
 end Behavioral;

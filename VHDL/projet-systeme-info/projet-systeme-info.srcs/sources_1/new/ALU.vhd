@@ -67,14 +67,17 @@ begin
 
 
         case Ctrl_ALU is
-            when "000" => --Add
+            when "001" => --Add
                 res := std_logic_vector(signed(resize_A) + signed(resize_B));
+                
+                
+                
                 if (signed(res) < -128 ) then
                     Carry <=  '1'; --complément a deux
                 else 
                     Carry <= '0';
              end if;
-            when "001" => --sub
+            when "011" => --sub
                 res := std_logic_vector(signed(resize_A) - signed(resize_B));
                 
                 if(signed(res) <128) then
@@ -93,16 +96,14 @@ begin
                     Overflow <= '0';
                 end if;
                 
-            when "011" =>
+            when "100" => -- div
                 res := std_logic_vector(signed(resize_A) / signed(resize_B));
-            when "100" => --and
+            when "101" => --and
                 res(7 downto 0) := A AND B;
-            when "101" => --or
+            when "110" => --or
                 res(7 downto 0) := A OR B;
-            when "110" => -- xor
+            when "111" => -- xor
                 res(7 downto 0) := A XOR B;
-            when "111" => -- not A
-                res(7 downto 0) := std_logic_vector(NOT A);
             when others =>
                 res := (others => 'U');
             end case;

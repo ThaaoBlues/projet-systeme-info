@@ -36,10 +36,8 @@ entity mux_ex_mem_to_mem is
 end mux_ex_mem_to_mem;
 
 architecture Behavioral of mux_ex_mem_to_mem is
-
 begin
     
-    -- store loadr load 
-    -- TODO : dans la mémoire, faire le loadr ( chercher l'addr dans le registre pointé)
-    out_addr <= ex_mem_a when op = X"A8" ex_mem_a when op = X"AB"  ex_mem_b when op = X"A7" else X"00"; 
+    -- store load     
+    out_addr <= ex_mem_a when op = X"38" else ex_mem_b when op = X"A7" else "UUUUUUUU"; 
 end Behavioral;

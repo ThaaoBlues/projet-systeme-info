@@ -50,7 +50,6 @@ end component;
 
 
 component LIDI port(
-        CLK  : in std_logic;
         INST : in std_logic_vector(31 downto 0);
         OP,A,B,C   : out std_logic_vector(7 downto 0)
     );
@@ -63,7 +62,9 @@ component BANC_REG port(
         DATA   : in std_logic_vector(7 downto 0);
         RST    : in std_logic;
         CLK    : in std_logic;
-        QA,QB  : out std_logic_vector(7 downto 0)
+        QA,QB  : out std_logic_vector(7 downto 0) --n des aléas –
+         
+
     
     );
 end component;
@@ -79,7 +80,7 @@ end component;
 
 
 component DIEX port(
-        CLK: in std_logic;
+        
         OP_IN, A_IN, B_IN, C_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT, C_OUT: out std_logic_vector(7 downto 0)
     );
@@ -87,7 +88,7 @@ end component;
 
 -- je pense que là c'est juste 3 registres
 component EXMEM port(
-        CLK: in std_logic; 
+       
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -96,7 +97,7 @@ end component;
 
 -- là jsp c'est un peu plus complexe comme il touche au banc de registres
 component MEMRE port(
-        CLK: in std_logic; 
+       
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -168,13 +169,13 @@ for all: EXMEM use entity work.EXMEM(beh);
 for all: MEMRE use entity work.MEMRE(beh);
 for all: ALU_COMP use entity work.ALU(beh);
 for all: DATA_MEM_COMP use entity work.DATA_MEM(beh);
-for all: LC_RE use entity work.LC_RE(beh);
-for all: MUX_BR use entity work.MUX_BR(beh);
-for all: LC_UAL use entity work.LC_UAL(beh);
-for all: MUX_UAL use entity work.MUX_UAL(beh);
-for all: LC_MEM use entity work.LC_MEM(beh);
-for all: MUX_DATA_MEM use entity work.MUX_DATA_MEM(beh);
-for all: MUX_EX_MEM_TO_MEM use entity work.mux_ex_mem_to_mem(beh);
+for all: LC_RE use entity work.LC_RE(Behavioral);
+for all: MUX_BR use entity work.MUX_BR(Behavioral);
+for all: LC_UAL use entity work.LC_UAL(Behavioral);
+for all: MUX_UAL use entity work.MUX_UAL(Behavioral);
+for all: LC_MEM use entity work.LC_MEM(Behavioral);
+for all: MUX_DATA_MEM use entity work.MUX_DATA_MEM(Behavioral);
+for all: MUX_EX_MEM_TO_MEM use entity work.mux_ex_mem_to_mem(Behavioral);
 
 
 
@@ -245,8 +246,7 @@ begin
                           OP=>op_li_di,
                           A=>a_li_di,
                           B=>b_li_di,
-                          C=>c_li_di,
-                          CLK => CLK
+                          C=>c_li_di
                         );
 
 
@@ -307,11 +307,11 @@ begin
 
 
     
-    di_ex : DIEX port map(CLK => CLK,
+    di_ex : DIEX port map(
                                 OP_IN => op_li_di, 
                                 A_IN => a_li_di, 
                                 B_IN => out_mux_br, -- mux entre b_li_di,qa_out suivant op_li_di
-                                C_IN => c_li_di, -- TODO : relier directement à qb du banc de registre
+                                C_IN => qb_out, --  relier directement à qb du banc de registre
                                 OP_OUT => op_di, 
                                 A_OUT => a_di, 
                                 B_OUT => b_di, 
@@ -320,7 +320,7 @@ begin
 
 -- EX/MEM
 
-    ex_mem : EXMEM port map(CLK => CLK,
+    ex_mem : EXMEM port map(
                                 OP_IN => op_di, 
                                 A_IN => a_di,
                                 B_IN => out_mux_ual, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
@@ -349,7 +349,7 @@ begin
     mux_data : MUX_DATA_MEM port map( op => op_ex, out_data_mem => data_mem_out, out_ex_mem => b_ex,out_b => mux_data_mem_out);
 
 
-    mem_re : MEMRE port map(CLK => CLK, 
+    mem_re : MEMRE port map( 
                             OP_IN => op_ex, 
                             A_IN => a_ex, 
                             B_IN => mux_data_mem_out, -- : mux entre b_ex,data_mem_out suivant op_ex 
@@ -360,7 +360,9 @@ begin
 
 -- process d'incrémentation de IP
     process(CLK) begin
-        if CLK'Event AND CLK='1' then 
+        if RST = '0' then
+         ip <= (others => '0');
+        elsif CLK'Event AND CLK='1' then 
             ip <= std_logic_vector( unsigned(ip) + 1 ); 
         end if;
     end process;

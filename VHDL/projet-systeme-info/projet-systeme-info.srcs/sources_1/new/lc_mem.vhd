@@ -40,6 +40,8 @@ architecture Behavioral of lc_mem is
 
 begin
 -- on doit rw que dans le code opcode commence par 101
-    
-    rw_out <= '1' when op(7 downto 5)="101" else '0';
+    -- load et store
+    rw_out <= '1' when op = X"A7" else 
+          '0' when op = X"38" else  
+          'U';                  
 end Behavioral;

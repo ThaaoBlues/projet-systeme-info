@@ -32,7 +32,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity EXMEM is
-    Port ( CLK : in STD_LOGIC;
+    Port (
             OP_IN, A_IN, B_IN : in STD_LOGIC_VECTOR (7 downto 0);
             OP_OUT, A_OUT, B_OUT : out STD_LOGIC_VECTOR (7 downto 0));
 end EXMEM;
@@ -40,10 +40,7 @@ end EXMEM;
 architecture beh of EXMEM is
 
 begin
-    process(CLK) begin
-        if CLK'Event and CLK = '1' then
-             OP_OUT <= OP_IN; A_OUT <= A_IN; B_OUT <= B_IN;
-         end if;
-     end process;
+    
+     OP_OUT <= OP_IN; A_OUT <= A_IN; B_OUT <= B_IN;
 
 end beh;
