@@ -50,7 +50,7 @@ end component;
 
 
 component LIDI port(
-        CLK: in std_logic;
+        CLK : in std_logic;
         INST : in std_logic_vector(31 downto 0);
         OP,A,B,C   : out std_logic_vector(7 downto 0)
     );
@@ -63,7 +63,7 @@ component BANC_REG port(
         DATA   : in std_logic_vector(7 downto 0);
         RST    : in std_logic;
         CLK    : in std_logic;
-        QA,QB  : out std_logic_vector(7 downto 0) --n des aléas –
+        QA,QB  : out std_logic_vector(7 downto 0) --n des aléas -
          
 
     
@@ -81,7 +81,7 @@ end component;
 
 
 component DIEX port(
-        CLK: in std_logic;
+        CLK : in std_logic;
         OP_IN, A_IN, B_IN, C_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT, C_OUT: out std_logic_vector(7 downto 0)
     );
@@ -89,7 +89,7 @@ end component;
 
 -- je pense que là c'est juste 3 registres
 component EXMEM port(
-        CLK: in std_logic;
+        CLK : in std_logic;
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -98,7 +98,7 @@ end component;
 
 -- là jsp c'est un peu plus complexe comme il touche au banc de registres
 component MEMRE port(
-               CLK: in std_logic;
+        CLK : in std_logic;
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -107,6 +107,7 @@ end component;
 
 component ALU_COMP
     Port(
+        CLK : in std_logic;
         B, A : in  std_logic_vector(7 downto 0);
         S : out std_logic_vector(7 downto 0);
         Ctrl_ALU : in std_logic_vector(2 downto 0);
@@ -162,6 +163,15 @@ component MUX_DATA_MEM is
 end component;
 
 
+component retard_B_ALU is 
+    Port ( 
+            Clk : in std_logic;
+            B : in std_logic_vector(7 downto 0);
+            B_out : out std_logic_vector(7 downto 0) );
+
+end component;
+
+
 for all: ROM use entity work.ROM(beh);
 for all: LIDI use entity work.LIDI(beh);
 for all: BANC_REG use entity work.BANC(beh);
@@ -177,6 +187,7 @@ for all: MUX_UAL use entity work.MUX_UAL(Behavioral);
 for all: LC_MEM use entity work.LC_MEM(Behavioral);
 for all: MUX_DATA_MEM use entity work.MUX_DATA_MEM(Behavioral);
 for all: MUX_EX_MEM_TO_MEM use entity work.mux_ex_mem_to_mem(Behavioral);
+for all: retard_B_ALU use entity work.retard_B_alu(Behavioral);
 
 
 
@@ -236,6 +247,16 @@ signal mux_data_mem_out : std_logic_vector(7 downto 0);
 -- mux mux_ex_mem_to_mem
 signal mux_ex_mem_to_mem_out : std_logic_vector(7 downto 0);
 
+-- signaux pour créer un retard artificiel afin de synchro avec les deux étages de l'alu.
+signal op_di_r1 : std_logic_vector(7 downto 0);
+signal a_di_r1  : std_logic_vector(7 downto 0);
+signal op_di_r2 : std_logic_vector(7 downto 0);
+signal a_di_r2  : std_logic_vector(7 downto 0);
+
+signal b_en_retard : std_logic_vector(7 downto 0);
+
+
+
 begin
 
 -- LES MULTIPLEXERS SERONT DES COMPOSANTS   
@@ -243,8 +264,9 @@ begin
     
     
 -- LI/DI
-    li_di : LIDI port map(CLK => CLK,
-                            INST=>inst_4o,
+    li_di : LIDI port map(
+                            CLK => Clk,
+                           INST=>inst_4o,
                           OP=>op_li_di,
                           A=>a_li_di,
                           B=>b_li_di,
@@ -286,7 +308,10 @@ begin
 -- sans forcément besoin de composant
 
 -- DI/EX
-    alu : alu_comp port map(A => b_di,
+    alu : alu_comp port map(
+    
+                       CLK => CLK,
+                       A => b_di,
                        B => c_di,
                        Ctrl_ALU => lc_ctrl_ual, --  passer par le controleur avant ici 
                        S => alu_out,
@@ -301,15 +326,24 @@ begin
         ctrl_out => lc_ctrl_ual
     );
     
+    
+    retardateur_b : retard_B_alu port map(
+        CLK => CLK,
+        B => b_di,
+        B_out => b_en_retard
+    
+    );
+    
     mux_alu : mux_ual port map(
              out_ual => alu_out,
-        out_di_ex =>  b_di,
-        op_code => op_di,
+        out_di_ex =>  b_en_retard,
+        op_code => op_di_r2,
         out_mux_ual => out_mux_ual);
 
 
     
-    di_ex : DIEX port map(      CLK => CLK,
+    di_ex : DIEX port map(
+                                CLK => CLK,
                                 OP_IN => op_li_di, 
                                 A_IN => a_li_di, 
                                 B_IN => out_mux_br, -- mux entre b_li_di,qa_out suivant op_li_di
@@ -322,10 +356,11 @@ begin
 
 -- EX/MEM
 
-    ex_mem : EXMEM port map(    CLK => CLK,
-                                OP_IN => op_di, 
-                                A_IN => a_di,
-                                B_IN => out_mux_ual, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
+    ex_mem : EXMEM port map(
+                                CLK => CLK,
+                                OP_IN => op_di_r2, 
+                                A_IN => a_di_r2,
+                                B_IN => out_mux_ual, -- : mux entre sortie d'ALU, b_di suivant op_di
                                 OP_OUT => op_ex, 
                                 A_OUT => a_ex, 
                                 B_OUT => b_ex
@@ -351,7 +386,8 @@ begin
     mux_data : MUX_DATA_MEM port map( op => op_ex, out_data_mem => data_mem_out, out_ex_mem => b_ex,out_b => mux_data_mem_out);
 
 
-    mem_re : MEMRE port map( CLK => CLK,
+    mem_re : MEMRE port map( 
+                            CLK => CLK,
                             OP_IN => op_ex, 
                             A_IN => a_ex, 
                             B_IN => mux_data_mem_out, -- : mux entre b_ex,data_mem_out suivant op_ex 
@@ -368,9 +404,22 @@ begin
             ip <= std_logic_vector( unsigned(ip) + 1 ); 
         end if;
     end process;
+    
+    process(CLK) 
+    
+    begin
+         --créer le retard artificiel de 2 cycles
+        
+        if rising_edge(CLK) then
+            op_di_r1 <= op_di;
+            a_di_r1  <= a_di;
+            op_di_r2 <= op_di_r1;
+            a_di_r2 <= a_di_r1;
+        end if;
+    end process;
 
 
-    FAUSSE_SORTIE <= not b_re;
+    FAUSSE_SORTIE <= b_re;
 
 end Structural;
 

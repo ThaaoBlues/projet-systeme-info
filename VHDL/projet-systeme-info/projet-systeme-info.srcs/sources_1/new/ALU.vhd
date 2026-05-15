@@ -34,6 +34,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ALU is
     Port(
+        CLK : in std_logic; --clk pour copier les registre dans les registre interne de l'ALU
         B,A : in std_logic_vector(7 downto 0);
         S : out std_logic_vector(7 downto 0);
         
@@ -46,84 +47,94 @@ entity ALU is
 end ALU;
 
 architecture beh of ALU is
-    
-    
+    -- registre de l'ALU
+    signal r1_res       : std_logic_vector(15 downto 0) := (others => '0');
+    signal r1_Ctrl : std_logic_vector(2 downto 0);
     
 begin
-    process (A, B, Ctrl_ALU)
+    
+
+    process (Clk)
         variable res : std_logic_vector(15 downto 0) := (others => '0');
         variable resize_A : std_logic_vector(15 downto 0) := (others => '0');
         variable resize_B : std_logic_vector(15 downto 0) := (others => '0');
     begin
-        -- Initialisation par défaut pour éviter les Latches
-        Carry    <= '0';
-        Zero     <= '0';
-        Negatif  <= '0';
-        Overflow <= '0';
-        S        <= (others => '0');
+        if rising_edge(clk) then
+            r1_Ctrl <= Ctrl_ALU;
+            -- Initialisation par défaut pour éviter les Latches
 
-        resize_A := std_logic_vector(resize(signed(A),16));
-        resize_B := std_logic_vector(resize(signed(B),16));
+            resize_A := std_logic_vector(resize(signed(A),16));
+            resize_B := std_logic_vector(resize(signed(B),16));
+    
+    
+            case Ctrl_ALU is
+                when "001" => --Add
+                    res := std_logic_vector(signed(resize_A) + signed(resize_B));
+                    
+                    
+                when "011" => --sub
+                    res := std_logic_vector(signed(resize_A) - signed(resize_B));
+                    
+                    
+                when "010" => --mul
+                    res := std_logic_vector(signed(A) * signed(B));
+                          
+                when "100" => -- div
+                    res := std_logic_vector(signed(resize_A) / signed(resize_B));
+                when "101" => --and
+                    res(7 downto 0) := A AND B;
+                when "110" => --or
+                    res(7 downto 0) := A OR B;
+                when "111" => -- xor
+                    res(7 downto 0) := A XOR B;
+                when others =>
+                    res := (others => 'U');
+                end case;
+                r1_res <= res;
+           end if;
+       end process;
+       
+       -- Etage 2 (calcul flags)--
+       
+       process(clk)
+       begin
+       
 
 
-        case Ctrl_ALU is
-            when "001" => --Add
-                res := std_logic_vector(signed(resize_A) + signed(resize_B));
-                
-                
-                
-                if (signed(res) < -128 ) then
-                    Carry <=  '1'; --complément a deux
-                else 
-                    Carry <= '0';
-             end if;
-            when "011" => --sub
-                res := std_logic_vector(signed(resize_A) - signed(resize_B));
-                
-                if(signed(res) <128) then
-                    Carry <= '1'; --complément a deux
-                else
-                    Carry <= '0';
-                end if;
-                
-            when "010" => --mul
-                res := std_logic_vector(signed(A) * signed(B));
-                
-                
-                if (signed(res) > 127 OR signed(res) < -128 ) then
-                    Overflow <= '1';
-                else
-                    Overflow <= '0';
-                end if;
-                
-            when "100" => -- div
-                res := std_logic_vector(signed(resize_A) / signed(resize_B));
-            when "101" => --and
-                res(7 downto 0) := A AND B;
-            when "110" => --or
-                res(7 downto 0) := A OR B;
-            when "111" => -- xor
-                res(7 downto 0) := A XOR B;
-            when others =>
-                res := (others => 'U');
-            end case;
-        
-            if (signed(res) = 0) then
-                Zero <=  '1';
-             else 
+            if rising_edge(clk) then
                 Zero <= '0';
+                Negatif  <= '0';
+                S <= (others => '0');
+                Carry <= '0';
+                Overflow <= '0';
+                
+                
+                
+                 if (signed(r1_res) > 127 or signed(r1_res) < -128) and ( r1_Ctrl = "001" or r1_Ctrl = "011") then 
+                        Carry <= '1'; 
+                 elsif (signed(r1_res) > 127 or signed(r1_res) < -128) and ( r1_Ctrl = "010") then
+                    Overflow <= '1';
+                 end if;
+                 
+                 
+                S <= r1_res(7 downto 0);
+                
+                
+                if (signed(r1_res) = 0) then
+                    Zero <=  '1';
+                 else 
+                    Zero <= '0';
+                end if;
+                
+                if(signed(r1_res) < 0) then
+                    Negatif <= '1';
+                else
+                    Negatif <= '0';
+                    
+                end if;
+                    
+                
             end if;
-            
-            if(signed(res) < 0) then
-                Negatif <= '1';
-            else
-                Negatif <= '0';
-                
-             end if;
-                
-            
-            S <= res(7 downto 0);
-
        end process;
  
     

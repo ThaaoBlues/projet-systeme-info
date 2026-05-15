@@ -57,7 +57,7 @@ if {$::dispatch::connected} {
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
 set_param chipscope.maxJobs 2
-set_param xicom.use_bs_reader 1
+set_msg_config -id {Common 17-41} -limit 10000000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
@@ -89,6 +89,7 @@ read_vhdl -library xil_defaultlib {
   /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_data_mem.vhd
   /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_ex_mem_to_mem.vhd
   /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/mux_ual.vhd
+  /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/retard_B_alu.vhd
   /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/pipeline.vhd
 }
 OPTRACE "Adding files" END { }

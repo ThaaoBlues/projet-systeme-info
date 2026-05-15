@@ -33,7 +33,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity DIEX is
     
-    Port (CLK : in std_logic;  
+    Port (
+    CLK : in std_logic;  
     OP_IN, A_IN, B_IN, C_IN : in STD_LOGIC_VECTOR (7 downto 0);
             OP_OUT, A_OUT, B_OUT, C_OUT : out STD_LOGIC_VECTOR (7 downto 0));
 end DIEX;

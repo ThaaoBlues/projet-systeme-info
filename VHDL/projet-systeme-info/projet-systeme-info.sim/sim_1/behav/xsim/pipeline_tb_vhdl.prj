@@ -15,6 +15,7 @@ vhdl xil_defaultlib  \
 "../../../../projet-systeme-info.srcs/sources_1/new/mux_data_mem.vhd" \
 "../../../../projet-systeme-info.srcs/sources_1/new/mux_ex_mem_to_mem.vhd" \
 "../../../../projet-systeme-info.srcs/sources_1/new/mux_ual.vhd" \
+"../../../../projet-systeme-info.srcs/sources_1/new/retard_B_alu.vhd" \
 "../../../../projet-systeme-info.srcs/sources_1/new/pipeline.vhd" \
 "../../../../projet-systeme-info.srcs/sim_1/new/pipeline_tb.vhd" \
 
