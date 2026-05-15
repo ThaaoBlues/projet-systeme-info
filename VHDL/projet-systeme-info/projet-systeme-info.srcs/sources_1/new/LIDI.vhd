@@ -33,6 +33,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity LIDI is
      Port ( 
+        CLK : in std_logic;
         INST : in std_logic_vector(31 downto 0);
         OP,A,B,C   : out std_logic_vector(7 downto 0)
      );
@@ -41,10 +42,16 @@ end LIDI;
 architecture beh of LIDI is
 
 begin
+        process(CLK) begin
+        if rising_edge(CLK) then
             OP <= INST(31 downto 24);
             A <= INST(23 downto 16);
             B <= INST(15 downto 8);
             C <= INST(7 downto 0);
+        end if;
+        
+      end process;
+            
          
          
 

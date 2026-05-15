@@ -33,6 +33,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity MEMRE is
     Port (
+            CLK : in std_logic;
             OP_IN, A_IN, B_IN : in STD_LOGIC_VECTOR (7 downto 0);
             OP_OUT, A_OUT, B_OUT : out STD_LOGIC_VECTOR (7 downto 0));
 end MEMRE;
@@ -40,7 +41,12 @@ end MEMRE;
 architecture beh of MEMRE is
 
 begin
-
-     OP_OUT <= OP_IN; A_OUT <= A_IN; B_OUT <= B_IN;
+    process(CLK) begin
+        if rising_edge(CLK) then
+            
+            OP_OUT <= OP_IN; A_OUT <= A_IN; B_OUT <= B_IN;
+        end if;
+        
+      end process;
 
 end beh;

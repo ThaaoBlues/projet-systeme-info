@@ -65,6 +65,9 @@ begin
     
     end process;
     
+    
+    -- sortie non synchrone car sinon ça sort au coup d'horloge d'après
+    
     SORTIE <= data(to_integer(unsigned(ADDR))) when RW='1' else "UUUUUUUU";
 
 end beh;

@@ -50,6 +50,7 @@ end component;
 
 
 component LIDI port(
+        CLK: in std_logic;
         INST : in std_logic_vector(31 downto 0);
         OP,A,B,C   : out std_logic_vector(7 downto 0)
     );
@@ -80,7 +81,7 @@ end component;
 
 
 component DIEX port(
-        
+        CLK: in std_logic;
         OP_IN, A_IN, B_IN, C_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT, C_OUT: out std_logic_vector(7 downto 0)
     );
@@ -88,7 +89,7 @@ end component;
 
 -- je pense que là c'est juste 3 registres
 component EXMEM port(
-       
+        CLK: in std_logic;
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -97,7 +98,7 @@ end component;
 
 -- là jsp c'est un peu plus complexe comme il touche au banc de registres
 component MEMRE port(
-       
+               CLK: in std_logic;
         OP_IN, A_IN, B_IN: in std_logic_vector(7 downto 0);
         OP_OUT, A_OUT, B_OUT: out std_logic_vector(7 downto 0)
     );
@@ -242,7 +243,8 @@ begin
     
     
 -- LI/DI
-    li_di : LIDI port map(INST=>inst_4o,
+    li_di : LIDI port map(CLK => CLK,
+                            INST=>inst_4o,
                           OP=>op_li_di,
                           A=>a_li_di,
                           B=>b_li_di,
@@ -307,7 +309,7 @@ begin
 
 
     
-    di_ex : DIEX port map(
+    di_ex : DIEX port map(      CLK => CLK,
                                 OP_IN => op_li_di, 
                                 A_IN => a_li_di, 
                                 B_IN => out_mux_br, -- mux entre b_li_di,qa_out suivant op_li_di
@@ -320,7 +322,7 @@ begin
 
 -- EX/MEM
 
-    ex_mem : EXMEM port map(
+    ex_mem : EXMEM port map(    CLK => CLK,
                                 OP_IN => op_di, 
                                 A_IN => a_di,
                                 B_IN => out_mux_ual, -- TODO: mux entre sortie d'ALU, b_di suivant op_di
@@ -349,7 +351,7 @@ begin
     mux_data : MUX_DATA_MEM port map( op => op_ex, out_data_mem => data_mem_out, out_ex_mem => b_ex,out_b => mux_data_mem_out);
 
 
-    mem_re : MEMRE port map( 
+    mem_re : MEMRE port map( CLK => CLK,
                             OP_IN => op_ex, 
                             A_IN => a_ex, 
                             B_IN => mux_data_mem_out, -- : mux entre b_ex,data_mem_out suivant op_ex 
@@ -368,7 +370,7 @@ begin
     end process;
 
 
-    FAUSSE_SORTIE <= b_re;
+    FAUSSE_SORTIE <= not b_re;
 
 end Structural;
 
