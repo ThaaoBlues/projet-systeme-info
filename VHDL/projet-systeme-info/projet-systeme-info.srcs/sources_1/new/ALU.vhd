@@ -38,7 +38,6 @@ entity ALU is
         B,A : in std_logic_vector(7 downto 0);
         S : out std_logic_vector(7 downto 0);
         
-        -- OPTIMISATION : remplacer par un vecteur qui prend les codes des opérations directement
         Ctrl_ALU : in std_logic_vector(2 downto 0);
         Carry,Overflow,Negatif,Zero : out std_logic
     );

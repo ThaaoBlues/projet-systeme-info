@@ -191,3 +191,7 @@ Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
 Time: 965 ns  Iteration: 1  Process: /pipeline_tb/uut/alu/line__99  File: /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
 Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
 Time: 975 ns  Iteration: 1  Process: /pipeline_tb/uut/alu/line__99  File: /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
+Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+Time: 985 ns  Iteration: 1  Process: /pipeline_tb/uut/alu/line__99  File: /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
+Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+Time: 995 ns  Iteration: 1  Process: /pipeline_tb/uut/alu/line__99  File: /home/mougnibas/Bureau/4IR/S2/projet-systeme-info/VHDL/projet-systeme-info/projet-systeme-info.srcs/sources_1/new/ALU.vhd
