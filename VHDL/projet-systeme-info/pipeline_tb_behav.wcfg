@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="pipeline_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="pipeline_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="152.401 ns"></ZoomEndTime>
+      <Cursor1Time time="51.200 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="112"></NameColumnWidth>
+      <ValueColumnWidth column_width="167"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject type="logic" fp_name="/pipeline_tb/clk_tb">
+      <obj_property name="ElementShortName">clk_tb</obj_property>
+      <obj_property name="ObjectShortName">clk_tb</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pipeline_tb/rst_tb">
+      <obj_property name="ElementShortName">rst_tb</obj_property>
+      <obj_property name="ObjectShortName">rst_tb</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/pipeline_tb/CLK_PERIOD">
+      <obj_property name="ElementShortName">CLK_PERIOD</obj_property>
+      <obj_property name="ObjectShortName">CLK_PERIOD</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/li_di/OP">
+      <obj_property name="ElementShortName">OP[7:0]</obj_property>
+      <obj_property name="ObjectShortName">OP[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/b_li_di">
+      <obj_property name="ElementShortName">b_li_di[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b_li_di[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/c_li_di">
+      <obj_property name="ElementShortName">c_li_di[7:0]</obj_property>
+      <obj_property name="ObjectShortName">c_li_di[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/qa_out">
+      <obj_property name="ElementShortName">qa_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">qa_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/qb_out">
+      <obj_property name="ElementShortName">qb_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">qb_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/a_re">
+      <obj_property name="ElementShortName">a_re[7:0]</obj_property>
+      <obj_property name="ObjectShortName">a_re[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pipeline_tb/uut/w_out_br">
+      <obj_property name="ElementShortName">w_out_br</obj_property>
+      <obj_property name="ObjectShortName">w_out_br</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/alu/B">
+      <obj_property name="ElementShortName">B[7:0]</obj_property>
+      <obj_property name="ObjectShortName">B[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/alu/A">
+      <obj_property name="ElementShortName">A[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/banc_registres_principal/regs">
+      <obj_property name="ElementShortName">regs[0:15][7:0]</obj_property>
+      <obj_property name="ObjectShortName">regs[0:15][7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/b_ex">
+      <obj_property name="ElementShortName">b_ex[7:0]</obj_property>
+      <obj_property name="ObjectShortName">b_ex[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pipeline_tb/uut/lc_mem_out">
+      <obj_property name="ElementShortName">lc_mem_out</obj_property>
+      <obj_property name="ObjectShortName">lc_mem_out</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/mux_ex_mem_to_mem_out">
+      <obj_property name="ElementShortName">mux_ex_mem_to_mem_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">mux_ex_mem_to_mem_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/data_mem_out">
+      <obj_property name="ElementShortName">data_mem_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_mem_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/data_mem/data">
+      <obj_property name="ElementShortName">data[255:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">data[255:0][7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/data_mem/ADDR">
+      <obj_property name="ElementShortName">ADDR[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ADDR[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/data_mem/ENTREE">
+      <obj_property name="ElementShortName">ENTREE[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ENTREE[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/data_mem_out">
+      <obj_property name="ElementShortName">data_mem_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_mem_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pipeline_tb/uut/mux_data_mem_out">
+      <obj_property name="ElementShortName">mux_data_mem_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">mux_data_mem_out[7:0]</obj_property>
+   </wvobject>
+</wave_config>

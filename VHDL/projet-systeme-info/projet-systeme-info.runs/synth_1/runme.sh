@@ -37,4 +37,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log BANC.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source BANC.tcl
+EAStep vivado -log pipeline.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source pipeline.tcl

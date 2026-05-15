@@ -34,18 +34,18 @@ use IEEE.NUMERIC_STD.ALL;
 entity DATA_MEM is
     PORT (
         ADDR : in std_logic_vector( 7 downto 0);
-        ENTREE : in std_logic_vector(31 downto 0);
+        ENTREE : in std_logic_vector(7 downto 0);
         RW : in std_logic;
         RST : in std_logic;
         CLK : in std_logic;
-        SORTIE : out std_logic_vector(31 downto 0)
+        SORTIE : out std_logic_vector(7 downto 0)
     );
 end DATA_MEM;
 
-architecture Behavioral of DATA_MEM is
+architecture beh of DATA_MEM is
 
 
-    type mem is array(255 downto 0) of std_logic_vector(31 downto 0);
+    type mem is array(255 downto 0) of std_logic_vector(7 downto 0);
     signal data : mem := (others => (others => '0'));
 begin
     
@@ -54,13 +54,8 @@ begin
     begin
     
         if CLK'Event and CLK = '1' then
-            if RST = '1' then
+            if RST = '0' then
                 data <= (others => (others => '0'));
-                SORTIE <= (others => '0');
-            elsif RW = '1' then 
-            
-                SORTIE <= data(to_integer(unsigned(ADDR)));
-
             elsif RW = '0' then
                 data(to_integer(unsigned(ADDR))) <= ENTREE;
             end if;
@@ -69,6 +64,11 @@ begin
     
     
     end process;
+    
+    
+    -- sortie non synchrone car sinon ça sort au coup d'horloge d'après
+    
+    SORTIE <= data(to_integer(unsigned(ADDR))) when RW='1' else "UUUUUUUU";
 
-end Behavioral;
+end beh;
 

@@ -26,7 +26,7 @@ architecture beh of BANC is
      signal regs : banc_reg := (others => (others => '0'));
 begin 
 
-    process(ADDR_A,ADDR_B,ADDR_W,W,DATA,CLK,RST)
+    process(CLK,RST)
     begin
 
 
@@ -34,38 +34,20 @@ begin
             -- reset synchrone
             if RST = '0' then
                 regs  <= (others => (others => '0'));
-                QA   <= (others => '0');
-                QB   <= (others => '0');
-            else
-                if W = '0' then
-                    -- lecture d'un registre
-                    if unsigned(ADDR_A) /= 0 then
-                        QA <= regs(to_integer(unsigned(ADDR_A)));
-                        
-                    end if;
-
-                    -- possibilité de lire un second registre en même temps
-                    if unsigned(ADDR_B) /= 0 then
-                        QB <= regs(to_integer(unsigned(ADDR_B)));
-                        
-                    end if;
-
-                else
+            elsif W = '1' then
                     -- écriture d'un registre
                     regs(to_integer(unsigned(ADDR_W))) <= DATA;
-
-                    -- BYPASS
-                    if ADDR_A = ADDR_W then
-                        QA <= DATA;
-                    elsif ADDR_B = ADDR_W then
-                        QB <= DATA;
-                    end if;
-
-                end if;
-
             end if;
         end if;
 
     end process;
+    
+    
+    -- prend en compte le bypass
+    QA <= DATA when (W = '1' and ADDR_A = ADDR_W) else 
+              regs(to_integer(unsigned(ADDR_A)));
+          
+    QB <= DATA when (W = '1' and ADDR_B = ADDR_W) else 
+          regs(to_integer(unsigned(ADDR_B)));
 
 end architecture;

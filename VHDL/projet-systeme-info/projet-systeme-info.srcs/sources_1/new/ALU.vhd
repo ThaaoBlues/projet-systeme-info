@@ -45,7 +45,7 @@ entity ALU is
     
 end ALU;
 
-architecture Behavioral of ALU is
+architecture beh of ALU is
     
     
     
@@ -67,18 +67,21 @@ begin
 
 
         case Ctrl_ALU is
-            when "000" => --Add
+            when "001" => --Add
                 res := std_logic_vector(signed(resize_A) + signed(resize_B));
+                
+                
+                
                 if (signed(res) < -128 ) then
-                    Carry <=  '1';
+                    Carry <=  '1'; --complément a deux
                 else 
                     Carry <= '0';
              end if;
-            when "001" => --sub
+            when "011" => --sub
                 res := std_logic_vector(signed(resize_A) - signed(resize_B));
                 
                 if(signed(res) <128) then
-                    Carry <= '1';
+                    Carry <= '1'; --complément a deux
                 else
                     Carry <= '0';
                 end if;
@@ -87,24 +90,22 @@ begin
                 res := std_logic_vector(signed(A) * signed(B));
                 
                 
-                if (signed(res) > 127) then
+                if (signed(res) > 127 OR signed(res) < -128 ) then
                     Overflow <= '1';
                 else
                     Overflow <= '0';
                 end if;
                 
-            when "011" =>
+            when "100" => -- div
                 res := std_logic_vector(signed(resize_A) / signed(resize_B));
-            when "100" => --and
+            when "101" => --and
                 res(7 downto 0) := A AND B;
-            when "101" => --or
+            when "110" => --or
                 res(7 downto 0) := A OR B;
-            when "110" => -- xor
+            when "111" => -- xor
                 res(7 downto 0) := A XOR B;
-            when "111" => -- not A
-                res(7 downto 0) := std_logic_vector(NOT A);
-            when "111" => --not b
-                res(7 downto 0) := std_logic_vector(NOT B);
+            when others =>
+                res := (others => 'U');
             end case;
         
             if (signed(res) = 0) then
@@ -113,9 +114,17 @@ begin
                 Zero <= '0';
             end if;
             
+            if(signed(res) < 0) then
+                Negatif <= '1';
+            else
+                Negatif <= '0';
+                
+             end if;
+                
+            
             S <= res(7 downto 0);
 
        end process;
  
     
-end Behavioral;
+end beh;
