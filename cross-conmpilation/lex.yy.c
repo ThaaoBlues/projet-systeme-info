@@ -494,9 +494,18 @@ char *yytext;
 #include <stdio.h>
 #include <string.h>
 #include "y.tab.h"
-#line 497 "lex.yy.c"
 
-#line 499 "lex.yy.c"
+// Nous avons demandé à Gemini des informations sur flex à gemini pour arriver à nos fins
+// Il nous a fait découvrir les stat symbol
+//
+// on a donc eu L'idée d'utiliser des start symbol pour différentier 
+// la zone où on parse les opcode et les la zone où on paarse les arguments
+// car unn opcode peut avoir le même symbole qu'une adresse  ex : '4' pourrait être 
+// l'opcode copy ou l'adresse 4 ou la constante 4
+ 
+#line 506 "lex.yy.c"
+
+#line 508 "lex.yy.c"
 
 #define INITIAL 0
 #define ARGS 1
@@ -714,10 +723,12 @@ YY_DECL
 		}
 
 	{
-#line 13 "cc.l"
+#line 24 "cc.l"
 
 
-#line 720 "lex.yy.c"
+
+
+#line 731 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -787,78 +798,78 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "cc.l"
+#line 28 "cc.l"
 { /* commentaire seul, ignore */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "cc.l"
+#line 29 "cc.l"
 { /* commentaire fin de ligne, ignore */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "cc.l"
+#line 30 "cc.l"
 { /* espaces en debut de ligne */ }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 18 "cc.l"
+#line 31 "cc.l"
 { /* ligne vide */ }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 20 "cc.l"
+#line 33 "cc.l"
 { printf("[LEX] tJMPREF\n"); BEGIN(ARGS); return tJMPREF; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "cc.l"
+#line 36 "cc.l"
 { printf("[LEX] tPRINT\n");  BEGIN(ARGS); return tPRINT;  }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "cc.l"
+#line 38 "cc.l"
 { printf("[LEX] tADD\n");    BEGIN(ARGS); return tADD;    }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "cc.l"
+#line 39 "cc.l"
 { printf("[LEX] tMUL\n");    BEGIN(ARGS); return tMUL;    }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "cc.l"
+#line 40 "cc.l"
 { printf("[LEX] tSOU\n");    BEGIN(ARGS); return tSOU;    }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "cc.l"
+#line 41 "cc.l"
 { printf("[LEX] tDIV\n");    BEGIN(ARGS); return tDIV;    }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "cc.l"
+#line 42 "cc.l"
 { printf("[LEX] tCOPY\n");   BEGIN(ARGS); return tCOPY;   }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "cc.l"
+#line 43 "cc.l"
 { printf("[LEX] tAFC\n");    BEGIN(ARGS); return tAFC;    }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "cc.l"
+#line 44 "cc.l"
 { printf("[LEX] tJMP\n");    BEGIN(ARGS); return tJMP;    }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "cc.l"
+#line 45 "cc.l"
 { printf("[LEX] tJMPF\n");   BEGIN(ARGS); return tJMF;   }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 34 "cc.l"
+#line 47 "cc.l"
 {
     yylval.nb = atoi(yytext);
     printf("[LEX] tNB=%d\n", yylval.nb);
@@ -868,31 +879,31 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 40 "cc.l"
+#line 53 "cc.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 41 "cc.l"
+#line 54 "cc.l"
 { }
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 42 "cc.l"
+#line 55 "cc.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 43 "cc.l"
+#line 56 "cc.l"
 { }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 46 "cc.l"
+#line 59 "cc.l"
 ECHO;
 	YY_BREAK
-#line 895 "lex.yy.c"
+#line 906 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ARGS):
 	yyterminate();
@@ -1910,6 +1921,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 46 "cc.l"
+#line 59 "cc.l"
 
 

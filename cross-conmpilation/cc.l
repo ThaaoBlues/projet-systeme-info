@@ -3,16 +3,21 @@
 #include <stdio.h>
 #include <string.h>
 #include "y.tab.h"
+
+// Nous avons demandé à Gemini des informations sur flex à gemini pour arriver à nos fins
+// Il nous a fait découvrir les stat symbol
+//
+// on a donc eu L'idée d'utiliser des start symbol pour différentier 
+// la zone où on parse les opcode et les la zone où on paarse les arguments
+// car unn opcode peut avoir le même symbole qu'une adresse  ex : '4' pourrait être 
+// l'opcode copy ou l'adresse 4 ou la constante 4
+ 
 %}
 
 %option noyywrap
 %option yylineno
 
 
-// L'idée d'utiliser des start symbol pour différentier 
-// la zone où on parse les opcode et les la zone où on paarse les arguments
-// car unn opcode peut avoir le même symbole qu'une adresse  ex : '4' pourrait être 
-// l'opcode copy ou l'adresse 4 ou la constante 4
 
 %x ARGS
 
