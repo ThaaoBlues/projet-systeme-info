@@ -30,10 +30,11 @@ Pointeur:
 
 VHDL todo :
 
-finir alu modification avec CRTL_alu
-finir de faire le carry pour tout les flags
-faire flag overflow et autre
-verif avec test
+faire loadr dans la mémoire de données
+revoir le mux addresse de mémoire de données
+tester le pipeline
+faire aléas
+revoir lc_mem pour mettre r ou w car pour l'instant je crois qu'on met à 1 même si on read ( pour load par exemple)
 
 COMPILATEUR TODO :
 - tester le while et if/else

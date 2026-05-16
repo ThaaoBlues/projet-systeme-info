@@ -8,6 +8,37 @@
 #define DEBUT_PILE 0xFFFFFFFF
 #define TAILLE_PILE 1024
 
+
+/* FONCTION PAR GEMINI*/
+
+// On suppose que ta structure et HASH_SIZE sont déjà définis au-dessus
+// void print_table(struct Node* table[])
+
+void print_table(struct Node* table[]) {
+    printf("\n=== VISUALISATION DE LA MÉMOIRE (HASH TABLE) ===\n");
+    printf("%-7s | %-18s | %s\n", "Index", "Value (0)", "Pointeur");
+    printf("---------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < HASH_SIZE; i++) {
+        // Affiche l'index du tableau
+        if (table[i] != NULL){
+            struct Node* current = table[i];
+            while (current != NULL) {
+                // On affiche l'ID et l'adresse du nœud actuel pour bien voir le lien
+                printf("[ID:%u (%s) | Val:%d | @:%d] \n", 
+                        current->id,
+                        current->name, 
+                        current->value, 
+                        current->pointeur);
+                
+                
+                current = current->next;
+            }
+        }
+    }
+    printf("---------------------------------------------------------------------------\n\n");
+}
+
 uint32_t derniere_addr_libre = 0x00000004;
 
 uint32_t stack_pointer = DEBUT_PILE;
@@ -123,7 +154,7 @@ uint32_t add_var(char name[5],char is_constante,char is_pointeur){
     
     // On cherche dans la liste chaînée à cet index
 
-	struct Node* new_node = malloc(sizeof(struct Node));
+	struct Node* new_node =  malloc(sizeof(struct Node));
 	
 	
 
@@ -146,7 +177,7 @@ uint32_t add_var(char name[5],char is_constante,char is_pointeur){
 	new_node->id = full_id;
 	new_node->est_constante = is_constante;
     new_node->est_pointeur = is_pointeur;
-	new_node->value = NULL;
+	new_node->value = 0;
 	new_node->profondeur = profondeur_actuelle;
     strcpy(new_node->name,name);
 
@@ -206,32 +237,6 @@ uint32_t getTmpAddr(){
     return adr[whichTmp];
 }
 
-/* FONCTION PAR GEMINI*/
 
-// On suppose que ta structure et HASH_SIZE sont déjà définis au-dessus
-// void print_table(struct Node* table[])
 
-void print_table(struct Node* table[]) {
-    printf("\n=== VISUALISATION DE LA MÉMOIRE (HASH TABLE) ===\n");
-    printf("%-7s | %-18s | %s\n", "Index", "Value (0)", "Pointeur");
-    printf("---------------------------------------------------------------------------\n");
 
-    for (int i = 0; i < HASH_SIZE; i++) {
-        // Affiche l'index du tableau
-        if (table[i] != NULL){
-            struct Node* current = table[i];
-            while (current != NULL) {
-                // On affiche l'ID et l'adresse du nœud actuel pour bien voir le lien
-                printf("[ID:%u (%s) | Val:%d | @:%d] \n", 
-                        current->id,
-                        current->name, 
-                        current->value, 
-                        current->pointeur);
-                
-                
-                current = current->next;
-            }
-        }
-    }
-    printf("---------------------------------------------------------------------------\n\n");
-}
