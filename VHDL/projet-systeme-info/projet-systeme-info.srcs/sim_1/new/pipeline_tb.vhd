@@ -60,9 +60,6 @@ begin
         
         wait for CLK_PERIOD * 10;
 
-        -- ICI : Tu peux ajouter des "asserts" si tu exposes tes signaux internes
-        -- pour vérifier que la valeur B est bien arrivée dans le registre A.
-
         report "Fin de simulation du test AFC";
         wait;
     end process;
