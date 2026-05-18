@@ -179,17 +179,30 @@ Instruction :
 
 	
 
-    | tWHILE Expr  {
+    | tWHILE  {
+
+        // enregistre la ligne où l'on doit jump car suivie de l'expression a re-evaluer pour chaque iteration
         int line_while_start = ftell_line(output_file,ftell(output_file));
         push(pile_lignes_a_finir,line_while_start);
+    }
+    Expr {
+
+        int line_end_while_expr = ftell_line(output_file,ftell(output_file));
+        push(pile_lignes_a_finir,line_end_while_expr); // enregistre l'addresse de fin de l'expression à evaluer pour pouvoir y mettre la condition de while
         fprintf(output_file,";Debut WHILE %d                                             \n",line_while_start);
-    } Body {
-        int line_while = pop(pile_lignes_a_finir);
-        fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",line_while); 
-        int lineJump = ftell_line(output_file,ftell(output_file))+1;
-        fseek_line(output_file,line_while);
-        fprintf(output_file,"8 %d %d; condition du while\n",$2,lineJump);
+    }
+    Body {
+        
+        int line_jump = ftell_line(output_file,ftell(output_file))+1;
+        int line_placeholder = pop(pile_lignes_a_finir); // fin de l'expression
+        fseek_line(output_file,line_placeholder);
+        fprintf(output_file,"8 %d %d; condition du while\n",$2,line_jump);
         fseek(output_file,0,SEEK_END);
+
+
+        int line_while = pop(pile_lignes_a_finir); // debut de l'expression
+        fprintf(output_file,"7 %d; saut inconditionel pour remonter à la condition du while\n",line_while); 
+
     };
     // Pour le while, on realise un jump hors de la boucle en début de while si l'instruction est fausse. A la fin du while on jump au debut du while pour reverifier la condition
 
