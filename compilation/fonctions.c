@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "fonctions.h"
+#include "gestionMem.h"
 
 #define HASH_SIZE 1024  
 FuncNode* table_fonctions[HASH_SIZE];
@@ -89,6 +90,5 @@ void update_func_args(char name[5],int nb_args){
             current = current->next;
         }
     }
-    return 0;
 
 }

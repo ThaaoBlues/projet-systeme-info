@@ -6,6 +6,7 @@
 
 #define VAR_NAME_SIZE 4
 #define TAILLE_BANC_REGISTRES
+int yylex();
 
 
 typedef struct StackNode {
@@ -65,7 +66,6 @@ void iniOutputFile(){
 
   	if (output_file == NULL) {
         perror("Erreur lors de l'ouverture du fichier");
-        return 1;
     }
 }
 
@@ -188,6 +188,8 @@ Instruction :
     Expr {
 
         int line_end_while_expr = ftell_line(output_file,ftell(output_file));
+        int line_while_start = pop(pile_lignes_a_finir);
+        push(pile_lignes_a_finir,line_while_start);
         push(pile_lignes_a_finir,line_end_while_expr); // enregistre l'addresse de fin de l'expression à evaluer pour pouvoir y mettre la condition de while
         fprintf(output_file,";Debut WHILE %d                                             \n",line_while_start);
     }
@@ -196,7 +198,7 @@ Instruction :
         int line_jump = ftell_line(output_file,ftell(output_file))+1;
         int line_placeholder = pop(pile_lignes_a_finir); // fin de l'expression
         fseek_line(output_file,line_placeholder);
-        fprintf(output_file,"8 %d %d; condition du while\n",$2,line_jump);
+        fprintf(output_file,"8 %d %d; condition du while\n",$<nb>2,line_jump);
         fseek(output_file,0,SEEK_END);
 
 

@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -512,6 +512,7 @@ char *yytext;
 #include <stdlib.h>
 #include <stdio.h>
 #include "y.tab.h"
+
 #line 516 "lex.yy.c"
 #line 517 "lex.yy.c"
 
@@ -730,7 +731,7 @@ YY_DECL
 		}
 
 	{
-#line 10 "compilateur.l"
+#line 11 "compilateur.l"
 
 
 #line 737 "lex.yy.c"
@@ -802,102 +803,102 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "compilateur.l"
+#line 13 "compilateur.l"
 {printf("tMAIN\n"); return tMAIN;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "compilateur.l"
+#line 14 "compilateur.l"
 {printf("tCONST\n"); return tCONST;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "compilateur.l"
+#line 15 "compilateur.l"
 {printf("tINTVAR\n");return tINTVAR;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "compilateur.l"
+#line 16 "compilateur.l"
 {printf("tPRINTF\n");return tPRINTF;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "compilateur.l"
+#line 17 "compilateur.l"
 {printf("tIF\n");return tIF;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "compilateur.l"
+#line 18 "compilateur.l"
 {printf("tELSE\n");return tELSE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "compilateur.l"
+#line 19 "compilateur.l"
 {printf("tWhile\n");return tWHILE;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "compilateur.l"
+#line 20 "compilateur.l"
 {printf("tRETURN\n"); return tRETURN;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 21 "compilateur.l"
+#line 22 "compilateur.l"
 {printf("tEXP\n");return tEXP;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 22 "compilateur.l"
+#line 23 "compilateur.l"
 { printf("tEGAL\n");return tEGAL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 23 "compilateur.l"
+#line 24 "compilateur.l"
 { printf("tSOU\n");return tSOU; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 24 "compilateur.l"
+#line 25 "compilateur.l"
 { printf("tADD\n");return tADD; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 25 "compilateur.l"
+#line 26 "compilateur.l"
 { printf("tMUL\n");return tMUL; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 26 "compilateur.l"
+#line 27 "compilateur.l"
 { printf("tDIV\n");return tDIV; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 27 "compilateur.l"
+#line 28 "compilateur.l"
 { printf("tPO\n");return tPO; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 28 "compilateur.l"
+#line 29 "compilateur.l"
 { printf("tPF\n");return tPF; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 29 "compilateur.l"
+#line 30 "compilateur.l"
 { printf("tACCO\n");return tACCO; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 30 "compilateur.l"
+#line 31 "compilateur.l"
 { printf("tACCF\n");return tACCF; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 31 "compilateur.l"
+#line 32 "compilateur.l"
 {printf("tAND\n"); return tAND;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 32 "compilateur.l"
+#line 33 "compilateur.l"
 {
 	  yylval.nb = atoi(yytext);
 	  printf("tNB\n");return tNB;
@@ -905,7 +906,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 36 "compilateur.l"
+#line 37 "compilateur.l"
 {
 	if(strlen(yytext) > 4){
 		printf("Identifiant trop long ! (%d>4)",strlen(yytext));
@@ -920,27 +921,27 @@ YY_RULE_SETUP
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
-#line 46 "compilateur.l"
+#line 47 "compilateur.l"
 {}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 47 "compilateur.l"
+#line 48 "compilateur.l"
 {printf("VIRGULE\n");return tVIRG;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 48 "compilateur.l"
+#line 49 "compilateur.l"
 {printf("tENDINST\n");return tENDINST;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 49 "compilateur.l"
+#line 50 "compilateur.l"
 { printf("tERROR\n"); return tERROR; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 56 "compilateur.l"
+#line 57 "compilateur.l"
 ECHO;
 	YY_BREAK
 #line 947 "lex.yy.c"
@@ -1960,4 +1961,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 56 "compilateur.l"
+#line 57 "compilateur.l"

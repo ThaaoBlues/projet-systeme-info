@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+int yyparse();
 
 int main(void) {
   printf("Perseur\n"); // yydebug=1;
